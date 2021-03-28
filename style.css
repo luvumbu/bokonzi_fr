@@ -1,0 +1,264 @@
+@font-face {
+  font-family: "OwlCute";
+  src: url("src/font/OwlCute.ttf");
+}
+.facebook_logo{
+  
+color:var(--main-bg-color) ; 
+font-size: 4em;
+
+}
+
+:root{
+  --main-bg-color: black;
+} 
+.cursor:hover{
+  cursor: pointer;
+}
+body{
+/*  font-family: "OwlCute";*/
+background-color: #f0f2f5;
+}
+#form-group{
+  width: 60%;
+  margin: auto;
+  margin-top: 100px;
+}
+.class_img img{ 
+  height: 300px;  
+}
+.btn-ins:hover ,.creer_compte:hover,.connexion:hover{
+cursor: pointer;
+}
+
+.cursor-pointer{
+      cursor: pointer;
+}
+.class_img{
+  max-width: 300px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  text-align: center;
+}
+.containers{
+  display: flex;
+  justify-content:center;
+  margin-top:100px;
+  justify-content: center;
+}
+/* width */
+::-webkit-scrollbar {
+width: 20px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+box-shadow: inset 0 0 5px black; 
+border-radius: 10px;
+transition :all 10s;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+background: #809fff; 
+border-radius: 10px;
+transition :all 10s;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+background: #3366ff; 
+transition :all 10s;
+}   
+
+html {
+scroll-behavior: smooth;
+}
+.none{
+display:none;
+}
+
+
+
+/*
+
+
+
+
+*/ 
+.right{
+background-color: white;
+padding: 20px;
+border-radius: 5px   5px  5px  5px  ;
+
+border:2px solid rgba(0, 0, 0, 0.1);
+box-shadow: 3px 3px .6em  rgba(0, 0, 0, 0.1), -3px 0 .6em rgba(0, 0, 0, 0.1);
+}
+#presentation {
+width: 80%; 
+margin: auto;
+margin-top: 150px;
+display: flex;
+justify-content: space-between;
+}
+.w100 {
+width: 100%;
+margin-top: 10px;
+border:1px solid #dddfe2;
+padding:10px;
+border-radius: 5px   5px  5px  5px  ;
+font-size: 1.2em;
+}
+.connexion{
+background-color: var(--main-bg-color);
+border-radius: 5px   5px  5px  5px  ;
+color: white;
+margin-top:25px; 
+padding: 10px;
+text-align: center;
+
+}
+.oublie{
+color: var(--main-bg-color);
+text-align: center;
+margin-top:25px ; 
+border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+padding-bottom: 25px;
+}
+input:focus {
+color: var(--main-bg-color);
+border:1px solid var(--main-bg-color);
+}
+.left {
+position: relative;
+top: 100px;
+}
+#presentation p {
+font-size: 1.5em; 
+}
+.creer_compte{
+background-color: var(--main-bg-color);
+color: white;
+padding: 10px;
+text-align: center;
+width: 60%;
+margin:auto;
+margin-top: 20px;
+}
+.fright {
+text-align: right;
+width: 100%;
+margin:auto;
+
+padding-right: 200px;
+margin-top: 25px;
+}
+footer {
+background-color: white ;
+margin-top: 200px;
+padding: 40px;
+color: #737373;
+padding-bottom: 40px;
+}
+#inscription{
+ position: absolute;
+ width: 100%;
+ background-color: rgba(0, 0, 0, 0.1);
+ top: 0;
+ height:1200px;
+}
+#info_inscription{
+
+ background-color: white;
+ width:600px;
+ margin: auto;
+    margin-top: 150px;
+}
+.bk1{
+ display: flex;
+ justify-content: space-between;
+ width: 100%;
+  
+}
+
+.padding-15{
+ padding: 18px;
+}
+.bk2 input{
+ width: 100%;
+
+}
+.select-padding{
+ padding: 10px;
+ margin-right: 15px;
+ width:30%;
+}
+.btn-ins{
+text-align: center;
+/*
+background-color: seagreen;
+*/
+background-color: var(--main-bg-color);
+font-size: 1.3em;
+color: white;
+width: 200px;
+margin:auto;
+padding: 15px;
+
+}
+input {
+ background-color: #f5f6f7;
+ border:1px solid #ccd0d5;
+ padding: 10px;
+ border-radius: 5px;
+ margin-bottom: 15px;
+ margin-top: 15px;
+ font-size: 1.3em;
+}
+.display-none{
+ display: none;
+}
+.display-block{
+ display: block;
+}
+.eye-position {
+  position: absolute;
+  top: 70px;
+  padding: 10px;
+border-left: 1px solid rgba(0, 0, 0, 0.1);
+right: 0;
+}
+.eye-position:hover {
+cursor: pointer;
+}
+@media screen and (max-width: 1280px)
+  {
+    .class_img img{
+    height: 300px;
+    }
+    .class_img{
+    max-height: 300px;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    text-align: center;
+      }
+    .containers{
+      display: flex;
+      justify-content:center;
+      margin-top:100px;
+      justify-content: center;
+      }
+      #presentation {
+margin-top: 15px;
+        display: block;
+        text-align: center;
+     
+      }
+
+      .left {
+        position: relative;
+        top:  0px;
+        margin-bottom: 50px;
+      }
+
+  }
