@@ -1,0 +1,1092 @@
+;------------------------------------------------------------------
+;	(c)  Copyright 2017 HP Development Company, L.P. 
+;	Reproduction, adaptation or translation without prior 
+;	written permission is prohibited, except as allowed 
+;	under the copyright laws.
+;------------------------------------------------------------------
+
+CLASS USER
+
+CATEGORY "HP Managed Print Policies 4.5.1"
+
+; UPD Administrative Template version xxxx.xx 
+; 
+; Most applications will use a registry key with the naming convention 
+; Software\Policies\CompanyName\ProductName\ComponentName
+; 
+; For example:  Software\Policies\Hewlett-Packard\HP Print Settings
+;               Software\Microsoft\Windows\CurrentVersion\Policies\blah\blah
+;
+; 061103 - Commented out EXPLAIN due to incompatability with Server 2000
+; 
+; 
+; 
+
+   KEYNAME "Software\Policies\Hewlett-Packard\HP Print Settings\ADSPrintPolicy"
+
+CATEGORY "UseMode Settings"
+ 
+; General Settings
+  
+   POLICY "General Settings"
+   EXPLAIN !!t_General_Settings
+
+         VALUENAME "General_Settings"	
+      PART !!p_DisableColor         CHECKBOX
+         VALUENAME "Color"
+           VALUEON NUMERIC 0
+           VALUEOFF NUMERIC 1
+      END PART
+
+      PART "Show device address"          CHECKBOX
+         DEFCHECKED
+         VALUENAME "ShowDeviceAddress"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+	  PART "" TEXT END PART
+
+      PART "Enable Policy for all users"          CHECKBOX
+         DEFCHECKED
+	 KEYNAME "Software\Hewlett-Packard\HP Print Settings"
+         VALUENAME "UPDADS"
+           VALUEON  NUMERIC 19728374
+           VALUEOFF NUMERIC 0
+      END PART
+      PART "ver. 100811.00" TEXT END PART
+   END POLICY
+
+; Restricted mode
+
+   POLICY "User Interaction Settings"
+      EXPLAIN !!t_Restricted_Mode
+;      VALUENAME "Restricted"
+;           VALUEON  NUMERIC 0
+;           VALUEOFF NUMERIC 1
+
+      VALUENAME "UserInteractionSettings"
+      PART "Restricted Mode"      CHECKBOX
+;         DEFCHECKED
+         VALUENAME "Restricted"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Show UPD dialog settings window"      CHECKBOX
+         DEFCHECKED
+         VALUENAME "ShowDriverSettings"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Allow user to group printers by location"         CHECKBOX
+         DEFCHECKED
+         VALUENAME "ShowProfiles"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Allow user to add printers to OS Printers folder" CHECKBOX
+         DEFCHECKED
+         VALUENAME "ShowMakePermanent"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Device verify level:" DROPDOWNLIST REQUIRED
+        VALUENAME "DeviceVerifyLevel"
+	ITEMLIST
+	   NAME "(Do not specify)" DEFAULT
+	   VALUE "default"
+	   NAME "Verify communication and compatibility with driver (High)"
+	   VALUE "high"
+	   NAME "Verify device ID and Model Name can be obtained (Medium)"
+	   VALUE "medium"
+	   NAME "Verify port can be opened for printing (Low)"
+	   VALUE "low"
+	END ITEMLIST 
+      END PART
+
+      PART "When printing:" DROPDOWNLIST REQUIRED
+        VALUENAME "WhenPrinting"
+	ITEMLIST
+	   NAME "(Do not specify)" DEFAULT
+	   VALUE "default"
+	   NAME "Always prompt for the destination when printing a job"
+	   VALUE "always"
+	   NAME "Only prompt the first time a job is printed from an application"
+	   VALUE "firstjob"
+	   NAME "Only prompt if the last known destination is no longer available"
+	   VALUE "onerror"
+	END ITEMLIST 
+      END PART
+
+   END POLICY
+
+;Enable services tab
+
+   POLICY "Enable services tab"    
+      EXPLAIN !!t_Services_Tab
+      VALUENAME "ServicesTab"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+ 
+      PART "Enable driver updates"           CHECKBOX
+          DEFCHECKED
+          VALUENAME "DriverUpdates"     
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Enable online support"           CHECKBOX
+          DEFCHECKED
+          VALUENAME "OnlineSupport"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Enable supply ordering"          CHECKBOX
+          DEFCHECKED
+          VALUENAME "OrderSupplies"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Enable product manuals"          CHECKBOX
+          DEFCHECKED
+          VALUENAME "ProductManuals"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+   END POLICY
+END CATEGORY 
+
+CATEGORY "Default Print Settings"
+
+   POLICY "Default Print Settings"
+   EXPLAIN !!t_Default_Print_Settings
+      PART "Duplex:" DROPDOWNLIST 
+        VALUENAME "DuplexDefault"
+	ITEMLIST
+	   NAME "Driver Default" DEFAULT
+	   VALUE NUMERIC 0
+	   NAME "Print on both sides"
+	   VALUE NUMERIC 1
+	   NAME "Print on both sides - Flip pages up"
+	   VALUE NUMERIC 2
+	   NAME "Print on both sides Lock"
+	   VALUE NUMERIC 101
+	   NAME "Print on both sides - Flip pages up - Lock"
+	   VALUE NUMERIC 102
+	END ITEMLIST 
+      END PART
+
+      PART "Grayscale Default:" DROPDOWNLIST 
+        VALUENAME "GrayscaleDefault"
+	ITEMLIST
+	   NAME "Off" DEFAULT
+	   VALUE NUMERIC 0
+	   NAME "On"
+	   VALUE NUMERIC 1
+	   NAME "On - Locked"
+	   VALUE NUMERIC 101
+	END ITEMLIST 
+      END PART
+
+      PART "Economode:" DROPDOWNLIST 
+        VALUENAME "EconomodeDefault"
+	ITEMLIST
+	   NAME "Driver Default" DEFAULT
+	   VALUE NUMERIC 0
+	   NAME "Economode On"
+	   VALUE NUMERIC 1
+	   NAME "Economode On - Locked"
+	   VALUE NUMERIC 101
+	END ITEMLIST 
+      END PART
+
+      PART "Job Storage:" DROPDOWNLIST 
+        VALUENAME "PrivatePrintDefault"
+	ITEMLIST
+	   NAME "Driver Default (Off)" DEFAULT
+	   VALUE NUMERIC 0
+	   NAME "Proof and Hold"
+	   VALUE NUMERIC 1
+	   NAME "Private Job"
+	   VALUE NUMERIC 2
+	   NAME "Quick Copy"
+	   VALUE NUMERIC 3
+	   NAME "Stored Job (requires PIN)"
+	   VALUE NUMERIC 5
+	   NAME "Private Job (requires PIN)"
+	   VALUE NUMERIC 6
+	   NAME "Personal Job with Secure Print"
+	   VALUE NUMERIC 8
+	   NAME "Stored Job with Secure Print"
+	   VALUE NUMERIC 9
+	   NAME "Proof and Hold - Lock"
+	   VALUE NUMERIC 101
+	   NAME "Private Job - Lock"
+	   VALUE NUMERIC 102
+	   NAME "Quick Copy - Lock"
+	   VALUE NUMERIC 103
+	   NAME "Stored Job (requires PIN) - Lock"
+	   VALUE NUMERIC 105
+	   NAME "Private Job (requires PIN) - Lock"
+	   VALUE NUMERIC 106
+	   NAME "Personal Job with Secure Print Locked"
+	   VALUE NUMERIC 108
+	   NAME "Stored Job with Secure Print Locked"
+	   VALUE NUMERIC 109
+	  
+	END ITEMLIST 
+      END PART
+
+      PART "Private Print Pin [0000-9999]"    NUMERIC 
+        VALUENAME "PrivatePrintPin"
+	MIN 0 MAX 9999 DEFAULT 0
+      END PART
+
+      PART "Secure Print password minimum length [4-12]"    NUMERIC 
+        VALUENAME "SEPMinimumPasswordLength"
+	MIN 4 MAX 12 DEFAULT 0
+      END PART
+
+      PART "Edgeline QAC:" DROPDOWNLIST 
+        VALUENAME "EdgelineQACDefault"
+	ITEMLIST
+	   NAME "Driver Default" DEFAULT
+	   VALUE NUMERIC 0
+	   NAME "Professional"
+	   VALUE NUMERIC 1
+	   NAME "General Office"
+	   VALUE NUMERIC 2
+	   NAME "Black and White"
+	   VALUE NUMERIC 3
+	   NAME "Professional - Lock"
+	   VALUE NUMERIC 101
+	   NAME "General Office - Lock"
+	   VALUE NUMERIC 102
+	   NAME "Black and White - Lock"
+	   VALUE NUMERIC 103
+	END ITEMLIST 
+	 NOSORT
+      END PART
+	  
+	  PART "Print Quality:" DROPDOWNLIST 
+        VALUENAME "OfficeInkDefault"
+	ITEMLIST
+	   NAME "Driver Default" DEFAULT
+	   VALUE NUMERIC 0
+	   NAME "Draft/General Office"
+	   VALUE NUMERIC 2
+	   NAME "Normal/Professional"
+	   VALUE NUMERIC 3
+	   NAME "Draft/General Office - Lock"
+	   VALUE NUMERIC 102
+	   NAME "Normal/Professional - Lock"
+	   VALUE NUMERIC 103
+	END ITEMLIST 
+	 NOSORT
+      END PART
+	PART "Allow users to permanently change settings from the user's 'Devices and Printers' folder, 'Print Management' Desktop app and System settings options such as 'Printers and Scanners', 'Change default printer' and 'Add a printer or scanner'"          CHECKBOX
+        VALUENAME "AllowUserDefaults"
+           VALUEON  NUMERIC 1
+           VALUEOFF NUMERIC 0
+    END PART
+	  
+;        PART "SNMP Community Name:"              EDITTEXT
+;	DEFAULT "public"
+;         VALUENAME "MystSNMPCommunityName"
+;      END PART
+
+   END POLICY
+END CATEGORY
+
+CATEGORY "Color Access Control"
+
+   POLICY "Application Filtering"
+   EXPLAIN !!t_Application_Filtering
+      VALUENAME "ApplicationFiltering"
+
+      PART "Exclude these Applications"      CHECKBOX
+         VALUENAME "ApplicationExclude"
+           VALUEON NUMERIC 1
+           VALUEOFF NUMERIC 0
+      END PART
+
+;      PART "Application List:" LISTBOX 
+;        VALUEPREFIX "Application_"
+;      END PART
+
+      PART "Name:" EDITTEXT VALUENAME "Application_1"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_2"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_3"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_4"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_5"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_6"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_7"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_8"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_9"  DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_10" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_11" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_12" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_13" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_14" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_15" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_16" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_17" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_18" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_19" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_20" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_21" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_22" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_23" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_24" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_25" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_26" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_27" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_28" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_29" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_30" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_31" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_32" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_33" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_34" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_35" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_36" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_37" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_38" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_39" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_40" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_41" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_42" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_43" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_44" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_45" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_46" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_47" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_48" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_49" DEFAULT !!t_Def END PART
+      PART "Name:" EDITTEXT VALUENAME "Application_50" DEFAULT !!t_Def END PART
+
+   END POLICY
+
+   POLICY "Time of Day Restriction"
+      VALUENAME "ToD_Restriction"
+   EXPLAIN !!t_Time_of_Day_Restriction
+
+      PART "Monday"    COMBOBOX NOSORT
+         VALUENAME "MondayColor"
+         SUGGESTIONS
+	"Specify time"
+	"Allow Color all day"
+	"Restrict Color all day"
+         END SUGGESTIONS
+      END PART
+      PART "Hour On"    NUMERIC SPIN 1
+        VALUENAME "MondayColorOnHour"
+	MIN 0 MAX 23 DEFAULT 8
+      END PART
+      PART "Hour Off"   NUMERIC SPIN 1
+        VALUENAME "MondayColorOffHour"
+	MIN 0 MAX 23 DEFAULT 17
+      END PART
+
+      PART "Tuesday"    COMBOBOX NOSORT
+         VALUENAME "TuesdayColor"
+         SUGGESTIONS
+	"Specify time"
+	"Allow Color all day"
+	"Restrict Color all day"
+         END SUGGESTIONS
+      END PART
+      PART "Hour On"    NUMERIC SPIN 1
+        VALUENAME "TuesdayColorOnHour"
+	MIN 0 MAX 23 DEFAULT 8
+      END PART
+      PART "Hour Off"   NUMERIC SPIN 1
+        VALUENAME "TuesdayColorOffHour"
+	MIN 0 MAX 23 DEFAULT 17
+      END PART
+
+      PART "Wednesday"    COMBOBOX NOSORT
+         VALUENAME "WednesdayColor"
+         SUGGESTIONS
+	"Specify time"
+	"Allow Color all day"
+	"Restrict Color all day"
+         END SUGGESTIONS
+      END PART
+      PART "Hour On"    NUMERIC SPIN 1
+        VALUENAME "WednesdayColorOnHour"
+	MIN 0 MAX 23 DEFAULT 8
+      END PART
+      PART "Hour Off"   NUMERIC SPIN 1
+        VALUENAME "WednesdayColorOffHour"
+	MIN 0 MAX 23 DEFAULT 17
+      END PART
+
+      PART "Thursday"    COMBOBOX NOSORT
+         VALUENAME "ThursdayColor"
+         SUGGESTIONS
+	"Specify time"
+	"Allow Color all day"
+	"Restrict Color all day"
+         END SUGGESTIONS
+      END PART
+      PART "Hour On"    NUMERIC SPIN 1
+        VALUENAME "ThursdayColorOnHour"
+	MIN 0 MAX 23 DEFAULT 8
+      END PART
+      PART "Hour Off"   NUMERIC SPIN 1
+        VALUENAME "ThursdayColorOffHour"
+	MIN 0 MAX 23 DEFAULT 17
+      END PART
+
+      PART "Friday"    COMBOBOX NOSORT
+         VALUENAME "FridayColor"
+         SUGGESTIONS
+	"Specify time"
+	"Allow Color all day"
+	"Restrict Color all day"
+         END SUGGESTIONS
+      END PART
+      PART "Hour On"    NUMERIC SPIN 1
+        VALUENAME "FridayColorOnHour"
+	MIN 0 MAX 23 DEFAULT 8
+      END PART
+      PART "Hour Off"   NUMERIC SPIN 1
+        VALUENAME "FridayColorOffHour"
+	MIN 0 MAX 23 DEFAULT 17
+      END PART
+
+      PART "Saturday"    COMBOBOX NOSORT
+         VALUENAME "SaturdayColor"
+         SUGGESTIONS
+	"Specify time"
+	"Allow Color all day"
+	"Restrict Color all day"
+         END SUGGESTIONS
+      END PART
+      PART "Hour On"    NUMERIC SPIN 1
+        VALUENAME "SaturdayColorOnHour"
+	MIN 0 MAX 23 DEFAULT 8
+      END PART
+      PART "Hour Off"   NUMERIC SPIN 1
+        VALUENAME "SaturdayColorOffHour"
+	MIN 0 MAX 23 DEFAULT 17
+      END PART
+
+      PART "Sunday"    COMBOBOX NOSORT
+         VALUENAME "SundayColor"
+         SUGGESTIONS
+	"Specify time"
+	"Allow Color all day"
+	"Restrict Color all day"
+         END SUGGESTIONS
+      END PART
+      PART "Hour On"    NUMERIC SPIN 1
+        VALUENAME "SundayColorOnHour"
+	MIN 0 MAX 23 DEFAULT 8
+      END PART
+      PART "Hour Off"   NUMERIC SPIN 1
+        VALUENAME "SundayColorOffHour"
+	MIN 0 MAX 23 DEFAULT 17
+      END PART
+
+   END POLICY
+END CATEGORY
+
+CATEGORY "User Search Capabilities"
+   POLICY "User Search Capabilities"
+   EXPLAIN !!t_User_Search_Capabilities
+      VALUENAME "User_Search_Capabilities"
+      PART "Network print shares"    CHECKBOX    
+          DEFCHECKED
+          VALUENAME "NetworkShares"
+              VALUEON  NUMERIC 1
+              VALUEOFF NUMERIC 0
+      END PART
+      PART "   Allow users to browse for and use printer shares on the network" TEXT END PART
+
+      PART "Network printers"    CHECKBOX    
+          DEFCHECKED
+          VALUENAME "RendezvousTCPIP"
+              VALUEON  NUMERIC 1
+              VALUEOFF NUMERIC 0
+      END PART
+      PART "  Allow users to search for and use TCP/IP printers connected to the" TEXT END PART
+      PART "network" TEXT END PART
+
+   END POLICY
+END CATEGORY
+
+CATEGORY "Job Accounting"
+   POLICY "Pass the job accounting XML to a Windows DLL function call"
+   EXPLAIN !!t_Job_Accounting_1
+      VALUENAME "Job_Accounting"
+      PART "Module name:"            EDITTEXT
+         VALUENAME "JobAccountingModule"
+      END PART
+
+      PART "API name:"               EDITTEXT
+         VALUENAME "JobAccountingAPI"
+      END PART
+
+   END POLICY
+
+   POLICY "Post the job accounting XML to an http or https web server"
+   EXPLAIN !!t_Job_Accounting_web
+
+      PART "URL:"                    EDITTEXT
+         VALUENAME "JobAccountingURL"
+      END PART
+   END POLICY
+
+END CATEGORY
+
+CATEGORY "Job Delivery"
+
+   POLICY "Job Delivery"
+   EXPLAIN !!t_Job_Delivery
+        VALUENAME "Job_Delivery"	
+      PART "Job Delivery Mode" DROPDOWNLIST REQUIRED
+        VALUENAME "HPMPLOnly"
+	ITEMLIST
+	   NAME "All printers will deliver jobs according to this scheme"
+	   VALUE NUMERIC 0
+	   NAME "Only printers that have been selected in the MPL will deliver jobs"
+	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Delivery port name:"                    EDITTEXT
+         VALUENAME "Deliveryportname"
+      END PART
+
+      PART "URL for job completion:"                EDITTEXT
+         VALUENAME "JobCompletionURL"
+      END PART
+   END POLICY
+
+   POLICY "Call a Windows DLL function to handle delivery of the print job data"
+   EXPLAIN !!t_Windows_dll
+	
+      PART "Module name:"                           EDITTEXT
+         VALUENAME "Modulename"
+      END PART
+	
+      PART "API name:"                              EDITTEXT
+         VALUENAME "APIname"
+      END PART
+   END POLICY
+
+   POLICY "Post the print job data to an http or https web server"
+   EXPLAIN !!t_HTTPS_web_server
+
+      PART "Job submit URL:"                        EDITTEXT
+         VALUENAME "JobSubmitURL"
+      END PART
+
+   END POLICY
+END CATEGORY
+
+CATEGORY "MPP Information Settings"
+   POLICY "MPP Information Settings"
+   EXPLAIN !!t_MPP
+      VALUENAME "MPP_Information_Settings"
+      PART "Info Link Name:"              EDITTEXT
+         VALUENAME "PolicyInfoLinkName"
+      END PART
+
+      PART "Info Link URL:"               EDITTEXT
+         VALUENAME "PolicyInfoLinkURL"
+      END PART
+
+   END POLICY
+END CATEGORY
+
+CATEGORY "Managed Printer List settings"
+   POLICY "Managed Printer List settings"
+   EXPLAIN !!t_Managed_printer_lists
+      VALUENAME "MPL_List"
+
+      PART "Custom MPL Count"            NUMERIC REQUIRED
+         VALUENAME "CustomMPLCount"
+      END PART
+
+      PART "HP MPL Only"        CHECKBOX
+         DEFCHECKED
+          VALUENAME "HPMPLOnly"
+              VALUEON NUMERIC 1
+              VALUEOFF NUMERIC 0
+      END PART
+
+      PART "Custom MPL 1" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName0" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath0" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType0"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 2" TEXT END PART
+      PART " Name" EDITTEXT VALUENAME "CustomMPLName1" END PART
+      PART " Path" EDITTEXT VALUENAME "CustomMPLPath1" END PART
+      PART " Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType1"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 3" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName2" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath2" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType2"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 4" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName3" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath3" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType3"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 5" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName4" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath4" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType4"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 6" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName5" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath5" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType5"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 7" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName6" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath6" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType6"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 8" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName7" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath7" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType7"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 9" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName8" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath8" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType8"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 10" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName9" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath9" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType9"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL"     VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 11" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName10" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath10" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType10"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 12" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName11" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath11" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType11"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 13" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName12" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath12" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType12"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 14" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName13" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath13" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType13"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 15" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName14" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath14" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType14"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 16" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName15" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath15" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType15"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 17" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName16" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath16" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType16"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 18" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName17" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath17" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType17"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 19" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName18" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath18" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType18"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 20" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName19" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath19" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType19"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL"     VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 21" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName20" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath20" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType20"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 22" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName21" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath21" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType21"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 23" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName22" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath22" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType22"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 24" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName23" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath23" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType23"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 25" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName24" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath24" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType24"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 26" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName25" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath25" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType25"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 27" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName26" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath26" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType26"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 28" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName27" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath27" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType27"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 29" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName28" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath28" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType28"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 30" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName29" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath29" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType29"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL"     VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 31" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName30" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath30" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType30"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 32" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName31" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath31" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType31"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 33" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName32" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath32" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType32"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 34" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName33" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath33" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType33"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 35" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName34" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath34" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType34"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 36" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName35" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath35" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType35"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 37" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName36" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath36" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType36"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 38" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName37" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath37" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType37"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 39" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName38" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath38" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType38"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL" 	   VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+      PART "Custom MPL 40" TEXT END PART
+      PART "Name" EDITTEXT VALUENAME "CustomMPLName39" END PART
+      PART "Path" EDITTEXT VALUENAME "CustomMPLPath39" END PART
+      PART "Type" DROPDOWNLIST REQUIRED
+        VALUENAME "CustomMPLType39"
+	ITEMLIST
+	   NAME "Standard UPD MPL" DEFAULT VALUE NUMERIC 0
+	   NAME "Web JetAdmin XML MPL"     VALUE NUMERIC 1
+	END ITEMLIST 
+      END PART
+
+   END POLICY
+END CATEGORY
+
+END CATEGORY
+
+[Strings]
+; Control label strings
+p_DisableColor="Disable Color"
+t_Def="[enter application executable name]
+
+;EXPLAIN strings
+t_Disable_Color="Restricts the user to printing in black and white only."
+t_Application_Filtering="Limits color printing to these applications, or excludes color printing from these applications."
+t_Time_of_Day_Restriction="Enter values using a 24 hour clock.  For example, 1:00 PM is entered as 13."
+t_Restricted_Mode="Turns on Restricted mode \nDevice verify level:       \nDo not specify   \nVerify communication and compatibility with driver - HIGH        \nVerify device ID and Model Name can be obtained - MEDIUM     \nVerify port can be opened for printing - LOW"
+t_Services_Tab="Enable online diagnostic tools:  Connects to HP’s online Support Wizard to access interactive tools and contacts for troubleshooting specific to the printer model.\n\nEnable check for driver updates:  Opens online to HP Instant Support - Driver Check webpage.\n\nEnable online Support and troubleshooting:  Transmits the name of the printer model to connect to the product’s online Support Center webpage.\n\nEnable online Device and supplies status:  Opens client’s browser to the printer’s embedded webserver page\n\nEnable online product manuals:  Transmits the name of the printer model to connect to the product’s online Support Center webpage for  available documentation.\n\n"
+t_General_Settings="Disables color printing - black and white by default.  \n \nShow Device Address \n \nEnable Policy for all users. This setting allows the administrator to configure the HP UPD to enable AD policy without having to configure every installed instance of the HP UPD."
+t_Default_Print_Settings="Duplex - Default is simplex - one sided        \n \nGrayscale – Enable “Print in Grayscale” to print a document in shades of gray.      \n \nEconomode - Doesn't use 100% toner in effort to save toner \n \nJob Storage - Allows the user to spool job to printer and then manually release it from the printer control panel    \n \nPIN to print – PIN to print requires the user to enter a 4-digit numerical PIN at the device to retrieve/delete the print job.   \n \nSecure Print password minimum length [4-12] - Define a 4 to 12 character minimum password length that must be inputted at the device control panel to release jobs from the printer.  If no value is defined in the device might be configured to require a minimum length password that will be utilized.  \n   \nEdgeline - Settings used for HP's Edgeline Color Printer - CM8060 only. \n \nPrint quality – Select the quality of printing you desire.  The options can vary from printer to printer. \n \nAllow users to permanently change settings from the user's "Devices and Printers" folder, "Print Management" Desktop app and System settings options such as "Printers & Scanners", "Change default printer" and "Add a printer or scanner" - \nIf Checked : The user will be allowed to override the policy settings in the "Devices and Printers" folder, "Print Management" Desktop app and System settings options such as "Printers & Scanners", "Change default printer" and "Add a printer or scanner". These new settings can be applied to the printer, which will be used in all applications.\nIf Unchecked, the user will be blocked from making any changes to the policy settings. The user will be shown a message box restricting change of any policy administered feature from devices and printers folder. However from an application, the user will still be allowed to change the policy governed value and print and all settings will revert back to the template defined setting after the application has been re-started."
+t_User_Search_Capabilities="Network print shares check box – Allow users to browse for and use printer shares on the network. \n  \nNetwork printers check box – Allow users to search for and use TCP/IP printers connected to the network."
+t_Job_Accounting_1="Enabled: Select this option button to make the following options available:   \nModule name: field   \nAPI name: field"
+t_Job_Accounting_web="Enabled: Select this option button to make the following options available:  \n   \nJob Delivery Mode - All printers will deliver job according to this scheme \n \nOnly printers that have been selected in the MPL will deliver jobs \n \nDelivery port name: field \nURL for job completion: field" 
+t_Job_Delivery="Enabled: Select this option button to make the following options available:    \nDelivery Mode.  \nAll printers will deliver job according to this scheme   \nOnly printers that have been selected in the MPL will deliver jobs"
+t_Windows_dll="Call a Windows DLL function to handle delivery of the print job data"
+t_HTTPS_web_server="Post the print job data to an http or https web server"
+t_MPP="Settings for MPP information"
+t_Managed_printer_lists="Printer lists for use in the Active Directory Group Policy environment are created outside the Active Directory Group Policy object, and linked to the HP UPD Active Directory Administrative template within each Group Policy Object. Create HP Managed Printer Lists by using the HP MPA or by exporting printer lists from web Jetadmin. For each policy created, up to 40 HP Managed Printer Lists can be selected. \n \nCustom MPL Count. This number must match the number of printer lists entered.  \n  \nHP MPL Only. Check this if the printer lists have been created by, and exported from, the HP MPA software tool.  \n \nName. This is the name displayed for each group. \n  \nPath. The information in the Path field depends on the type of MPL and the location of the data.  \n \n \nNOTE: The path string consists of a prefix like http, and a folder or subfolders separated by a colon :"
+colon

@@ -1,0 +1,334 @@
+<html>
+<head>
+<title>AutoUpgrade Wizard</title>
+
+<HTA:APPLICATION 
+     ID="oHTA"
+     ICON="install.ico"
+	 APPLICATIONNAME="AutoUpgrade Wizard"
+     SCROLL="no"
+     SINGLEINSTANCE="yes"
+     WINDOWSTATE="normal"
+>
+</head>
+
+<SCRIPT Language="VBScript">
+'*******************************************************************************
+' 
+'© Copyright 2013 Hewlett-Packard Development Company, L.P.
+'
+'Disclaimer Of Warranty and Support
+'THE SOFTWARE AND ANY RELATED DOCUMENTATION ARE PROVIDED "AS IS", WITHOUT 
+'WARRANTY OR SUPPORT OF ANY KIND.  THE ENTIRE RISK AS TO THE USE, RESULTS AND 
+'PERFORMANCE OF THE SOFTWARE AND DOCUMENTATION ARE ASSUMED BY YOU AND THOSE TO 
+'WHOM YOU PROVIDE THE SOFTWARE AND DOCUMENTATION.  HEWLETT-PACKARD COMPANY, 
+'HEWLETT-PACKARD DEVELOPMENT COMPANY, AND THEIR AFFILIATES AND SUBSIDIARIARIES 
+'HEREBY SPECIFICALLY DISCLAIM ANY AND ALL WARRANTIES, EXPRESS, IMPLIED OR 
+'STATUTORY, INCLUDING BUT NOT LIMITED TO THE IMPLIED WARRANTIES OF 
+'MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NONINFRINGEMENT.
+'
+'Limitation Of Liability
+'IN NO EVENT SHALL HEWLETT-PACKARD COMPANY, HEWLETT-PACKARD DEVELOPMENT COMPANY 
+'OR THEIR AFFILIATES AND SUBSIDIARIARIES BE LIABLE FOR ANY CLAIM, DAMAGES 
+'(DIRECT, INDIRECT, INCIDENTAL, PUNITIVE, SPECIAL OR OTHER DAMAGES, INCLUDING 
+'WITHOUT LIMITATION, DAMAGES FOR LOSS OF BUSINESS PROFITS, BUSINESS INTERRUPTION, 
+'LOSS OF BUSINESS INFORMATION, OR OTHER PECUNIARY LOSS AND THE LIKE) OR OTHER 
+'LIABILITY WHATSOEVER, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, 
+'ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR DOCUMENTATION, EVEN 
+'IF ADVISED OF THE POSSIBILITY OF SUCH CLAIM, DAMAGES OR OTHER LIABILITY. 
+'
+'***12/04/18 BAB****************************************************************
+
+Option Explicit
+On Error Resume Next
+const ForReading = 1
+
+'******************************************************************************
+Sub Window_Onload
+	dim x, y
+
+    window.resizeTo 520,520 
+    x = (window.screen.width - 850) / 2 
+    y = (window.screen.height - 780) / 2 
+    If x < 0 Then x = 0 
+    If y < 0 Then y = 0 
+    window.moveTo x,y 
+	TestMode.Checked = true
+	ClusterNodeName.Value = "Local Node"
+	GetInstalledDrivers
+
+	'DataArea.InnerHtml  = "Test"
+	'ErrorArea.InnerHtml = "Test"
+
+End Sub
+
+'******************************************************************************
+Function ClearInstalledDrivers
+	dim objOption
+
+	For Each objOption in OldDriverList.Options
+        objOption.RemoveNode
+    Next 
+end Function
+
+'******************************************************************************
+Function GetInstalledDrivers
+
+	dim strComputer
+	dim objWMIService
+	dim objDriver
+	dim objOption
+	dim colInstalledDrivers
+	dim a
+
+	strComputer = "."
+	Set objWMIService = GetObject("winmgmts:" & "{impersonationLevel=impersonate}!\\" & strComputer & "\root\cimv2")
+	Set colInstalledDrivers =  objWMIService.ExecQuery ("Select * from Win32_PrinterDriver")
+
+	For each objDriver in colInstalledDrivers
+		a = split(objDriver.Name, ",")
+        Set objOption = Document.createElement("OPTION")
+        objOption.Text = a(0)
+        objOption.Value = a(0)
+        OldDriverList.Add(objOption)
+	Next
+end Function
+
+'******************************************************************************
+Function BrowseForFile()
+    Dim sRet, IE
+	BrowseForFile = InputBox("Enter driver .inf path and name")
+
+'  This trick does not appear to work with IE 9, so it is being removed.
+'   Set IE = CreateObject("InternetExplorer.Application")
+'   IE.visible = False
+'   IE.Navigate("about:blank")
+'   Do Until IE.ReadyState = 4
+'   Loop
+
+'	IE.Document.Write "<HTML><BODY><INPUT ID=" & chr(34) & "Fil" & chr(34) & "Type=" & chr(34) & "file" & chr(34) & "></BODY></HTML>"
+'    With IE.Document.all.Fil
+'        .focus
+'        .click
+'        BrowseForFile = .value
+'    End With
+'    IE.Quit
+'    Set IE = Nothing
+End Function
+
+'******************************************************************************
+Function GetInfFile  
+
+	dim objDialog
+	Const cdlOFNExplorer = &H80000 
+	Const cdlOFNFileMustExist = &H1000 
+	Const cdlOFNHideReadOnly = &H4 
+	Const cdlOFNPathMustExist = &H800 
+
+	Set objDialog = CreateObject("MSComDlg.CommonDialog")   
+	objDialog.DialogTitle = "Select driver inf file"
+	objDialog.Filter      = "inf Files|*.inf*"
+	objDialog.MaxFileSize = 260
+	objDialog.Flags       = cdlOFNExplorer OR cdlOFNFileMustExist OR cdlOFNHideReadOnly OR cdlOFNPathMustExist
+	objDialog.InitDir     = "C:\"  
+	objDialog.ShowOpen   
+	If Err.Number <> 0 Then   
+		GetInfFile = hex(Err.Number)
+	Else   
+		GetInfFile = objDialog.FileName
+	End If   
+End Function  
+
+'******************************************************************************	
+function GetDriversFromInf(sInfName)
+On Error Resume Next
+	dim oInfFile
+	dim strLine
+	dim oFso
+	dim bDriverNames
+	Dim objDictionary 
+	dim a
+	dim i
+	dim strItem, arrayItems
+	dim objOption
+
+	For Each objOption in NewDriver.Options
+        objOption.RemoveNode
+    Next 
+	Set objDictionary = CreateObject("Scripting.Dictionary")
+	if (err.number = 0) Then
+		Set oFso = CreateObject("Scripting.FileSystemObject")
+		Set oInfFile = oFso.OpenTextFile(sInfName, ForReading, False)
+		If Err = 0 then
+			Do Until oInfFile.AtEndOfStream
+				strLine = oInfFile.ReadLine
+				if (InStr(strLine, "[")) then
+					bDriverNames = false
+				end if
+
+				if (InStr(strLine, "[HP.NT")) then
+					bDriverNames = true
+					strLine = ""
+				end if
+
+				if bDriverNames then
+					if (len(strLine) > 1) Then
+						a = split(strLine, "=")
+						If not objDictionary.Exists(a(0)) Then
+							objDictionary.Add a(0), a(0)
+						End If
+					End if 
+				end if
+				
+			Loop
+			oInfFile.Close
+			set oInfFile = nothing
+		else
+			ErrorArea.InnerHtml = "ERROR: Open file failed : " & sInfName
+		end if
+		
+		if objDictionary.Count > 0 then 
+			arrayItems = objDictionary.Items
+			for i = 0 to objDictionary.Count -1
+				strItem = arrayItems(i)
+				if (InStr(strItem,"HP") OR InStr(strItem,"Hewlett")) then
+					Set objOption = Document.createElement("OPTION")
+					strItem = Trim(Replace(strItem,chr(34),""))
+					objOption.Text = strItem
+					objOption.Value = strItem
+					NewDriver.Add(objOption)
+				end if
+			next
+		end if
+	
+		Set oFso = nothing
+	else
+		ErrorArea.InnerHtml = "Error creating dictionary object: " & err.number & ", " & err.description
+	end if
+	
+end function
+    
+'******************************************************************************
+Sub FindInfFile
+	ErrorArea.InnerHtml = ""
+	NewInf.Value = BrowseForFile
+	if (Len(NewInf.Value) > 1) Then
+		GetDriversFromInf NewInf.Value
+	End if
+End Sub
+
+'******************************************************************************
+Sub RunUpgrade
+	dim oShell
+	dim sCmd
+	dim strOldDriver
+	
+	ErrorArea.InnerHtml = ""
+
+	'Get old driver from OldDriverList or OldDriverEdit control, depending on if it is cluster or not.
+	if (ClusterNode.Checked) Then
+		strOldDriver = OldDriverEdit.Value
+	else
+		strOldDriver = OldDriverList.Value
+	end if
+	
+	'REVISIT: Include -s <server name> and -t options
+	sCmd = "AutoUpgradeUPD.exe" & _
+		" -o " & chr(34) & OldDriverList.Value & chr(34) & _
+		" -n " & chr(34) & NewDriver.Value & chr(34) & _
+		" -f " & chr(34) & NewInf.Value & chr(34) & _
+		" -l " & chr(34) & "AutoUpgrade.log" & chr(34)
+
+	if (ClusterNode.Checked) Then
+		sCmd = sCmd & " -s " & chr(34) & ClusterNodeName.Value & chr(34)
+	end if
+	
+	if (TestMode.Checked) Then 
+		sCmd = sCmd & " -test"
+	end if
+	
+	Set oShell = CreateObject("WScript.Shell")
+	if (err.number = 0) Then
+		'MsgBox sCmd
+		'oShell.Run "%comspec% /k " & sCmd, 1, true 
+		oShell.Run sCmd, 1, true 
+	Else
+		ErrorArea.InnerHtml = "Error creating shell object: " & err.number & ", " & err.description
+	end if
+	DataArea.InnerHtml = "Upgrade finished.  Results were saved in AutoUpgrade.log"
+End Sub
+
+'******************************************************************************
+function displaytxtbox(s_ID) 
+	set displaytxtbox = document.all(s_ID) 
+	displaytxtbox.style.display = "" 
+end function 
+
+function removelist(s_ID) 
+	set removelist = document.all(s_ID) 
+	removelist.style.display = "none" 
+end function 
+
+function displaylist(s_ID) 
+	set displaylist = document.all(s_ID) 
+	displaylist.style.display = "" 
+end function 
+
+function removetxtbox(s_ID) 
+	set removetxtbox = document.all(s_ID) 
+	removetxtbox.style.display = "none" 
+end function 
+
+'******************************************************************************
+Sub IsClusterNode
+    If ClusterNode.Checked Then
+ 		ClearInstalledDrivers
+		removelist("ID_OldDriverList") 
+		displaytxtbox("ID_OldDriverEdit") 
+		OldDriverEdit.Value = ""
+		ClusterNodeName.Value = ""
+		ClusterNodeName.Disabled = false
+    Else
+		displaylist("ID_OldDriverList") 
+		removetxtbox("ID_OldDriverEdit") 
+		GetInstalledDrivers
+		ClusterNodeName.Value = "Local Node"
+		ClusterNodeName.Disabled = true
+    End If
+End Sub
+
+'******************************************************************************
+</SCRIPT>
+<BODY STYLE="font:9pt arial; color:#000000; filter:progid:DXImageTransform.Microsoft.Gradient (GradientType=0, StartColorStr='#ddd7ff', EndColorStr='#9690ff')"> 
+
+AutoUpgradeWizard Version 13.02.13.1<br><br>
+<input type="checkbox"name="ClusterNode"value="1" onClick="IsClusterNode"> <b>Failover Cluster virtual Node</b>
+<br><br>
+<b>Node Name</b>
+<br>
+<input type="text" name="ClusterNodeName" size="38" id="ID_ClusterNodeName" disabled="disabled" title="Type in the failover cluster virtual node name">
+<br><br>
+<b>Old Driver Name</b>
+<br>
+<input type="text" name="OldDriverEdit" size="38" id="ID_OldDriverEdit" style="display: none;" title="Type in the old driver name"> 
+<select size="1" name="OldDriverList" style="width:300" id="ID_OldDriverList" title="Select the driver to upgrade"></select>
+<br><br>
+<b>New Driver inf file</b>
+<br>
+<input type=text name="NewInf" rows="1" size="50" disabled="disabled" title="Select the new driver .inf file">
+<input id=runbutton  class="button" type="button" value="..." name="Inf File"  onClick="FindInfFile" title="Click her to browse for the new driver .inf file">
+<br><br>
+<b>New Driver Name</b>
+<br>
+<select size="1" name="NewDriver" style="width:300" title="Select the new driver"></select>
+<br><br>
+<input type="checkbox"name="TestMode"value="1" > <b>Test Mode</b>
+<br><br>
+<input id=runbutton  class="button" type="button" value="Upgrade" name="run_button"  onClick="RunUpgrade">
+<br><br>
+<span id = "DataArea"></span>
+<br><br>
+<span id = "ErrorArea"></span>
+
+</body>
+</html>

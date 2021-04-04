@@ -18,6 +18,10 @@ session_start();
 
 <?php    
  include("model/class/php/Class.php");  
+$REMOTE_ADDR= $_SERVER['REMOTE_ADDR']; 
+
+
+
 ?>
 <header>
     <?php        
@@ -140,12 +144,40 @@ setTimeout(function(){
     document.getElementById("moves-sr").className="display-none" ; 
     document.getElementById("information-bdd").innerHTML=""; 
     var favix = 'https://icon-library.com/images/ok-icon-gif/ok-icon-gif-29.jpg';
-    document.getElementById("favicon").href=favia ; 
-    
+    document.getElementById("favicon").href=favia;
+    document.location.reload();
+
+
+
      }, 3000);
 
 
      }
+
+
+
+function connexion() {
+
+    setTimeout(function(){ 
+    
+    document.location.reload();
+    
+    
+    }, 100);
+ 
+var input_password = document.getElementById("input_password").value ;
+var mail_mobil = document.getElementById("mail_mobil").value ;
+
+   
+var ok = new Information("login.php"); // création de la classe 
+ok.add("mail_mobil", input_password); // ajout de l'information pour lenvoi 
+ok.add("passwords", mail_mobil); // ajout d'une deuxieme information denvoi  
+console.log(ok.info()); // demande l'information dans le tableau
+ok.push(); // envoie l'information au code pkp 
+
+}
+
+
  </script>
 
  <style>
@@ -161,9 +193,8 @@ setTimeout(function(){
 
 
 
-  <div id="naissance"> okok </div>
-
-  //Fichier PHP script.php
+ 
+ 
   <?php
 
 if(isset($_SESSION['naissance'])){
@@ -174,12 +205,25 @@ if(isset($_SESSION['naissance'])){
 <script>
 
 var variable_js = '<?php echo $ok; ?>';
-alert(variable_js); 
+
+
  </script>
  
     <?php 
 }
- 
+
+if(isset( $_SESSION['user_login'] ))
+{
+    if($_SESSION['user_login']==true){
+
+    }
+ ?>
+
+<meta http-equiv="refresh" content="0;url=user/index.php">
+ <?php 
+}
+
+
  ?>
  
 

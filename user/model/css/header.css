@@ -1,0 +1,40 @@
+ .display-flex{
+
+    display:flex; 
+    justify-content: space-around;    
+}
+.width-header{
+    width: 50px;
+}
+  .user_width{
+ 
+    width: 80%;
+     
+ padding-left: 65%;
+}
+.musique_width{
+    width: 80%;
+     
+    padding-left:45%;
+}
+.video_width{
+    width: 80%;
+     
+    padding-left:25%;
+}
+.picture_width{
+    width: 80%;     
+    padding-left:5%;
+}
+.picture_width{
+    width: 80%;     
+    padding-left:5%;
+}
+
+.log_out_width{
+    
+    width: 80%;     
+    padding-left:80%;
+ 
+   
+}
