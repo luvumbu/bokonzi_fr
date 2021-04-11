@@ -106,10 +106,9 @@ function header_button(_this)
  
   if(folder_parent.children[i].id!=_this.id ){
     document.getElementById(folder_parent.children[i].id).style.display="none";
-    
-    
-   
-
+  }
+  else{
+    document.getElementById(folder_parent.children[i].id).style.opacity="0.1";
   }
   document.getElementById(folder_parent.children[parentElLength-1].id).id="plus_"+_this.id ;
   document.getElementById(folder_parent.children[parentElLength-1].id).style.display="block";
