@@ -66,96 +66,60 @@ else{
 
 }
  
-
-
-/*
-
-echo $_SESSION['user_login']."<br/>";
-echo $_SESSION['prenom']."<br/>";
-echo $_SESSION['nom']."<br/>";
-echo $_SESSION['mail_mobil']."<br/>";
-echo $_SESSION['passwords']."<br/>";
-echo $_SESSION['naissance'] ."<br/>";
-echo $_SESSION['reg_date']."<br/>";
-*/
- ?>
- 
- <style>
-
- </style>
+ ?> 
 
 
 <script>
 
-function redirection(){
-    document.location.href="model/class/php/log_out.php";
+function log_out(){
+  
+  window.location.href = "model/class/php/log_out.php";
 }
-setTimeout(function(){ 
-    document.location.reload();
-     },10000);
+function reload(){
+  document.location.reload();
+}
+function loadDoc(_this) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("div_folder").innerHTML =
+      this.responseText;
+    }
+  };
+  xhttp.open("GET", "contained/"+_this.title+".html", true);
+  xhttp.send();
+}
 
+function header_button(_this)
+{
+  var mypagediv  = document.getElementById(_this.id) ; 
+  var parentElId = mypagediv.parentElement.id; 
+  var folder_parent = document.getElementById(parentElId) ; 
+  var parentElLength = document.getElementById(parentElId).childElementCount ; 
 
-     function header_button(_this){
+  
 
-
-        let  div_picture_width =document.getElementById("div_picture_width"); 
-        let  div_video_width =document.getElementById("div_video_width"); 
-        let  div_musique_width =document.getElementById("div_musique_width"); 
-        let  div_user_width =document.getElementById("div_user_width"); 
-        let  div_log_out =document.getElementById("div_log_out_width"); 
-        
-         function del_all(){
-             
-            div_picture_width.className="display-none";
-            div_video_width.className="display-none";
-            div_musique_width.className="display-none";
-            div_user_width.className="display-none";
-            div_log_out.className="display-none";
-          
-            document.getElementById("div_"+_this.title).className="";
-            wd50a.className=_this.title;
-           
-         }
-      
-
-         let wd50a = document.getElementById('wd50a');
-      
-         switch (_this.title) {
-                case "user_width":
-                    
-                     del_all() ; 
-               
-                    break;
-                case "musique_width":
-                     
-                       del_all() ; 
-                    
-                    break;
-                case "video_width":
-                       
-                       del_all() ; 
-                     
-                    break;
-                case "picture_width":
-                      
-                       del_all() ; 
-                     
-                    break;
-
-                    case "log_out_width":
-                      
-                      del_all() ; 
-                      
-                    
-                   break;
-
-                
+ for(var i = 1 ; i < parentElLength ; i++ ){
  
+  if(folder_parent.children[i].id!=_this.id){
+    document.getElementById(folder_parent.children[i].id).style.display="none"; 
+
+  }
+ }
+ 
+  
 }
-         
-     }
+
 </script>
 
+<style>
+    #div_folder{
+      display:flex; 
+      justify-content: space-around; 
+     
+      width: 90%;
+    }
+  </style>
  
 </body>
 </html>
