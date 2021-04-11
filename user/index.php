@@ -71,9 +71,11 @@ else{
 
 <script>
 
-function log_out(){
-  
+function log_out(){  
   window.location.href = "model/class/php/log_out.php";
+}
+function folde_plus(_this){
+  alert(_this.id);
 }
 function reload(){
   document.location.reload();
@@ -92,6 +94,7 @@ function loadDoc(_this) {
 
 function header_button(_this)
 {
+   
   var mypagediv  = document.getElementById(_this.id) ; 
   var parentElId = mypagediv.parentElement.id; 
   var folder_parent = document.getElementById(parentElId) ; 
@@ -99,14 +102,28 @@ function header_button(_this)
 
   
 
- for(var i = 1 ; i < parentElLength ; i++ ){
+ for(var i = 1 ; i < parentElLength-1 ; i++ ){
  
-  if(folder_parent.children[i].id!=_this.id){
-    document.getElementById(folder_parent.children[i].id).style.display="none"; 
+  if(folder_parent.children[i].id!=_this.id ){
+    document.getElementById(folder_parent.children[i].id).style.display="none";
+    
+    
+   
 
   }
+  document.getElementById(folder_parent.children[parentElLength-1].id).id="plus_"+_this.id ;
+  document.getElementById(folder_parent.children[parentElLength-1].id).style.display="block";
+
+  
+ 
+
+
+
+ 
  }
  
+
+  
   
 }
 
