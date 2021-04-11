@@ -127,7 +127,10 @@ function header_button(_this)
 }
 
 </script>
-
+<?php 
+include("imagex.php"); 
+ 
+?>
 <style>
     #div_folder{
       display:flex; 
