@@ -63,7 +63,42 @@ try {
  
 
 
+// 0000000000000000000000000000
+try {
+  // debut du test 
+                       // Create connection
+                       $conn = new mysqli($servername, $username, $password, $dbname);
+                       // Check connection
+                       if ($conn->connect_error) {
+                         die("Connection failed: " . $conn->connect_error);
+                       }
+ 
+                       // sql to create table
+                       $sql = "CREATE TABLE picture (
+                       id_picture	 INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                       id_user VARCHAR(30) NOT NULL,
+                       ip VARCHAR(30) NOT NULL,
+                       name_picture VARCHAR(60) NOT NULL,
+                       reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+                       )";
+ 
+                       if ($conn->query($sql) === TRUE) {
+                         echo "Table user created successfully";
+                       } else {
+                         echo "Error creating table: " . $conn->error;
+                       }
+ 
+                       $conn->close();
+ 
+  // fin du test 
+ } catch (Exception $e) {
+   echo 'Exception reçue : ',  $e->getMessage(), "\n";
+ }
 
+
+
+
+// 1111111111111111111111111111
 
 
 
@@ -93,6 +128,14 @@ try {
                        } else {
                          echo "Error creating table: " . $conn->error;
                        }
+
+                       // !!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
+
+
+                       //000000000000000000000000000000
  
                        $conn->close();
  

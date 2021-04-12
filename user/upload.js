@@ -51,7 +51,7 @@ $(function() {
 
                         setTimeout(function(){ 
                             document.location.reload(true);
-                        }, 800);
+                        }, 3000);
                         
 
 

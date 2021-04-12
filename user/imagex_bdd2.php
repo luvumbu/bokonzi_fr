@@ -9,7 +9,7 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "INSERT INTO user (prenom)
+$sql = "INSERT INTO picture (name_picture)
 VALUES ('$file_name')";
 
 if ($conn->query($sql) === TRUE) {
