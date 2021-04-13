@@ -1,4 +1,5 @@
 <?php
+session_start(); 
 header("Access-Control-Allow-Origin: *");
 $dbname= $_POST["dbname"];
 $username= $_POST["username"];
