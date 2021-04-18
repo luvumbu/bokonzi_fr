@@ -1,5 +1,8 @@
 <?php
 session_start();
+/// Partie du code pour enregistrer les done de l'utilisateur
+
+// Pour la connection 
 header("Access-Control-Allow-Origin: *");
 $servername = "localhost";
 include("model/class/php/connexion.php"); 
@@ -8,9 +11,8 @@ $nom =$_POST["nom"] ;
 $mobile_mail =$_POST["mobile_mail"] ;
 $passwords =$_POST["password"] ;
 $naissance =$_POST["naissance"] ;
-
-
-$_SESSION['naissance'] = $_POST["naissance"] ;
+$sex =$_POST["sex"] ;
+ 
 // 
 
 
@@ -50,8 +52,8 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "INSERT INTO user (prenom, nom , mail_mobil , passwords , naissance )
-VALUES ('$prenom ', '$nom', '$mobile_mail','$passwords','$naissance ')";
+$sql = "INSERT INTO user (prenom, nom , mail_mobil , passwords , naissance,sex )
+VALUES ('$prenom ', '$nom', '$mobile_mail','$passwords','$naissance','$sex')";
 
 if ($conn->query($sql) === TRUE) {
   echo "New record created successfully";
@@ -62,6 +64,8 @@ $_SESSION['prenom']      =             $prenom   ;
 $_SESSION['mobile_mail'] =             $mobile_mail   ;
 $_SESSION['passwords']   =             $passwords   ;
 $_SESSION['naissance']   =             $naissance   ;
+$_SESSION['sex']   =             $sex   ;
+
 
 
 
@@ -77,20 +81,13 @@ else {
 
 
   $to      = $mobile_mail;
-  $subject = 'le sujet';
-  $message = 'Bonjour !';
+  $subject = 'Inscription ';
+  $message = 'Pour valider votre inscription cliquez sur ce lien <a hreff="http://google.com"></a>';
   $headers = 'From: contact@bokonzi.com' . "\r\n" .
   'Reply-To: contact@bokonzi.com' . "\r\n" .
   'X-Mailer: PHP/' . phpversion();
 
   mail($to, $subject, $message, $headers);
-
-
-
-
-
-
-
 }
 
 
@@ -116,51 +113,5 @@ else {
 $conn->close();
 }
 $conn->close();
- 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ?>

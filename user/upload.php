@@ -2,7 +2,6 @@
 session_start();
 $_SESSION["file_name"]=$_POST['file'];
 
-
 function decode_chunk($data) {
     $data = explode(';base64,', $data);
 

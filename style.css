@@ -125,7 +125,7 @@ margin-top:25px ;
 border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 padding-bottom: 25px;
 }
-input:focus {
+input:focus,,select:focus {
 color: var(--main-bg-color);
 border:1px solid var(--main-bg-color);
 }
@@ -184,7 +184,7 @@ padding-bottom: 40px;
 .padding-15{
  padding: 18px;
 }
-.bk2 input{
+.bk2 input,select{
  width: 100%;
 
 }
@@ -206,7 +206,7 @@ margin:auto;
 padding: 15px;
 
 }
-input {
+input ,select{
  background-color: #f5f6f7;
  border:1px solid #ccd0d5;
  padding: 10px;
