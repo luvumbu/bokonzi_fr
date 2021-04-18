@@ -63,6 +63,49 @@ if ($conn->query($sql) === TRUE) {
 
 
 
+  
+ 
+   
+  $_SESSION['prenom'] = $prenom ;  
+  $_SESSION['nom'] =$nom  ;
+  $_SESSION['mobile_mail'] =$mail_mobil ;
+  $_SESSION['passwords'] =$passwords ;
+  $_SESSION['naissance'] =$naissance;
+      
+  
+
+
+
+
+$_SESSION['servername']  = $servername;
+$_SESSION['username']  = $username;
+$_SESSION['password']  = $password;
+$_SESSION['dbname']  = $dbname;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   if($REMOTE_ADDR=="::1" || $REMOTE_ADDR=="127.0.0.1" ){
     echo "Mon adreesse est en local"; 
@@ -117,5 +160,25 @@ $_SESSION['naissance']   =             $naissance   ;
 $_SESSION['sex']   =             $sex   ;
 
  $_SESSION['user_login']= true; 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
 
 ?>

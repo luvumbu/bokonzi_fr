@@ -68,4 +68,6 @@ echo json_encode([]);
 
 
 $_SESSION["file_name_bdd"] =$autre.$file_name.$extension;
+
+$_SESSION["name_extension"] =$extension;
 ?>

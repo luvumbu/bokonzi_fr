@@ -1,5 +1,5 @@
 <?php 
- session_start();
+session_start();
 include("../model/class/php/connexion.php");
 $name_file=$_SESSION['name_file'] ;
 $conn = new mysqli($servername, $username, $password, $dbname);

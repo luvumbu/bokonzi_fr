@@ -1,5 +1,6 @@
 <?php 
 session_start();
+include("../model/class/php/connexion.php"); 
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -82,7 +83,8 @@ include("imagex.php");
       width: 90%;
     }
   </style>
- 
+ </body>
+</html>
 
  <?php
 
@@ -93,13 +95,26 @@ include("imagex.php");
 $mobile_mail = $_SESSION['mobile_mail'] ;
 $passwords =  $_SESSION['passwords'] ;  
 
-
-include("user_info.php") ; 
+ 
+ 
 ?>
 
+
+<?php 
+
+
+if(!isset( $_SESSION['id_user'])){
+    session_destroy();
+   echo ' <meta http-equiv="refresh" content="0;url=../">' ; 
+
+ 
+ 
+  
+  }
+ 
+?>  
 
 <script>
 
  
-</body>
-</html>
+ 
