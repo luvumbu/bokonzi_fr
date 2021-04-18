@@ -2,12 +2,14 @@ function log_out(){
     window.location.href = "model/class/php/log_out.php";
   }
   function folde_plus(_this){
-    alert(_this.id);
+
+    document.getElementById("add_files").className="" ; 
   }
   function reload(){
     document.location.reload();
   }
   function loadDoc(_this) {
+    document.getElementById("add_files").className="add_files_off" ; 
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
@@ -21,7 +23,7 @@ function log_out(){
   
   function header_button(_this)
   {
-     
+    document.getElementById("add_files").className="add_files_off" ; 
     var mypagediv  = document.getElementById(_this.id) ; 
     var parentElId = mypagediv.parentElement.id; 
     var folder_parent = document.getElementById(parentElId) ; 

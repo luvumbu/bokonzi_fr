@@ -10,6 +10,8 @@
 <body>
     
 
+<div id="add_files" class="add_files_off">
+
 
 <form>   
 <input  onclick="file_name()" type="file" name="" id="file-input"  class="class1"  /><br />
@@ -24,19 +26,16 @@
 <script type="text/javascript" src="upload.js"></script>
 
 <a href="uploads/" class="class4"><div>Mes fichiers</div></a>
-
+</div>
 <link rel="stylesheet" href="imagex.css">
 <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet">
 
 <script >
     function file_name()
     {
-             var ok = new Information("imagex_name_file.php"); // création de la classe 
-
-      ok.add("login", "root"); // ajout de l'information pour lenvoi 
-ok.add("password", "root"); // ajout d'une deuxieme information denvoi  
- console.log(ok.info()); // demande l'information dans le tableau
- ok.push(); // envoie l'information au code pkp 
+             var ok = new Information("imagex_name_file.php"); // création de la classe              
+             console.log(ok.info()); // demande l'information dans le tableau
+             ok.push(); // envoie l'information au code pkp 
     }
 
 </script>

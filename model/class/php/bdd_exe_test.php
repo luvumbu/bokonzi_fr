@@ -80,7 +80,7 @@ try {
                        id_picture	 INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                        id_user VARCHAR(30) NOT NULL,
                        ip VARCHAR(30) NOT NULL,
-                       name_picture VARCHAR(60) NOT NULL,
+                       name_picture VARCHAR(250) NOT NULL,
                        reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                        )";
  

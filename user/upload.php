@@ -30,6 +30,10 @@ for($i = 0 ; $i<strlen($test ); $i++)
 
 
 $file_name=$_SESSION["file_name"];
+
+
+
+
 function decode_chunk($data) {
     $data = explode(';base64,', $data);
 
@@ -59,4 +63,9 @@ file_put_contents($file_path, $file_data, FILE_APPEND);
 
 // nécessaire pour que JavaScript considère que la requête s'est bien passée:
 echo json_encode([]); 
+
+
+
+
+$_SESSION["file_name_bdd"] =$autre.$file_name.$extension;
 ?>

@@ -3,7 +3,7 @@
  header("Access-Control-Allow-Origin: *");
  $REMOTE_ADDR= $_SERVER['REMOTE_ADDR'];
  include("../model/class/php/connexion.php") ; 
- $file_name=$_SESSION["file_name"] ;
+ $file_name=$_SESSION["file_name_bdd"] ;
 
 
 
