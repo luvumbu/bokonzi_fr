@@ -23,13 +23,62 @@ function log_out(){
   
   function header_button(_this)
   {
+  
+    
+    /*
+    Voir contained 
+doc_width
+musique_width
+picture_width
+video_play_width
+*/
+
+  
     document.getElementById("add_files").className="add_files_off" ; 
     var mypagediv  = document.getElementById(_this.id) ; 
     var parentElId = mypagediv.parentElement.id; 
     var folder_parent = document.getElementById(parentElId) ; 
     var parentElLength = document.getElementById(parentElId).childElementCount ; 
   
+    document.getElementById("header_call").innerHTML="sa marche"; 
+
+
+ 
     
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        document.getElementById("header_call").innerHTML =
+        this.responseText;
+      }
+    };
+    xhttp.open("GET", "contained/folder_"+_this.id+".php", true);
+    xhttp.send();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+    /* 
+      doc_width
+      picture_width
+      video_play_width
+      musique_width
+
+
+
+    */
   
    for(var i = 1 ; i < parentElLength-1 ; i++ ){
    

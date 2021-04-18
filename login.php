@@ -5,7 +5,7 @@ include("model/class/php/connexion.php") ;
 $mail_mobil =$_POST["mail_mobil"] ;
 $passwords =$_POST["passwords"] ;
 
-
+$passwords = sha1($passwords);
  
 
 
@@ -24,14 +24,33 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   // output data of each row
   while($row = $result->fetch_assoc()) {
-     
-    $_SESSION['user_login']= true; 
+
+    
+     $_SESSION['id_user']==$row["id_user"]; 
+   
     $_SESSION['prenom'] = $row["prenom"] ;  
     $_SESSION['nom'] =$row["nom"]  ;
-    $_SESSION['mail_mobil'] =$row["mail_mobil"] ;
+    $_SESSION['mobile_mail'] =$row["mail_mobil"] ;
     $_SESSION['passwords'] =$row["passwords"] ;
     $_SESSION['naissance'] =$row["naissance"];
-    $_SESSION['reg_date'] =$row["reg_date"];
+    $_SESSION['reg_date'] =$row["reg_date"];   
+    $_SESSION['user_login']= true; 
+
+
+
+
+$_SESSION['servername']  = $servername;
+$_SESSION['username']  = $username;
+$_SESSION['password']  = $password;
+$_SESSION['dbname']  = $dbname;
+
+
+
+
+
+
+
+ 
 
   }
 } else {

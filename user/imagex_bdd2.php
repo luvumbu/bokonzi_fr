@@ -5,8 +5,8 @@
  include("../model/class/php/connexion.php") ; 
  $file_name=$_SESSION["file_name_bdd"] ;
 
-
-
+ $id_user = $_SESSION["id_user"] ;
+ 
  
 $conn = new mysqli($servername, $username, $password, $dbname);
 // Check connection
@@ -14,8 +14,8 @@ if ($conn->connect_error) {
   die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "INSERT INTO picture (name_picture,ip)
-VALUES ('$file_name','$REMOTE_ADDR')";
+$sql = "INSERT INTO folder (name_picture,ip,id_user)
+VALUES ('$file_name','$REMOTE_ADDR',' $id_user')";
 
 if ($conn->query($sql) === TRUE) {
   echo "New record created successfully";

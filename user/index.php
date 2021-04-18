@@ -16,11 +16,11 @@ session_start();
 <div id="body"   @mouseover="position_mouse"> 
 
 <?php    
- include("model/class/php/Class.php");  
+  include("model/class/php/Class.php");  
 ?>
 <header>
     <?php        
-        include("view/header.php");
+       include("view/header.php");
     ?>
 </header>
 <section>
@@ -30,7 +30,7 @@ session_start();
 </section>
 <footer>
     <?php       
-         include("view/footer.php");          
+        include("view/footer.php");          
     ?>
 </footer>
 
@@ -73,6 +73,7 @@ else{
 include("imagex.php"); 
  
 ?>
+<div id="header_call"></div>
 <style>
     #div_folder{
       display:flex; 
@@ -81,6 +82,24 @@ include("imagex.php");
       width: 90%;
     }
   </style>
+ 
+
+ <?php
+
+
+  
+  
+
+$mobile_mail = $_SESSION['mobile_mail'] ;
+$passwords =  $_SESSION['passwords'] ;  
+
+
+include("user_info.php") ; 
+?>
+
+
+<script>
+
  
 </body>
 </html>

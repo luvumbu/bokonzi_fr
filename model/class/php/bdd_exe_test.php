@@ -15,14 +15,9 @@ $servername = "localhost";
 $n="\n";
 $debut="<?php".$n;
 $fin="?>".$n;
-
 // nom du fichier courant
 $nom_file = "connexion.php";
 // fin du fichier courant 
- 
-
-
-
 //$servername = "localhost";
 //$username = "u481158665_facebook_clone";
 //$password = "v3p9r3e@59A";
@@ -76,10 +71,11 @@ try {
                        }
  
                        // sql to create table
-                       $sql = "CREATE TABLE picture (
-                       id_picture	 INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+                       $sql = "CREATE TABLE folder (
+                       id_folder	 INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
                        id_user VARCHAR(30) NOT NULL,
                        ip VARCHAR(30) NOT NULL,
+                       name_extension VARCHAR(30) NOT NULL,
                        name_picture VARCHAR(250) NOT NULL,
                        reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
                        )";
@@ -145,45 +141,6 @@ try {
  } catch (Exception $e) {
    echo 'Exception reçue : ',  $e->getMessage(), "\n";
  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 try {
   $conn = new PDO("mysql:host=$servername;dbname=".$dbname, $username, $password);

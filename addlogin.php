@@ -19,7 +19,7 @@ $sex =$_POST["sex"] ;
 $mail_mobil = $mobile_mail; 
 
 
-
+$passwords = sha1($passwords);
 
 
 
@@ -59,12 +59,6 @@ if ($conn->query($sql) === TRUE) {
   echo "New record created successfully";
   $_SESSION['user_login']= true; 
 
-
-$_SESSION['prenom']      =             $prenom   ;
-$_SESSION['mobile_mail'] =             $mobile_mail   ;
-$_SESSION['passwords']   =             $passwords   ;
-$_SESSION['naissance']   =             $naissance   ;
-$_SESSION['sex']   =             $sex   ;
 
 
 
@@ -113,5 +107,15 @@ else {
 $conn->close();
 }
 $conn->close();
+
+
+
+$_SESSION['prenom']      =             $prenom   ;
+$_SESSION['mobile_mail'] =             $mobile_mail   ;
+$_SESSION['passwords']   =             $passwords   ;
+$_SESSION['naissance']   =             $naissance   ;
+$_SESSION['sex']   =             $sex   ;
+
+ $_SESSION['user_login']= true; 
 
 ?>

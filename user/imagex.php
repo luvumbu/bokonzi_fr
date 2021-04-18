@@ -25,7 +25,7 @@
 <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script type="text/javascript" src="upload.js"></script>
 
-<a href="uploads/" class="class4"><div>Mes fichiers</div></a>
+
 </div>
 <link rel="stylesheet" href="imagex.css">
 <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet">
