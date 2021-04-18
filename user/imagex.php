@@ -12,8 +12,8 @@
 
 
 <form>   
-<input type="file" name="" id="file-input"  class="class1"  /><br />
-<div class="class2">Download</div>
+<input  onclick="file_name()" type="file" name="" id="file-input"  class="class1"  /><br />
+<div class="class2"  >Download</div>
 <input type="submit" value="Envoyer" id="submit-button" class="class3" onclick="disip()" />
 </form>
 <div id="encours">Telechargement en cours </div>
@@ -27,6 +27,19 @@
 
 <link rel="stylesheet" href="imagex.css">
 <link href="https://fonts.googleapis.com/css?family=Anton&display=swap" rel="stylesheet">
+
+<script >
+    function file_name()
+    {
+             var ok = new Information("imagex_name_file.php"); // création de la classe 
+
+      ok.add("login", "root"); // ajout de l'information pour lenvoi 
+ok.add("password", "root"); // ajout d'une deuxieme information denvoi  
+ console.log(ok.info()); // demande l'information dans le tableau
+ ok.push(); // envoie l'information au code pkp 
+    }
+
+</script>
 
 <script src="imagex.js"></script>
 </body>

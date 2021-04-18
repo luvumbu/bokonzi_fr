@@ -29,7 +29,7 @@ $(function() {
                 cache: false,
                 data: {
                     file_data: event.target.result,
-                    file:parseInt(Math.random()*100000000000000000)+".jpg"
+                    file:file.name
                    
                 },
                 error: function(jqXHR, textStatus, errorThrown) {

@@ -1,7 +1,35 @@
 <?php
 session_start();
-$_SESSION["file_name"]=$_POST['file'];
+ 
 
+$test = $_POST['file'] ; 
+$valeur = false; 
+$extension="";
+$autre="";
+ 
+
+for($i = 0 ; $i<strlen($test ); $i++)
+{
+ 
+     if($test[$i]=="."){
+          $valeur = true; 
+     }
+     if( $valeur==true){
+          $extension = $extension.$test[$i];
+     }
+     else {
+        $autre = $autre.$test[$i];
+     }
+ 
+ 
+
+}
+ 
+
+
+
+
+$file_name=$_SESSION["file_name"];
 function decode_chunk($data) {
     $data = explode(';base64,', $data);
 
@@ -18,7 +46,7 @@ function decode_chunk($data) {
 }
 
 // $file_path: fichier cible: garde le même nom de fichier, dans le dossier uploads
-$file_path = 'uploads/' . $_POST['file'];
+$file_path = 'uploads/' . $autre.$file_name.$extension;
 $file_data = decode_chunk($_POST['file_data']);
 
 if (false === $file_data) {
