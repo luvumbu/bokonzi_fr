@@ -1,0 +1,10 @@
+=== ESTIMATION DES COUTS ===
+
+
+--- MACONNERIE ---
+  Brique standard : 765 u x 0.45€ = 344.25€
+  Surface murs totale : 12.5 m²
+
+================================
+TOTAL HT : 344.25 €
+TOTAL TTC (20%) : 413.10 €

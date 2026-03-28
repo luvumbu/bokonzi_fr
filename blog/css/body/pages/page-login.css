@@ -1,0 +1,96 @@
+/* ============================================================
+   PAGE : LOGIN
+   ============================================================ */
+/* ----- Info index (message login) ----- */
+
+#info_index {
+    width: 380px;
+    margin: 0px auto;
+    padding: 10px 25px;
+    text-align: center;
+    font-family: var(--font-family);
+    color: var(--color-text);
+}
+
+/* ----- Projet non visible ----- */
+
+.project-not-visible {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    text-align: center;
+    font-family: var(--font-family);
+    color: var(--color-muted, #888);
+}
+
+.project-not-visible i {
+    font-size: 4rem;
+    color: var(--color-accent, #e74c3c);
+    margin-bottom: 20px;
+    opacity: 0.7;
+}
+
+.project-not-visible p {
+    font-size: 1.3em;
+    color: var(--color-text, #333);
+    margin-bottom: 15px;
+}
+
+.project-not-visible a {
+    color: var(--color-primary, #3498db);
+    text-decoration: none;
+    font-size: 1em;
+    transition: opacity 0.2s;
+}
+
+.project-not-visible a:hover {
+    opacity: 0.7;
+}
+
+/* ----- Projets publics (page login) ----- */
+
+.public-projets {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    max-width: 600px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+/* ----- Lien projet public ----- */
+
+.public-projet-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 14px 6px 6px;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: var(--font-family);
+    text-decoration: none;
+    color: var(--color-primary);
+    background: var(--bg-primary);
+    border: 2px solid var(--color-primary);
+    border-radius: var(--border-radius-sm);
+    box-shadow: 0 3px 0px var(--color-primary-dark);
+    transition: transform 0.2s, background 0.2s, color 0.2s;
+}
+
+.public-projet-link:hover {
+    background: var(--color-primary);
+    color: var(--color-white);
+    transform: translateY(-2px);
+}
+
+.public-projet-link img {
+    width: 18px;
+    height: 18px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    border: 2px solid var(--color-primary);
+}
+

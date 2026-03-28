@@ -1,0 +1,38 @@
+/* @icon: 🌆 */
+/* @label: Cyberpunk */
+body.theme-cyberpunk {
+
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #11111a;
+    --bg-tertiary: #161625;
+
+    --color-primary: #ff00ff;
+    --color-primary-dark: #cc00cc;
+    --color-primary-light: #ff4dff;
+
+    --color-accent: #00f0ff;
+    --color-accent-hover: #33f5ff;
+    --color-accent-dark: #00bcd4;
+
+    --color-text: #f5f5f5;
+    --color-text-secondary: #a0a0c0;
+    --color-placeholder: #6b6b8a;
+
+    --color-success: #00ff88;
+    --color-warning: #ffcc00;
+    --color-danger: #ff0055;
+
+    --color-border: #1f1f2e;
+    --color-card: #141422;
+    --color-hover: #1b1b2f;
+
+    --color-white: #ffffff;
+    --color-logout-bg: #1a1a2a;
+
+    --font-family: 'Orbitron', 'Segoe UI', sans-serif;
+
+    --border-radius: 10px;
+    --border-radius-sm: 6px;
+
+    --badge-label: "Neon City";
+}

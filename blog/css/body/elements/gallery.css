@@ -1,0 +1,412 @@
+/* ============================================================
+   GALLERY / IMAGES
+   ============================================================ */
+/* ----- 9a. Icone corbeille ----- */
+
+.simpson-form .vd-trash {
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--color-primary);
+    user-select: none;
+    transition: color 0.2s, transform 0.2s;
+}
+
+.simpson-form .vd-trash:hover {
+    color: var(--color-accent);
+    transform: scale(1.2);
+}
+
+/* ----- 9b. Image wrapper (preview unique) ----- */
+
+.simpson-form .image-wrapper {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.simpson-form .image-wrapper img {
+    width: 100%;
+    max-height: 250px;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    border-radius: var(--border-radius);
+    border: 3px solid var(--color-primary);
+}
+
+/* ----- 9c. Actions image (boutons sous image) ----- */
+
+.simpson-form .image-actions {
+    margin-top: 8px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* Bouton selectionner */
+.simpson-form .select-btn {
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--border-radius-sm);
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    font-family: var(--font-family);
+    transition: background 0.2s;
+}
+
+.simpson-form .select-btn:hover {
+    background-color: var(--color-primary-light);
+}
+
+.simpson-form .select-btn input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* ----- 9d. Preview media upload (img, video, audio, fichier) ----- */
+
+.simpson-form #file_dowload img,
+.simpson-form .file_dowload_src2 img,
+.simpson-form #file_dowload video,
+.simpson-form .file_dowload_src2 video {
+    max-width: 400px;
+    border-radius: var(--border-radius);
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    margin-top: 15px;
+}
+
+.simpson-form #file_dowload audio,
+.simpson-form .file_dowload_src2 audio {
+    max-width: 400px;
+    margin-top: 15px;
+}
+
+.simpson-form #file_dowload a,
+.simpson-form .file_dowload_src2 a {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background: var(--bg-secondary);
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    color: var(--color-primary);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* ----- 9e. Image block (galerie dans simpson-form) ----- */
+
+.simpson-form .image_block {
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    margin-bottom: 10px;
+    transition: border-color 0.2s;
+}
+
+.simpson-form .image_block.selected {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+}
+
+.simpson-form .image_block img,
+.simpson-form .image_block video {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+    display: block;
+}
+
+.simpson-form .image_block audio {
+    width: 100%;
+    display: block;
+    padding: 10px;
+}
+
+.simpson-form .image_block a {
+    display: block;
+    padding: 15px;
+    text-align: center;
+    color: var(--color-primary);
+    font-weight: bold;
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.simpson-form .image_block .buttons {
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.simpson-form .image_block .delete_btn {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: 2px solid var(--color-primary-dark);
+    border-radius: 8px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: 13px;
+    transition: all 0.2s;
+}
+
+.simpson-form .image_block .delete_btn:hover {
+    background-color: var(--color-primary-light);
+}
+
+/* ----- 9f. Galerie toutes images (.all_img) ----- */
+
+.all_img {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    max-width: 850px;
+    margin: 20px auto;
+}
+
+.all_img .image_block {
+    flex: 1 1 200px;
+    max-width: 260px;
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    transition: border-color 0.2s;
+}
+
+.all_img .image_block.selected {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 12px rgba(0,0,0,0.2);
+}
+
+.all_img .image_block img,
+.all_img .image_block video {
+    width: 100%;
+    max-height: 200px;
+    display: block;
+}
+
+.all_img .image_block audio {
+    width: 100%;
+    display: block;
+    padding: 10px 0;
+}
+
+.all_img .image_block a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 180px;
+    color: var(--color-primary);
+    font-weight: bold;
+    text-decoration: none;
+    word-break: break-all;
+    padding: 10px;
+}
+
+.all_img .image_block .buttons {
+    padding: 10px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-wrap: wrap;
+    background: var(--bg-primary);
+}
+
+.all_img .image_block .delete_btn {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: 2px solid var(--color-primary-dark);
+    border-radius: 8px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.all_img .image_block .delete_btn:hover {
+    background-color: var(--color-primary-light);
+}
+
+.all_img .rouge {
+    background-color: var(--color-accent);
+    font-size: 1.5em;
+    padding: 5px 10px;
+    color: var(--color-white);
+    border-radius: 8px;
+}
+
+/* ----- 9g. Gallery flex (editeur projet) ----- */
+
+#gallery-flex {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    max-width: 80%;
+    margin: auto;
+    justify-content: space-around;
+}
+
+.actions {
+    padding: 10px;
+}
+
+#gallery-flex .gallery-item {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 200px;
+    max-width: 260px;
+    border: 1px solid var(--color-primary);
+    border-radius: 7px;
+    padding: 8px;
+    box-sizing: border-box;
+    background: var(--bg-secondary);
+}
+
+#gallery-flex img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 7px;
+    display: block;
+    border-bottom: 3px solid var(--color-primary);
+}
+
+#gallery-flex .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+#gallery-flex .check-remove {
+    cursor: pointer;
+}
+
+#gallery-flex .remove_element {
+    cursor: pointer;
+    width: 22px;
+    height: 22px;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+#gallery-flex .remove_element:hover {
+    transform: scale(1.1);
+    opacity: 0.85;
+}
+
+/* ----- 9h. Notation etoiles (star rating) ----- */
+
+#gallery-flex .star-wrap input {
+    display: none;
+}
+
+#gallery-flex .star {
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    fill: transparent;
+    stroke: var(--color-primary);
+    stroke-width: 1.5;
+    transition: fill 0.2s;
+}
+
+#gallery-flex .star-wrap input:checked+.star {
+    fill: var(--color-accent);
+}
+
+/* ----- 9j. Bouton supprimer element ----- */
+
+.simpson-form .remove_element {
+    cursor: pointer;
+    transition: transform 0.2s, opacity 0.2s;
+}
+
+.simpson-form .remove_element:hover {
+    transform: scale(1.15);
+    opacity: 0.85;
+}
+
+/* ----- 9k. Icone ajouter enfant ----- */
+
+.add_child {
+    display: block;
+    margin: 28px auto 0;
+    cursor: pointer;
+    background: var(--bg-primary);
+    border-radius: 50%;
+    padding: 10px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.add_child:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 18px rgba(0,0,0,0.15);
+}
+
+.simpson-form .add_child {
+    cursor: pointer;
+    background-color: var(--bg-primary);
+    border-radius: 50%;
+    padding: 10px;
+    transition: transform 0.2s;
+}
+
+.simpson-form .add_child:hover {
+    transform: scale(1.1);
+}
+
+/* ----- 9l. Wrapper enfants image ----- */
+
+.simpson-form .image-children-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* ----- 9m. Image projet (carte) ----- */
+
+.projet_img {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius);
+    background: var(--bg-secondary);
+}
+
+.projet_img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* ----- 9n. Container toutes images ----- */
+
+.images_container_all img {
+    max-width: 100%;
+    border-radius: var(--border-radius);
+    margin-bottom: 12px;
+}
+

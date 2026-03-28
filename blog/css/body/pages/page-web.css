@@ -1,0 +1,142 @@
+/* ============================================================
+   PAGE : WEB (web.php) — prefixe .page-web
+   ============================================================ */
+/* ----- 11a. Base page ----- */
+
+.page-web {
+    scroll-behavior: smooth;
+}
+
+/* ----- 11b. Header / Hero ----- */
+
+.page-web header {
+    position: relative;
+    height: 60vh;
+    background: url('01.png') center/cover no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: var(--color-white);
+    text-shadow: 0 4px 15px rgba(0,0,0,0.6);
+}
+
+.page-web header .hero-text {
+    margin-top: 60px;
+}
+
+.page-web header h1 {
+    font-size: 3rem;
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.page-web header p {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    color: var(--color-text-secondary);
+}
+
+/* ----- 11c. Navigation fixe ----- */
+
+.page-web nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(15,23,42,0.9);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 50px;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+}
+
+.page-web nav .logo {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-primary);
+}
+
+.page-web nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+.page-web nav ul li a {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.page-web nav ul li a:hover {
+    color: var(--color-primary);
+}
+
+/* ----- 11d. Sections et cartes ----- */
+
+.page-web section {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 60px 30px;
+    gap: 30px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.page-web .card {
+    background: var(--bg-secondary);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--color-primary);
+    width: 320px;
+    padding: 30px;
+    border-radius: var(--border-radius);
+    transition: 0.4s ease;
+}
+
+.page-web .card:hover {
+    transform: translateY(-8px);
+    border-color: var(--color-accent);
+    box-shadow: 0 10px 30px rgba(59,130,246,0.2);
+}
+
+.page-web .tag {
+    display: inline-block;
+    font-size: 12px;
+    padding: 6px 12px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-radius: 20px;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.page-web .card h2 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    color: var(--color-text);
+}
+
+.page-web .card ul {
+    padding-left: 18px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+}
+
+/* ----- 11e. Footer ----- */
+
+.page-web footer {
+    text-align: center;
+    padding: 30px;
+    border-top: 1px solid var(--color-primary);
+    color: var(--color-text-secondary);
+}
+

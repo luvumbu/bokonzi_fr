@@ -1,0 +1,22 @@
+/* @icon: 🍩 */
+/* @label: Les Simpson */
+body, body.theme-simpson {
+    --bg-primary: #FED90F;
+    --bg-secondary: #FFFEF2;
+    --color-primary: #D6282B;
+    --color-primary-dark: #A01E20;
+    --color-primary-light: #E53E41;
+    --color-accent: #FF69B4;
+    --color-accent-hover: #FF85C2;
+    --color-accent-dark: #C44E8A;
+    --color-text: #1A1A1A;
+    --color-text-secondary: #8B4513;
+    --color-placeholder: #C4A83A;
+    --color-success: #22c55e;
+    --color-white: #FFF;
+    --color-logout-bg: #FFE4E6;
+    --font-family: 'Comic Sans MS', 'Chalkboard SE', cursive;
+    --border-radius: 14px;
+    --border-radius-sm: 12px;
+    --badge-label: "D'oh!";
+}

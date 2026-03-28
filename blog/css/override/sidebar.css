@@ -1,0 +1,63 @@
+/* ============================================================
+   SIDEBAR — Menu lateral gauche fixe
+   Utilise par : css.css (import)
+   ============================================================ */
+
+.app-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 56px;
+    height: 100vh;
+    background: rgba(17, 24, 39, 0.95);
+    border-right: 1px solid rgba(108, 92, 231, 0.2);
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 16px 0;
+    gap: 8px;
+    z-index: 100;
+}
+.app-sidebar-btn {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: #64748b;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+.app-sidebar-btn:hover {
+    background: rgba(108, 92, 231, 0.15);
+    color: #e2e8f0;
+}
+.app-sidebar-logout:hover {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+}
+
+.app-sidebar-preview.preview-online { color: #22c55e; }
+.app-sidebar-preview.preview-online:hover { background: rgba(34, 197, 94, 0.15); }
+.app-sidebar-preview.preview-offline { color: #64748b; opacity: 0.5; cursor: default; pointer-events: none; }
+
+.app-sidebar-status { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; text-align: center; padding: 2px 0; }
+.app-sidebar-status.online { color: #22c55e; }
+.app-sidebar-status.offline { color: #64748b; opacity: 0.5; }
+
+/* Decaler le contenu quand la sidebar est presente */
+body:has(.app-sidebar) .dashboard-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    max-height: none;
+    margin-left: 72px;
+    padding: 32px 20px;
+    max-width: 900px;
+}

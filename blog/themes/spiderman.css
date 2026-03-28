@@ -1,0 +1,22 @@
+/* @icon: 🕷️ */
+/* @label: Spider-Man */
+body.theme-spiderman {
+    --bg-primary: #C62828;
+    --bg-secondary: #FAFAFA;
+    --color-primary: #1565C0;
+    --color-primary-dark: #0D47A1;
+    --color-primary-light: #1E88E5;
+    --color-accent: #E53935;
+    --color-accent-hover: #EF5350;
+    --color-accent-dark: #B71C1C;
+    --color-text: #212121;
+    --color-text-secondary: #616161;
+    --color-placeholder: #9E9E9E;
+    --color-success: #43A047;
+    --color-white: #FFF;
+    --color-logout-bg: #FFCDD2;
+    --font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    --border-radius: 10px;
+    --border-radius-sm: 8px;
+    --badge-label: "Spidey!";
+}

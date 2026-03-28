@@ -1,0 +1,18 @@
+/* ============================================================
+   CSS PRINCIPAL — Point d'entree unique (autre_projet)
+   Depend de : ../css/dashboard.css, ../css/kirby.css
+   ============================================================ */
+
+/* --- Police --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+
+/* --- Styles specifiques CMS (ancien systeme) --- */
+@import url('css/body.css');
+
+/* --- Overrides style dashboard bokonzi --- */
+@import url('css/override/base.css');
+@import url('css/override/sidebar.css');
+@import url('css/override/checkbox.css');
+@import url('css/override/form-projet.css');
+@import url('css/override/upload-galerie.css');
+@import url('css/override/overrides.css');

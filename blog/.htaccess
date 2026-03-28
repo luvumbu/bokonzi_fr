@@ -1,0 +1,9 @@
+# Active la réécriture d'URL
+RewriteEngine On
+
+# Si la requête n'est pas exactement index.php, redirige vers index.php
+RewriteCond %{REQUEST_URI} !^/test/index\.php$
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+ 

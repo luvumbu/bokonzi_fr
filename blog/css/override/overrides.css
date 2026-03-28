@@ -1,0 +1,255 @@
+/* ============================================================
+   OVERRIDES DIVERS — Archives, profil, login, social
+   Utilise par : css.css (import)
+   ============================================================ */
+
+/* Archives (liste projets) */
+.archives { display: flex; flex-direction: column; gap: 10px; }
+.archives-list { margin: 0; }
+.archive-card { background: #f9fafb !important; border: 1px solid #e5e7eb !important; border-radius: 12px !important; padding: 16px 20px !important; color: #1f2937 !important; }
+.archive-card h3 { color: #111827 !important; }
+.archive-card .archive-date { color: #9ca3af !important; }
+.archive-card .archive-desc { color: #6b7280 !important; }
+.archive-card .btn { border: none !important; border-radius: 8px !important; padding: 8px 16px !important; font-size: 13px !important; cursor: pointer !important; }
+.archive-card .btn.view { background: linear-gradient(135deg, #6c5ce7, #7c3aed) !important; color: #fff !important; }
+.archive-card .btn.delete { background: #ef4444 !important; color: #fff !important; }
+
+/* Profil container */
+.profil-container { background: transparent !important; box-shadow: none !important; border: none !important; padding: 0 !important; color: #1f2937 !important; }
+.profil-container .profil-title { color: #111827 !important; }
+.profil-container input { background: #ffffff !important; color: #1f2937 !important; border: 1px solid #d1d5db !important; border-radius: 10px !important; padding: 12px 16px !important; }
+.profil-info-grid { margin-bottom: 24px; }
+.profil-info-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #e5e7eb; }
+.profil-info-label { color: #6b7280 !important; font-size: 13px; font-weight: 600; text-transform: uppercase; }
+.profil-info-value { color: #1f2937 !important; font-size: 15px; }
+
+/* Login #main_container */
+#main_container { background: transparent !important; border: none !important; box-shadow: none !important; }
+#main_container input { background: #ffffff !important; color: #1f2937 !important; border: 1px solid #d1d5db !important; border-radius: 10px !important; padding: 12px 16px !important; }
+#main_container label { color: #6b7280 !important; }
+
+/* ============================================================
+   SOCIAL MEDIA — Formulaire et liste
+   ============================================================ */
+.social-container { max-width: 700px; margin: 0 auto; }
+.social-title { color: #111827 !important; font-size: 20px; font-weight: 700; margin-bottom: 20px; }
+
+/* Liste des reseaux */
+.social-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 14px 18px !important;
+    margin-bottom: 10px !important;
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 12px !important;
+    transition: all 0.2s !important;
+}
+.social-card:hover {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.1) !important;
+}
+.social-brand-icon {
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 10px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #fff !important;
+    font-size: 18px !important;
+    flex-shrink: 0 !important;
+    background: #6c5ce7;
+}
+.social-icon {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+}
+.social-info {
+    flex: 1 !important;
+    min-width: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+}
+.social-info strong {
+    color: #1f2937 !important;
+    font-size: 15px !important;
+}
+.social-info a {
+    color: #6c5ce7 !important;
+    font-size: 13px !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+.social-info a:hover {
+    text-decoration: underline !important;
+}
+.social-edit {
+    background: none !important;
+    border: none !important;
+    color: #d1d5db !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+    transition: color 0.2s !important;
+}
+.social-edit:hover {
+    color: #6c5ce7 !important;
+}
+.social-delete {
+    background: none !important;
+    border: none !important;
+    color: #d1d5db !important;
+    font-size: 16px !important;
+    cursor: pointer !important;
+    padding: 8px !important;
+    transition: color 0.2s !important;
+}
+.social-delete:hover {
+    color: #ef4444 !important;
+}
+
+/* Formulaire edition inline */
+.social-edit-form {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    min-width: 0 !important;
+}
+.social-edit-input {
+    width: 100% !important;
+    padding: 8px 12px !important;
+    font-size: 14px !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    outline: none !important;
+}
+.social-edit-input:focus {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 0 0 2px rgba(108, 92, 231, 0.15) !important;
+}
+.social-edit-preview {
+    width: 36px !important;
+    height: 36px !important;
+    border-radius: 8px !important;
+    object-fit: cover !important;
+    border: 1px solid #d1d5db !important;
+}
+.social-save-btn {
+    background: #22c55e !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    padding: 8px 14px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+}
+.social-save-btn:hover { background: #16a34a !important; }
+.social-cancel-btn {
+    background: #f3f4f6 !important;
+    color: #6b7280 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 8px !important;
+    padding: 8px 14px !important;
+    cursor: pointer !important;
+    font-size: 14px !important;
+}
+.social-cancel-btn:hover { background: #e5e7eb !important; }
+
+/* Formulaire ajout */
+.social-form {
+    margin-top: 24px !important;
+    padding: 24px !important;
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 14px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+}
+.social-form label {
+    color: #6b7280 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin-top: 8px !important;
+    background: none !important;
+    border: none !important;
+    padding: 0 !important;
+}
+.social-form input,
+.social-form input[type="text"],
+.social-container input,
+.social-container input[type="text"],
+#social_nom,
+#social_img,
+#social_url {
+    width: 100% !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    outline: none !important;
+    -webkit-appearance: none !important;
+}
+.social-form input:focus,
+#social_nom:focus,
+#social_img:focus,
+#social_url:focus {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15) !important;
+}
+.social-form input::placeholder,
+#social_nom::placeholder,
+#social_img::placeholder,
+#social_url::placeholder {
+    color: #9ca3af !important;
+    font-style: italic !important;
+}
+.social-form input[type="file"] {
+    display: none !important;
+}
+.social-upload-label {
+    display: inline-block !important;
+    padding: 10px 20px !important;
+    background: #f3f4f6 !important;
+    color: #374151 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.2s !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    margin-top: 0 !important;
+}
+.social-upload-label:hover {
+    border-color: #6c5ce7 !important;
+    background: #ede9fe !important;
+}
+.social-preview {
+    display: none;
+    width: 60px !important;
+    height: 60px !important;
+    border-radius: 10px !important;
+    object-fit: cover !important;
+    border: 1px solid #e5e7eb !important;
+    margin-top: 4px !important;
+}
+.social-form .submit-btn {
+    margin-top: 16px !important;
+}

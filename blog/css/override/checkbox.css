@@ -1,0 +1,43 @@
+/* ============================================================
+   CHECKBOX — Override global (forms.css utilise des vars inexistantes)
+   Utilise par : css.css (import)
+   ============================================================ */
+
+input[type="checkbox"] {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 22px !important;
+    height: 22px !important;
+    border: 2px solid #6c5ce7 !important;
+    border-radius: 6px !important;
+    background: #1e293b !important;
+    cursor: pointer !important;
+    position: relative !important;
+    flex-shrink: 0 !important;
+    transition: all 0.2s !important;
+}
+input[type="checkbox"]:checked {
+    background: #6c5ce7 !important;
+    border-color: #7c3aed !important;
+}
+input[type="checkbox"]:checked::after {
+    content: '' !important;
+    position: absolute !important;
+    left: 6px !important;
+    top: 2px !important;
+    width: 6px !important;
+    height: 12px !important;
+    border: solid #fff !important;
+    border-width: 0 2.5px 2.5px 0 !important;
+    transform: rotate(45deg) !important;
+}
+input[type="checkbox"]:hover {
+    border-color: #8b5cf6 !important;
+}
+
+.select_radio {
+    display: none !important;
+}
+.check_btn {
+    accent-color: #6c5ce7 !important;
+}

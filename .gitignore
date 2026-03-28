@@ -1,0 +1,28 @@
+# Credentials et secrets
+.credentials.php
+.google_oauth.php
+blog/info_exe/dbCheck.php
+
+# Uploads utilisateurs
+uploads/
+blog/uploads/
+blog/cache/
+
+# Fichiers volumineux
+blog/rar/
+*.rar
+*.zip
+
+# Ancien dossier (a supprimer)
+autre_projet/
+
+# IDE et systeme
+.vscode/
+.idea/
+*.swp
+*.swo
+Thumbs.db
+.DS_Store
+
+# Claude
+.claude/

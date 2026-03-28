@@ -1,0 +1,32 @@
+/* ============================================================
+   BASE — Reset themes, body, container
+   Utilise par : css.css (import)
+   ============================================================ */
+
+body, body[class*="theme-"] {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+}
+
+/* Logo blog */
+.blog-logo {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 12px !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2) !important;
+    flex-shrink: 0 !important;
+}
+
+.dashboard-container {
+    max-width: 960px;
+}
+
+.menu_ {
+    display: none !important;
+}
+
+.display_none {
+    display: none !important;
+}

@@ -1,0 +1,434 @@
+/* ============================================================
+   FORMS — Inputs, Editors, Checkboxes, Radios, Selects
+   ============================================================ */
+
+/* ----- Containers (#main_container, .simpson-form) ----- */
+
+#main_container {
+    width: 380px;
+    margin: 60px auto;
+    padding: 30px 25px;
+    background-color: var(--bg-primary);
+    border-radius: calc(var(--border-radius) + 4px);
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.3),
+        0 0 0 4px var(--color-primary),
+        0 0 0 8px var(--bg-primary);
+    font-family: var(--font-family);
+    position: relative;
+}
+
+.simpson-form {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 30px 25px;
+    background-color: var(--bg-primary);
+    border-radius: calc(var(--border-radius) + 4px);
+    box-shadow:
+        0 6px 20px rgba(0,0,0,0.3),
+        0 0 0 4px var(--color-primary),
+        0 0 0 8px var(--bg-primary);
+    font-family: var(--font-family);
+    position: relative;
+}
+
+/* ----- Badge pseudo-element (::before) ----- */
+
+#main_container::before,
+.simpson-form::before {
+    content: var(--badge-label);
+    position: absolute;
+    top: -18px;
+    right: 20px;
+    background: var(--color-primary);
+    color: var(--color-white);
+    padding: 4px 14px;
+    border-radius: var(--border-radius-sm);
+    font-size: 13px;
+    font-weight: bold;
+    font-family: var(--font-family);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* ----- Espacement enfants directs ----- */
+
+#main_container > div,
+.simpson-form > div {
+    margin-bottom: 16px;
+}
+
+/* ----- Labels ----- */
+
+#main_container label,
+.simpson-form label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    font-weight: bold;
+    color: var(--color-text);
+    font-size: 14px;
+}
+
+/* Label icone utilisateur */
+#main_container label[for="mon_id_1"]::before {
+    content: "\f007";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: var(--color-primary);
+}
+
+/* Label icone cadenas */
+#main_container label[for="mon_id_2"]::before {
+    content: "\f023";
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    color: var(--color-primary);
+}
+
+/* ----- Inputs text / password / number ----- */
+
+#main_container input[type="text"],
+#main_container input[type="password"],
+#main_container input[type="number"],
+#main_container input[type="checkbox"],
+.simpson-form input[type="text"],
+.simpson-form input[type="password"],
+.simpson-form input[type="number"],
+.simpson-form input[type="checkbox"] {
+    font-size: 15px;
+    outline: none;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+#main_container input[type="text"],
+#main_container input[type="password"],
+#main_container input[type="number"],
+.simpson-form input[type="text"],
+.simpson-form input[type="password"],
+.simpson-form input[type="number"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-secondary);
+    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+/* ----- Etats focus ----- */
+
+#main_container input:focus,
+.simpson-form input:focus,
+.simpson-form textarea:focus,
+.simpson-form .editor:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 8px rgba(255,105,180,0.5);
+    transform: scale(1.02);
+}
+
+/* ----- Placeholders ----- */
+
+#main_container input::placeholder,
+.simpson-form input::placeholder,
+.simpson-form textarea::placeholder {
+    color: var(--color-placeholder);
+    font-style: italic;
+}
+
+/* ----- Textarea ----- */
+
+.simpson-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-secondary);
+    font-size: 15px;
+    font-family: var(--font-family);
+    outline: none;
+    box-sizing: border-box;
+    min-height: 100px;
+    resize: vertical;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* ----- Checkbox (dans formulaires) ----- */
+
+#main_container input[type="checkbox"],
+.simpson-form input[type="checkbox"] {
+    width: 22px;
+    height: 22px;
+    margin-left: 10px;
+    vertical-align: middle;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 3px solid var(--color-primary);
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+#main_container input[type="checkbox"]:checked,
+.simpson-form input[type="checkbox"]:checked {
+    background-color: var(--color-accent);
+    border-color: var(--color-primary);
+}
+
+#main_container input[type="checkbox"]:checked::after,
+.simpson-form input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 6px;
+    height: 12px;
+    border: solid var(--color-white);
+    border-width: 0 2.5px 2.5px 0;
+    transform: rotate(45deg);
+}
+
+#main_container input[type="checkbox"]:hover,
+.simpson-form input[type="checkbox"]:hover {
+    border-color: var(--color-accent);
+}
+
+/* ----- Checkbox (global / projet) ----- */
+
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 2px solid var(--color-primary);
+    border-radius: 6px;
+    background-color: var(--bg-secondary);
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+    background: var(--color-accent);
+    border-color: var(--color-primary);
+}
+
+input[type="checkbox"]:checked::after {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 2px;
+    width: 6px;
+    height: 12px;
+    border: solid var(--color-white);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+input[type="checkbox"]:hover {
+    border-color: var(--color-accent-hover);
+}
+
+/* ----- Radio ----- */
+
+.simpson-form input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    border: 3px solid var(--color-primary);
+    border-radius: 50%;
+    background-color: var(--bg-secondary);
+    cursor: pointer;
+    position: relative;
+    vertical-align: middle;
+    margin-right: 6px;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.simpson-form input[type="radio"]:checked {
+    border-color: var(--color-primary);
+    background-color: var(--bg-secondary);
+}
+
+.simpson-form input[type="radio"]:checked::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    background: var(--color-accent);
+    border-radius: 50%;
+}
+
+.simpson-form input[type="radio"]:hover {
+    border-color: var(--color-accent);
+}
+
+/* ----- Input file ----- */
+
+.simpson-form input[type="file"] {
+    display: none;
+}
+
+.simpson-file-label {
+    display: inline-block;
+    padding: 12px 20px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: var(--border-radius-sm);
+    font-weight: bold;
+    font-family: var(--font-family);
+    cursor: pointer;
+    border: 3px solid var(--color-primary-dark);
+    transition: all 0.2s ease;
+    font-size: 15px;
+}
+
+.simpson-file-label:hover {
+    background-color: var(--color-primary-light);
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+/* ----- Editor / Contenteditable ----- */
+
+.editor {
+    width: 100%;
+    border: 1px solid var(--color-primary);
+    border-radius: var(--border-radius-sm);
+    background: var(--bg-secondary);
+    color: var(--color-text);
+    cursor: text;
+    outline: none;
+    transition: border-color .15s, box-shadow .15s;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--color-placeholder);
+    pointer-events: none;
+}
+
+.editor:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px rgba(255,105,180,0.3);
+}
+
+/* Editor dans simpson-form */
+.simpson-form .editor {
+    width: 100%;
+    padding: 12px 15px;
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-secondary);
+    font-size: 15px;
+    font-family: var(--font-family);
+    color: var(--color-text);
+    outline: none;
+    box-sizing: border-box;
+    min-height: 42px;
+    cursor: text;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.simpson-form .editor:empty::before {
+    content: attr(data-placeholder);
+    color: var(--color-placeholder);
+    font-style: italic;
+    pointer-events: none;
+}
+
+/* ----- Liens dans formulaires ----- */
+
+#main_container a,
+.simpson-form a {
+    display: block;
+    font-size: 13px;
+    color: var(--color-primary);
+    text-decoration: none;
+    margin-bottom: 15px;
+    text-align: right;
+    transition: color 0.2s;
+    font-weight: bold;
+}
+
+#main_container a:hover,
+.simpson-form a:hover {
+    text-decoration: underline;
+    color: var(--color-accent);
+}
+
+/* ----- Layout champs (field) ----- */
+
+.simpson-form .field {
+    margin-bottom: 22px;
+}
+
+.simpson-form .field-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+
+.simpson-form .input-line {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.simpson-form .field-description,
+.field-description {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin-bottom: 6px;
+}
+
+/* ----- Input file stylise ----- */
+
+.simpson-form .field_img {
+    position: relative;
+    width: 100%;
+    padding: 10px 12px;
+    border: 3px solid var(--color-primary);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--bg-secondary);
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--color-text);
+    display: inline-block;
+    font-family: var(--font-family);
+}
+
+.simpson-form .field_img::before {
+    content: "Choisir un fichier";
+    display: inline-block;
+    padding: 6px 12px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.simpson-form .field_img:hover::before {
+    background-color: var(--color-primary-light);
+}
+
+/* ----- Input number petit ----- */
+
+.simpson-form input[type="number"] {
+    width: 120px;
+}

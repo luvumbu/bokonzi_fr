@@ -1,0 +1,413 @@
+/* ============================================================
+   FORMULAIRE MODIFIER PROJET — Style par defaut (fond clair)
+   Utilise par : css.css (import)
+   ============================================================ */
+
+/* ============================================================
+   DOUBLE DESIGN — Toggle simple/HTML
+   ============================================================ */
+
+.field {
+    width: 100% !important;
+    margin-bottom: 12px !important;
+}
+
+.field-header {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    margin-bottom: 8px !important;
+}
+
+.toggle-label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    cursor: pointer !important;
+    padding: 8px 14px !important;
+    background: #f3f4f6 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    transition: border-color 0.2s !important;
+}
+.toggle-label:hover {
+    border-color: #6c5ce7 !important;
+}
+.toggle-text {
+    color: #374151 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+}
+
+.vd-trash {
+    cursor: pointer !important;
+    font-size: 18px !important;
+    opacity: 0.4 !important;
+    transition: opacity 0.2s !important;
+    padding: 6px !important;
+}
+.vd-trash:hover {
+    opacity: 1 !important;
+}
+
+/* Design 1 : Input simple */
+.design-simple .field-input {
+    width: 100% !important;
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    padding: 14px 16px !important;
+    font-size: 15px !important;
+    outline: none !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+.design-simple textarea.field-input {
+    min-height: 100px !important;
+    resize: vertical !important;
+    font-family: inherit !important;
+    line-height: 1.6 !important;
+}
+.design-simple .field-input:focus {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15) !important;
+}
+.design-simple .field-input::placeholder {
+    color: #9ca3af !important;
+    font-style: italic !important;
+}
+
+/* Design 2 : Editeur riche HTML */
+.design-html .editor {
+    width: 100% !important;
+    background: #faf5ff !important;
+    color: #1f2937 !important;
+    border: 2px solid rgba(108, 92, 231, 0.3) !important;
+    border-radius: 10px !important;
+    padding: 14px 16px !important;
+    min-height: 80px !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    outline: none !important;
+    transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+.design-html .editor:focus {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.2) !important;
+}
+.design-html .editor:empty::before {
+    content: attr(data-placeholder) !important;
+    color: #9ca3af !important;
+    font-style: italic !important;
+}
+
+/* Descriptions des champs */
+.project-form .field-description,
+.field-description {
+    color: #6b7280 !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+    margin: 20px 0 6px !important;
+    padding: 0 !important;
+    background: none !important;
+    border: none !important;
+}
+.project-form .field-description:first-child {
+    margin-top: 0 !important;
+}
+
+.new-project {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+.new-project-center {
+    width: 80%;
+    margin: auto;
+}
+
+.project-form {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    max-width: 700px !important;
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+.project-form > *:not(.remove_element):not(.add_child):not(input[type="checkbox"]) {
+    width: 100% !important;
+}
+.project-form > input[type="checkbox"] {
+    width: 22px !important;
+    height: 22px !important;
+    align-self: center !important;
+}
+.project-form > label {
+    align-self: center !important;
+    width: auto !important;
+}
+.project-form > .field-description {
+    text-align: center !important;
+}
+.project-form > input[type="number"] {
+    align-self: center !important;
+}
+.project-form > .remove_element {
+    width: 40px !important;
+    height: 40px !important;
+    align-self: flex-end !important;
+}
+.project-form > .add_child {
+    width: 44px !important;
+    height: 44px !important;
+    align-self: center !important;
+}
+
+/* Input prix */
+.project-form input[type="number"] {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+    width: 200px !important;
+    outline: none !important;
+}
+.project-form input[type="number"]:focus {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15) !important;
+}
+
+/* Input texte (mot de passe) */
+.project-form input[type="text"],
+.field-input[type="text"] {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+    width: 100% !important;
+    outline: none !important;
+}
+.project-form input[type="text"]:focus {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15) !important;
+}
+.project-form input[type="text"]::placeholder {
+    color: #9ca3af !important;
+    font-style: italic !important;
+}
+
+/* Boutons */
+.remove_element { cursor: pointer !important; opacity: 0.5 !important; transition: opacity 0.2s, transform 0.2s !important; margin-top: 4px !important; }
+.remove_element:hover { opacity: 1 !important; transform: scale(1.1) !important; }
+
+.add_child { cursor: pointer !important; width: 44px !important; height: 44px !important; margin: 16px 0 !important; padding: 6px !important; background: rgba(108, 92, 231, 0.08) !important; border: 1px solid rgba(108, 92, 231, 0.3) !important; border-radius: 10px !important; transition: all 0.2s !important; }
+.add_child:hover { background: rgba(108, 92, 231, 0.15) !important; border-color: #6c5ce7 !important; transform: scale(1.05) !important; }
+
+.project-form .submit-btn,
+.submit-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #6c5ce7, #7c3aed) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 14px 32px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    margin-top: 24px !important;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3) !important;
+    transition: opacity 0.2s, transform 0.2s !important;
+}
+.submit-btn:hover { opacity: 0.9 !important; transform: translateY(-1px) !important; }
+
+/* ============================================================
+   LISTE SOUS-PROJETS
+   ============================================================ */
+.children-list {
+    margin: 24px 0 !important;
+    padding: 0 16px !important;
+}
+.children-title {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #374151 !important;
+    margin-bottom: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+.children-title i {
+    color: #6c5ce7 !important;
+}
+.child-card {
+    display: flex !important;
+    align-items: center !important;
+    gap: 14px !important;
+    padding: 14px 18px !important;
+    margin-bottom: 8px !important;
+    background: #f9fafb !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    transition: all 0.2s !important;
+}
+.child-card:hover {
+    border-color: #6c5ce7 !important;
+    background: #f5f3ff !important;
+    box-shadow: 0 4px 12px rgba(108, 92, 231, 0.1) !important;
+    transform: translateX(4px) !important;
+}
+.child-img {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 10px !important;
+    object-fit: cover !important;
+    flex-shrink: 0 !important;
+}
+.child-icon {
+    width: 48px !important;
+    height: 48px !important;
+    border-radius: 10px !important;
+    background: #ede9fe !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    color: #6c5ce7 !important;
+    font-size: 20px !important;
+}
+.child-info {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2px !important;
+    flex: 1 !important;
+    min-width: 0 !important;
+}
+.child-name {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: #1f2937 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+.child-date {
+    font-size: 12px !important;
+    color: #9ca3af !important;
+}
+.child-arrow {
+    color: #d1d5db !important;
+    font-size: 14px !important;
+    transition: color 0.2s, transform 0.2s !important;
+}
+.child-card:hover .child-arrow {
+    color: #6c5ce7 !important;
+    transform: translateX(3px) !important;
+}
+
+/* Bouton creer sous-projet */
+.add-child-banner {
+    display: flex !important;
+    justify-content: center !important;
+    margin: 20px 0 !important;
+}
+.add-child-btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 14px 28px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: #fff !important;
+    background: linear-gradient(135deg, #6c5ce7, #7c3aed) !important;
+    border: none !important;
+    border-radius: 12px !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3) !important;
+    transition: opacity 0.2s, transform 0.2s !important;
+}
+.add-child-btn:hover {
+    opacity: 0.9 !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4) !important;
+}
+.add-child-btn:disabled {
+    opacity: 0.6 !important;
+    cursor: wait !important;
+    transform: none !important;
+}
+.add-child-btn i {
+    font-size: 18px !important;
+}
+
+.envoyer {
+    background: linear-gradient(135deg, #6c5ce7, #7c3aed) !important;
+    color: #fff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    cursor: pointer !important;
+    font-weight: 600 !important;
+}
+
+/* Labels avec checkbox dans le form */
+.project-form label {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: #374151 !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    cursor: pointer !important;
+    padding: 10px 14px !important;
+    background: #f3f4f6 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    box-shadow: none !important;
+    transition: border-color 0.2s !important;
+}
+.project-form label:hover {
+    border-color: #6c5ce7 !important;
+}
+.project-form label span,
+.project-form label text {
+    color: #374151 !important;
+    background: none !important;
+    font-size: 14px !important;
+    display: inline !important;
+}
+.project-form label input[type="checkbox"] {
+    width: 18px !important;
+    height: 18px !important;
+    flex-shrink: 0 !important;
+}
+
+/* Editor contenteditable global */
+.editor[contenteditable="true"] {
+    background: #ffffff !important;
+    color: #1f2937 !important;
+    border: 1px solid #d1d5db !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    min-height: 60px !important;
+    outline: none !important;
+}
+.editor[contenteditable="true"]:focus {
+    border-color: #6c5ce7 !important;
+    box-shadow: 0 0 0 3px rgba(108, 92, 231, 0.15) !important;
+}

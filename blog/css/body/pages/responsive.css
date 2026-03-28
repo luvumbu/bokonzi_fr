@@ -1,0 +1,60 @@
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+/* ----- Tablette (max 768px) ----- */
+
+@media (max-width: 768px) {
+
+    .page-web section {
+        justify-content: center;
+    }
+
+    .page-web .card {
+        width: 90%;
+    }
+
+    .page-web nav {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px 20px;
+    }
+
+    .page-web nav ul {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    .page-web header h1 {
+        font-size: 2rem;
+    }
+
+    .page-web header p {
+        font-size: 1rem;
+    }
+}
+
+/* ----- Mobile (max 600px) ----- */
+
+@media (max-width: 600px) {
+
+    .simpson-form {
+        margin: 20px 10px;
+        padding: 20px 15px;
+    }
+
+    .simpson-menu ul {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .menu_ {
+        width: 100%;
+        border-radius: 0;
+    }
+
+    #main_container {
+        width: 90%;
+        margin: 30px auto;
+    }
+}

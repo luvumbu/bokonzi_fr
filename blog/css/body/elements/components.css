@@ -1,0 +1,261 @@
+/* ============================================================
+   COMPONENTS — Language, Theme, Speech, Progress
+   ============================================================ */
+/* ----- 10a. Language switcher ----- */
+
+.lang-switcher {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
+    user-select: none;
+}
+
+.lang-option {
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    color: var(--color-text-secondary);
+    transition: all 0.2s ease;
+}
+
+.lang-option:hover {
+    color: var(--color-primary);
+    background: rgba(59,130,246,0.1);
+}
+
+.lang-option.lang-active {
+    color: var(--color-primary);
+    background: rgba(59,130,246,0.15);
+}
+
+.lang-separator {
+    color: var(--color-text);
+}
+
+/* ----- 10b. Theme switcher ----- */
+
+.theme-switcher {
+    display: inline-flex;
+    align-items: center;
+}
+
+#theme-select {
+    padding: 6px 10px;
+    border-radius: 8px;
+    border: 2px solid var(--color-primary);
+    background: var(--bg-secondary);
+    color: var(--color-text);
+    font-weight: 600;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: var(--font-family);
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+#theme-select:hover {
+    border-color: var(--color-accent);
+}
+
+#theme-select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 6px rgba(0,0,0,0.15);
+}
+
+/* ----- 10c. Barre de progression ----- */
+
+.simpson-progress {
+    width: 100%;
+    max-width: 400px;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    margin-top: 10px;
+    height: 22px;
+    border: 3px solid var(--color-primary);
+}
+
+.simpson-progress-bar {
+    width: 0;
+    height: 100%;
+    background: linear-gradient(90deg, var(--color-accent), var(--color-primary));
+    transition: width 0.2s ease;
+    border-radius: 8px;
+}
+
+.simpson-progress-text {
+    margin-top: 5px;
+    font-weight: bold;
+    color: var(--color-primary);
+    font-family: var(--font-family);
+}
+
+/* ----- 10d. Speech controls ----- */
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.controls {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+    align-items: center;
+}
+
+/* Boutons et selects dans card_s */
+.card_s button,
+.card_s select {
+    border-radius: var(--border-radius-sm);
+    padding: 6px 10px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--font-family);
+}
+
+.card_s button {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+}
+
+.card_s button.secondary {
+    background: var(--bg-secondary);
+    color: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.card_s button.danger {
+    background: var(--color-accent);
+}
+
+.card_s textarea {
+    width: 100%;
+    height: 120px;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-primary);
+    font-size: 1rem;
+    box-sizing: border-box;
+    font-family: var(--font-family);
+}
+
+/* ----- 10e. Liste enfants (child-list) ----- */
+
+.simpson-form .child-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.simpson-form .child-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 14px;
+    min-width: 150px;
+    border-radius: var(--border-radius-sm);
+    background: var(--bg-secondary);
+    border: 3px solid var(--color-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+.simpson-form .child-item img {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+    display: block;
+    border-radius: 8px;
+}
+
+/* Corbeille sur child-item */
+.simpson-form .child-item .vd-trash {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    font-size: 16px;
+    color: var(--color-primary);
+    background-color: rgba(255,255,255,0.8);
+    border-radius: 50%;
+    padding: 2px 4px;
+    transition: color 0.2s, background-color 0.2s;
+    cursor: pointer;
+}
+
+.simpson-form .child-item .vd-trash:hover {
+    color: var(--color-white);
+    background-color: var(--color-primary);
+}
+
+/* Nom enfant */
+.simpson-form .child-name {
+    font-weight: bold;
+    color: var(--color-primary);
+    white-space: nowrap;
+}
+
+/* ----- 10f. Switch toggle ----- */
+
+.simpson-form .child-switch {
+    position: relative;
+    display: inline-block;
+    width: 42px;
+    height: 22px;
+}
+
+.simpson-form .child-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.simpson-form .child-slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: var(--bg-secondary);
+    border: 2px solid var(--color-primary);
+    border-radius: 30px;
+    transition: 0.3s;
+}
+
+.simpson-form .child-slider::before {
+    content: "";
+    position: absolute;
+    height: 14px;
+    width: 14px;
+    left: 2px;
+    bottom: 2px;
+    background-color: var(--color-primary);
+    border-radius: 50%;
+    transition: 0.3s;
+}
+
+.simpson-form .child-switch input:checked + .child-slider {
+    background-color: var(--color-accent);
+    border-color: var(--color-primary);
+}
+
+.simpson-form .child-switch input:checked + .child-slider::before {
+    transform: translateX(20px);
+    background-color: var(--color-white);
+}
+
+/* ----- 10g. Actions enfant ----- */
+
+.simpson-form .child-action {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 8px;
+}
+

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>ELEEC Tests</title>
+    <style>
+        body { background: #0f0f1a; color: #e0e0e0; font-family: monospace; padding: 20px; }
+        h1 { color: #00d4ff; }
+        #test-output { white-space: pre-wrap; font-size: 14px; line-height: 1.6; }
+        .pass { color: #4CAF50; }
+        .fail { color: #f44336; font-weight: bold; }
+        .summary { margin-top: 20px; padding: 12px; border: 1px solid #2a2a4a; border-radius: 8px; font-size: 16px; }
+        #run-btn { padding: 10px 24px; background: #00d4ff; color: #0f0f1a; border: none; border-radius: 6px; font-size: 14px; cursor: pointer; font-weight: bold; }
+        #run-btn:hover { background: #00b8d4; }
+    </style>
+</head>
+<body>
+    <h1>ELEEC APP — Tests</h1>
+    <button id="run-btn" onclick="runTests()">Lancer les tests</button>
+    <div id="test-output"></div>
+
+    <!-- Charger l'app complète (nécessaire pour tester) -->
+    <!-- On intègre l'app dans un iframe caché pour ne pas polluer cette page -->
+    <iframe id="app-frame" src="../index.php" style="display:none" width="1200" height="800"></iframe>
+
+    <script>
+    async function runTests() {
+        const out = document.getElementById('test-output');
+        out.innerHTML = 'Chargement...\n';
+
+        const iframe = document.getElementById('app-frame');
+        const win = iframe.contentWindow;
+
+        // Attendre que l'iframe soit chargé
+        if (!win.Grid || !win.App) {
+            out.innerHTML += 'Attente du chargement de l\'app...\n';
+            await new Promise(r => setTimeout(r, 1000));
+        }
+
+        if (!win.Grid || !win.App) {
+            out.innerHTML += '<span class="fail">ERREUR: App non chargée dans l\'iframe</span>\n';
+            return;
+        }
+
+        // Charger les données de test
+        try {
+            const resp = await fetch('test-data.json');
+            const data = await resp.json();
+            out.innerHTML += 'Données de test chargées.\n\n';
+
+            const Grid = win.Grid;
+            const App = win.App;
+            const projet = win.projet;
+
+            // Injecter
+            projet.nom = data.projet.nom;
+            projet.type = data.projet.type;
+            projet.etages = data.projet.etages;
+            Grid.floors = {};
+            Grid.walls = {};
+            Grid.doors = {};
+            Grid.equips = {};
+            for (const fi in data.floors) Grid.floors[parseInt(fi)] = data.floors[fi];
+            for (const fi in data.walls) Grid.walls[parseInt(fi)] = data.walls[fi];
+            for (const fi in data.doors) Grid.doors[parseInt(fi)] = data.doors[fi];
+            for (const fi in data.equips) Grid.equips[parseInt(fi)] = data.equips[fi];
+            projet.appareils = data.appareils || {};
+
+            let passed = 0, failed = 0;
+
+            function assert(name, cond, detail) {
+                if (cond) {
+                    passed++;
+                    out.innerHTML += `<span class="pass">  ✓ ${name}</span>\n`;
+                } else {
+                    failed++;
+                    out.innerHTML += `<span class="fail">  ✗ ${name}${detail ? ' — ' + detail : ''}</span>\n`;
+                }
+            }
+
+            // ===== DATA MODEL =====
+            out.innerHTML += '── Data Model ──\n';
+            assert('projet.nom', projet.nom === 'Maison Test');
+            assert('projet.type = maison', projet.type === 'maison');
+            assert('3 étages', projet.etages.length === 3);
+            assert('Floor 0 existe', !!Grid.floors[0]);
+            assert('Floor 1 existe', !!Grid.floors[1]);
+            assert('Floor 2 existe', !!Grid.floors[2]);
+            assert('Floor 0: 2 pièces', Object.keys(Grid.floors[0]).length === 2);
+            assert('Floor 1: 5 pièces', Object.keys(Grid.floors[1]).length === 5);
+            assert('Floor 2: 4 pièces', Object.keys(Grid.floors[2]).length === 4);
+            assert('Salon = 15 cells', Grid.floors[1]['salon_0'].cells.length === 15);
+
+            // ===== WALLS =====
+            out.innerHTML += '\n── Walls & Doors ──\n';
+            assert('Floor 0 murs', Object.keys(Grid.walls[0] || {}).length > 0);
+            assert('Floor 1 murs', Object.keys(Grid.walls[1] || {}).length > 0);
+            assert('Floor 1 portes', Object.keys(Grid.doors[1] || {}).length > 0);
+            // Portes sont aussi des murs
+            for (const dk of Object.keys(Grid.doors[1] || {})) {
+                assert(`Porte ${dk} = aussi mur`, !!Grid.walls[1][dk]);
+            }
+
+            // ===== EQUIPS =====
+            out.innerHTML += '\n── Équipements ──\n';
+            assert('Floor 1 equips', Object.keys(Grid.equips[1] || {}).length > 0);
+            assert('Prise salon (2_2)', Grid.equips[1]['2_2']?.[0]?.type === 'prise');
+            assert('Double prise (1_8)', Grid.equips[1]['1_8']?.[0]?.type === 'double');
+            assert('Multi-equip bureau (5_2)', Grid.equips[2]['5_2']?.length === 2);
+
+            // ===== WALL ORIENT =====
+            out.innerHTML += '\n── Wall Orientation ──\n';
+            assert('wallOrient défaut = h', Grid.wallOrient === 'h');
+            Grid.setWallOrient('v', null);
+            assert('setWallOrient(v)', Grid.wallOrient === 'v');
+            Grid.setWallOrient('d', null);
+            assert('setWallOrient(d)', Grid.wallOrient === 'd');
+            Grid.setWallOrient('h', null);
+
+            // ===== SELECT EQUIP =====
+            out.innerHTML += '\n── Select Equip → Orientation ──\n';
+            const wallBtn = win.document.querySelector('[data-equip="wall"]');
+            const orientEl = win.document.getElementById('wall-orient');
+            if (wallBtn && orientEl) {
+                Grid.selectEquip(wallBtn);
+                assert('selectEquip(wall): currentEquip = wall', Grid.currentEquip === 'wall');
+                assert('selectEquip(wall): orientation visible', orientEl.style.display !== 'none');
+                assert('selectEquip(wall): wallOrient = h', Grid.wallOrient === 'h');
+                const activeOrient = orientEl.querySelector('.orient-btn.active');
+                assert('Bouton H actif', activeOrient?.dataset?.orient === 'h');
+
+                const doorBtn = win.document.querySelector('[data-equip="door"]');
+                if (doorBtn) {
+                    Grid.selectEquip(doorBtn);
+                    assert('selectEquip(door): orientation visible', orientEl.style.display !== 'none');
+                }
+
+                const eraseBtn = win.document.querySelector('[data-equip="erase-wall"]');
+                if (eraseBtn) {
+                    Grid.selectEquip(eraseBtn);
+                    assert('selectEquip(erase): orientation cachée', orientEl.style.display === 'none');
+                }
+            } else {
+                assert('DOM trouvé', false, 'wallBtn ou orientEl manquant');
+            }
+
+            // ===== EDGE OVERLAY =====
+            out.innerHTML += '\n── Edge Overlay ──\n';
+            if (wallBtn) Grid.selectEquip(wallBtn);
+            App.goStep(4);
+            Grid.init(1);
+
+            Grid.setWallOrient('h', null);
+            Grid.showEdgeOverlay();
+            const edgeCont = win.document.getElementById('grid-edges');
+            const hCount = edgeCont.querySelectorAll('.edge-h[data-key]').length;
+            assert('Orient H: edges H présents', hCount > 0, `${hCount}`);
+            const vClickable = edgeCont.querySelectorAll('.edge-v[data-key]').length;
+            assert('Orient H: pas de V cliquables', vClickable === 0);
+
+            Grid.setWallOrient('v', null);
+            Grid.showEdgeOverlay();
+            const vCount = edgeCont.querySelectorAll('.edge-v[data-key]').length;
+            assert('Orient V: edges V présents', vCount > 0, `${vCount}`);
+
+            Grid.setWallOrient('d', null);
+            Grid.showEdgeOverlay();
+            const dCount = edgeCont.querySelectorAll('.edge-d[data-key]').length;
+            assert('Orient D: edges D présents', dCount > 0, `${dCount}`);
+
+            // ===== VISUAL =====
+            out.innerHTML += '\n── Visual ──\n';
+            Grid.setWallOrient('h', null);
+            Grid.init(1);
+            const occ = win.document.querySelectorAll('.grid-cell.occupied').length;
+            assert('Cellules occupées affichées', occ > 0, `${occ}`);
+            const rl = win.document.getElementById('rooms-list');
+            assert('Rooms list rempli', rl?.innerHTML?.length > 0);
+
+            // ===== GRID FUNCTIONS =====
+            out.innerHTML += '\n── Grid Functions ──\n';
+            assert('isAdjacentTo(1,1,["1_2"])', Grid.isAdjacentTo(1, 1, ['1_2']));
+            assert('isAdjacentTo(1,1,["0_1"])', Grid.isAdjacentTo(1, 1, ['0_1']));
+            assert('!isAdjacentTo(1,1,["3_3"])', !Grid.isAdjacentTo(1, 1, ['3_3']));
+
+            // ===== SUMMARY =====
+            out.innerHTML += `\n<div class="summary">`;
+            out.innerHTML += `RÉSULTAT: <span class="pass">${passed} PASS</span> / <span class="${failed?'fail':'pass'}">${failed} FAIL</span> / ${passed+failed} TOTAL`;
+            if (failed === 0) out.innerHTML += `\n<span class="pass">✓ Tous les tests passent !</span>`;
+            out.innerHTML += `</div>`;
+
+        } catch(err) {
+            out.innerHTML += `<span class="fail">ERREUR: ${err.message}\n${err.stack}</span>`;
+        }
+    }
+
+    // Auto-run quand l'iframe est chargé
+    document.getElementById('app-frame').addEventListener('load', () => {
+        setTimeout(runTests, 500);
+    });
+    </script>
+</body>
+</html>

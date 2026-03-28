@@ -1,0 +1,175 @@
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+/* ----- Bouton envoyer ----- */
+
+.envoyer {
+    background-color: var(--color-accent);
+    text-align: center;
+    padding: 15px;
+    color: var(--color-white);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: var(--font-family);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 4px 0px var(--color-accent-dark);
+    transition: all 0.15s ease;
+}
+
+.envoyer:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--color-accent-dark);
+}
+
+.envoyer:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0px var(--color-accent-dark);
+}
+
+/* ----- Bouton simpson-btn ----- */
+
+.simpson-form button,
+.simpson-btn {
+    background-color: var(--color-accent);
+    color: var(--color-white);
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    font-size: 16px;
+    font-weight: bold;
+    font-family: var(--font-family);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    border: 3px solid var(--color-primary);
+    box-shadow: 0 4px 0px var(--color-accent-dark);
+    transition: all 0.15s ease;
+    padding: 12px 20px;
+}
+
+.simpson-form button:hover,
+.simpson-btn:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 0px var(--color-accent-dark);
+}
+
+.simpson-form button:active,
+.simpson-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0px var(--color-accent-dark);
+}
+
+/* ----- Bouton submit ----- */
+
+.submit-btn {
+    margin-top: 32px;
+    background: var(--color-accent);
+    color: var(--color-white);
+    padding: 16px 24px;
+    text-align: center;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 15px;
+    letter-spacing: 0.03em;
+    transition: transform .2s, box-shadow .2s, background .2s;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    background: var(--color-accent-hover);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* ----- Bouton .btn (variantes) ----- */
+
+.btn {
+    padding: 10px 16px;
+    border-radius: var(--border-radius);
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border: 3px solid var(--color-primary);
+    font-family: var(--font-family);
+    text-transform: uppercase;
+    box-shadow: 0 4px 0px var(--color-primary-dark);
+    transition: 0.15s ease;
+}
+
+.btn.restore {
+    background: var(--color-success);
+    color: var(--color-white);
+}
+
+.btn.view {
+    background: var(--color-primary-light);
+    color: var(--color-white);
+}
+
+.btn.delete {
+    background: var(--color-accent);
+    color: var(--color-white);
+}
+
+.btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 0px var(--color-primary-dark);
+}
+
+.btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 1px 0px var(--color-primary-dark);
+}
+
+/* ----- Bouton effacer ----- */
+
+.effacer {
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    padding: 15px;
+    text-align: center;
+    border-radius: var(--border-radius-sm);
+    cursor: pointer;
+    font-family: var(--font-family);
+    font-weight: bold;
+    transition: opacity 0.2s;
+}
+
+.effacer:hover {
+    opacity: 0.85;
+}
+
+/* ----- Boutons child (ajouter enfant) ----- */
+
+.simpson-form .add-child-btn,
+.simpson-form .child-btn {
+    padding: 10px 16px;
+    background-color: var(--color-primary);
+    color: var(--color-white);
+    border: 3px solid var(--color-primary-dark);
+    border-radius: var(--border-radius-sm);
+    font-weight: bold;
+    cursor: pointer;
+    font-family: var(--font-family);
+    transition: all 0.2s;
+}
+
+.simpson-form .add-child-btn:hover,
+.simpson-form .child-btn:hover {
+    background-color: var(--color-primary-light);
+    transform: scale(1.05);
+}

@@ -1,0 +1,27 @@
+/* ============================================================
+   BODY — Tous les styles du site
+   ============================================================ */
+
+/* --- Elements de base (UI reutilisable) --- */
+@import url('body/elements/reset.css');
+@import url('body/elements/utilities.css');
+@import url('body/elements/typography.css');
+@import url('body/elements/forms.css');
+@import url('body/elements/buttons.css');
+@import url('body/elements/cards.css');
+@import url('body/elements/navigation.css');
+@import url('body/elements/gallery.css');
+@import url('body/elements/components.css');
+
+/* --- Pages du projet --- */
+@import url('body/pages/page-web.css');
+ @import url('body/pages/page-projet.css');  
+  @import url('body/pages/page-projet-view.css');  
+@import url('body/pages/page-profil.css');
+@import url('body/pages/page-social.css');
+@import url('body/pages/page-archives.css');
+@import url('body/pages/page-templates.css');
+@import url('body/pages/page-login.css');
+@import url('body/pages/responsive.css');
+
+

@@ -1,0 +1,1558 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulation Tableau Électrique</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #1a1a2e;
+    color: #e0e0e0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    padding: 10px;
+  }
+  h1 {
+    font-size: clamp(1rem, 4vw, 1.6rem);
+    margin-bottom: 6px;
+    color: #00d4ff;
+    text-align: center;
+  }
+  #info {
+    font-size: clamp(0.7rem, 2.5vw, 0.9rem);
+    margin-bottom: 8px;
+    color: #aaa;
+    text-align: center;
+  }
+  canvas {
+    border: 2px solid #333;
+    border-radius: 8px;
+    cursor: pointer;
+    background: #0f0f23;
+    width: 100%;
+    max-width: 900px;
+    height: auto;
+  }
+  #tooltip {
+    position: fixed;
+    background: rgba(0,0,0,0.85);
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    pointer-events: none;
+    display: none;
+    border: 1px solid #00d4ff;
+    max-width: 260px;
+    line-height: 1.4;
+    z-index: 100;
+  }
+  @media (max-width: 600px) {
+    body { padding: 5px; }
+    #tooltip { font-size: 0.75rem; max-width: 200px; }
+    #rapport { padding: 15px; }
+    #rapport h2 { font-size: 1.1rem; }
+    #rapport h3 { font-size: 0.95rem; }
+  }
+  #rapport {
+    width: 100%;
+    max-width: 900px;
+    margin-bottom: 20px;
+    padding: 25px 30px;
+    background: #16213e;
+    border: 2px solid #333;
+    border-radius: 8px;
+    line-height: 1.7;
+    font-size: 0.9rem;
+    color: #ccc;
+  }
+  #rapport h2 {
+    color: #00d4ff;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #333;
+    padding-bottom: 8px;
+  }
+  #rapport h3 {
+    color: #f1c40f;
+    font-size: 1.05rem;
+    margin: 18px 0 8px;
+  }
+  #rapport table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10px 0;
+    font-size: 0.85rem;
+  }
+  #rapport th {
+    background: #1a1a2e;
+    color: #00d4ff;
+    text-align: left;
+    padding: 6px 10px;
+    border: 1px solid #333;
+  }
+  #rapport td {
+    padding: 5px 10px;
+    border: 1px solid #333;
+  }
+  #rapport .on { color: #2ecc71; }
+  #rapport .off { color: #e74c3c; }
+  #rapport .warn { color: #e67e22; }
+  #rapport .info { color: #3498db; }
+  #rapport ul { margin: 5px 0 5px 20px; }
+  #rapport li { margin: 3px 0; }
+  #rapport .schema {
+    font-family: monospace;
+    background: #0f0f23;
+    padding: 12px 15px;
+    border-radius: 6px;
+    margin: 10px 0;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+    color: #aaa;
+  }
+  #rapport .schema span { font-weight: bold; }
+</style>
+</head>
+<body>
+
+<h1>Simulation Tableau Électrique</h1>
+<p id="info">Cliquez sur un disjoncteur pour l'activer / désactiver</p>
+<div id="rapport">
+  <h2>Compte rendu — Installation Electrique Domestique</h2>
+
+  <h3>1. Principe general</h3>
+  <p>
+    L'electricite arrive du <strong class="off">reseau EDF</strong> via le compteur <strong>Linky</strong>.
+    Elle passe ensuite par le <strong>disjoncteur principal 40A</strong> (Block 8) qui protege toute l'installation.
+    Depuis ce disjoncteur, un <strong class="warn">peigne de repartition</strong> distribue le courant vers les 7 disjoncteurs divisionnaires.
+  </p>
+  <div class="schema"><span class="off">EDF</span>  ──▶  <span style="color:#2ecc71">LINKY</span>  ──▶  <span class="warn">Disj. Principal 40A</span>  ──▶  <span style="color:#ff9f43">PEIGNE</span>  ──▶  Disjoncteurs 1 a 7</div>
+
+  <h3>2. Tableau electrique — 8 disjoncteurs</h3>
+  <table>
+    <tr><th>Block</th><th>Amp.</th><th>Circuit</th><th>Zones alimentees</th></tr>
+    <tr><td>1</td><td>25A</td><td>Puissance chauffe-eau</td><td>Cave (ballon eau chaude)</td></tr>
+    <tr><td>2</td><td>10A</td><td>Commande chauffe-eau</td><td>Cave (pilotage heures creuses)</td></tr>
+    <tr><td>3</td><td>10A</td><td>Eclairage general</td><td>RDC + R+1 + R+2 (chambre, dressing, SDB)</td></tr>
+    <tr><td>4</td><td>16A</td><td>Eclairage escalier + cave</td><td>Escalier vers cave + cave</td></tr>
+    <tr><td>5</td><td>16A</td><td>Prises electriques</td><td>RDC (prises + chaudiere) + R+1 (prises) + R+2 (prises chambre)</td></tr>
+    <tr><td>6</td><td>20A</td><td>Lumiere haut escalier + miroir SDB</td><td>R+1 (palier escalier) + R+2 (miroir SDB)</td></tr>
+    <tr><td>7</td><td>20A</td><td>Circuit inconnu</td><td>Non identifie</td></tr>
+    <tr><td><strong>8</strong></td><td><strong>40A</strong></td><td><strong>Disjoncteur principal</strong></td><td><strong>Toute la maison</strong></td></tr>
+  </table>
+
+  <h3>3. Description de la maison (4 niveaux)</h3>
+  <table>
+    <tr><th>Etage</th><th>Pieces</th><th>Circuits presents</th></tr>
+    <tr>
+      <td><strong>R+2</strong></td>
+      <td>Chambre, Dressing, Salle de bain</td>
+      <td>
+        Eclairage (B3) dans toutes les pieces<br>
+        Prises (B5) dans chambre et SDB<br>
+        Miroir lumineux SDB (B6)
+      </td>
+    </tr>
+    <tr>
+      <td><strong>R+1</strong></td>
+      <td>Palier escalier</td>
+      <td>
+        Eclairage (B3)<br>
+        Prises (B5)<br>
+        Lumiere haut escalier (B6)
+      </td>
+    </tr>
+    <tr>
+      <td><strong>RDC</strong></td>
+      <td>Piece principale / entree</td>
+      <td>
+        Eclairage (B3)<br>
+        Prises + chaudiere (B5)
+      </td>
+    </tr>
+    <tr>
+      <td><strong>Sous-sol</strong></td>
+      <td>Cave</td>
+      <td>
+        Chauffe-eau puissance (B1)<br>
+        Chauffe-eau commande (B2)<br>
+        Eclairage cave (B4)
+      </td>
+    </tr>
+  </table>
+
+  <h3>4. Cheminement du circuit prises (Block 5)</h3>
+  <p>Le block 5 alimente <strong>toutes les prises de la maison</strong> ainsi que certains appareils :</p>
+  <div class="schema"><span class="info">Block 5 (16A)</span>
+  ├──▶ RDC : prises murales + <span class="off">chaudiere</span>
+  ├──▶ R+1 : prises palier
+  ├──▶ R+2 Chambre : prises
+  └──▶ R+2 SDB : prises</div>
+  <p class="warn">Si le block 5 est coupe : plus aucune prise dans la maison et la chaudiere s'arrete.</p>
+
+  <h3>5. Cheminement du circuit eclairage (Block 3)</h3>
+  <p>Le block 3 est le circuit d'eclairage principal. Il alimente :</p>
+  <div class="schema"><span style="color:#f1c40f">Block 3 (10A)</span>
+  ├──▶ RDC : eclairage piece principale
+  ├──▶ R+1 : eclairage palier
+  ├──▶ R+2 Chambre : eclairage
+  ├──▶ R+2 Dressing : eclairage
+  └──▶ R+2 SDB : eclairage</div>
+  <p>Chaque piece dispose d'un <strong>interrupteur simple allumage</strong> (bascule murale) qui permet d'allumer ou eteindre la lumiere localement, sans couper le disjoncteur.</p>
+  <p><em>Attention : l'interrupteur ne fonctionne que si le disjoncteur correspondant est actif. Si le block 3 est coupe, aucun interrupteur ne pourra allumer la lumiere.</em></p>
+
+  <h3>6. Circuit cave et escalier (Block 4)</h3>
+  <div class="schema"><span class="info">Block 4 (16A)</span>
+  ├──▶ Escalier vers cave : eclairage
+  └──▶ Cave : eclairage
+  (Interrupteur simple en haut de l'escalier)</div>
+
+  <h3>7. Chauffe-eau (Blocks 1 + 2)</h3>
+  <p>Le chauffe-eau necessite <strong>deux circuits</strong> :</p>
+  <ul>
+    <li><strong>Block 1 (25A)</strong> : alimentation puissance du ballon (resistance chauffante)</li>
+    <li><strong>Block 2 (10A)</strong> : commande / pilotage (contacteur heures creuses)</li>
+  </ul>
+  <p class="warn">Si l'un des deux est coupe, le chauffe-eau ne fonctionne pas correctement.</p>
+
+  <h3>8. Scenarios de coupure</h3>
+  <table>
+    <tr><th>Action</th><th>Consequence</th></tr>
+    <tr><td class="off">Couper EDF (Linky)</td><td>Toute la maison sans electricite</td></tr>
+    <tr><td class="off">Couper Block 8 (40A)</td><td>Toute la maison sans electricite</td></tr>
+    <tr><td class="off">Couper Block 3</td><td>Plus de lumiere au RDC, R+1 et R+2 (prises OK)</td></tr>
+    <tr><td class="off">Couper Block 4</td><td>Plus de lumiere dans l'escalier et la cave</td></tr>
+    <tr><td class="off">Couper Block 5</td><td>Plus de prises RDC, R+1, R+2 + chaudiere</td></tr>
+    <tr><td class="off">Couper Block 6</td><td>Plus de lumiere en haut de l'escalier R+1 + miroir SDB</td></tr>
+    <tr><td class="off">Couper Blocks 1 ou 2</td><td>Chauffe-eau hors service, pas d'eau chaude</td></tr>
+    <tr><td class="off">Couper Block 3 + 5</td><td>R+2 totalement sans electricite (ni lumiere, ni prises)</td></tr>
+  </table>
+
+  <h3>9. Securite</h3>
+  <ul>
+    <li>Le <strong>disjoncteur principal 40A</strong> protege l'ensemble de l'installation contre les surcharges</li>
+    <li>Chaque disjoncteur divisionnaire protege son propre circuit (calibre adapte a la section des cables)</li>
+    <li>L'interrupteur mural <strong>ne coupe pas le courant</strong> dans les cables, il coupe uniquement le point lumineux. Pour travailler sur un circuit, il faut <strong>couper le disjoncteur</strong> correspondant au tableau</li>
+    <li>Le <strong>Block 7</strong> alimente un circuit non identifie — il est recommande de le tracer pour des raisons de securite</li>
+  </ul>
+</div>
+
+<canvas id="canvas"></canvas>
+<div id="tooltip"></div>
+
+<script>
+// ===== CONFIGURATION =====
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+const tooltip = document.getElementById('tooltip');
+
+// Dimensions
+const W = 900;
+const H = 1240;
+
+// État Linky EDF (coupure générale avant le 40A)
+let edfOn = true;
+canvas.width = W;
+canvas.height = H;
+
+// Couleurs
+const COL = {
+  panelBg: '#16213e',
+  breakerOn: '#27ae60',
+  breakerOff: '#c0392b',
+  breakerStroke: '#eee',
+  roomPowered: '#f1c40f',
+  roomOff: '#555',
+  roomStroke: '#888',
+  wire: '#00d4ff',
+  wireOff: '#444',
+  text: '#fff',
+  textDark: '#111',
+  label: '#aaa',
+  peigneOn: '#ff9f43',
+  peigneOff: '#444',
+  edf: '#e74c3c',
+};
+
+// ===== DISJONCTEURS =====
+
+const breakers = [
+  { id: 1, amp: '25A', label: 'Puissance\nchauffe-eau', on: true },
+  { id: 2, amp: '10A', label: 'Commande\nchauffe-eau', on: true },
+  { id: 3, amp: '10A', label: 'Éclairage\ngénéral',    on: true },
+  { id: 4, amp: '16A', label: 'Éclairage\nescalier+cave', on: true },
+  { id: 5, amp: '16A', label: 'Prises\nélectriques',   on: true },
+  { id: 6, amp: '20A', label: 'Lumière haut\nescalier R+1', on: true },
+  { id: 7, amp: '20A', label: 'Circuit\ninconnu (?)',   on: true },
+  { id: 8, amp: '40A', label: 'Disjoncteur\nprincipal', on: true },
+];
+
+// Positions des disjoncteurs (calculées dans draw)
+let breakerRects = [];
+
+// État des interrupteurs simple allumage par pièce (true = allumé)
+const switches = {
+  'Cave': true,
+  'Pièce principale': true,
+  'Palier escalier': true,
+  'Chambre': true,
+  'Dressing': true,
+  'Salle de bain': true,
+};
+
+// Rectangles cliquables des interrupteurs (remplis dans draw)
+let switchRects = [];
+
+// ===== PIÈCES =====
+// Chaque pièce a un nom, un étage, et les blocks qui l'alimentent (avec type)
+
+// Catégories d'équipement avec couleurs et labels courts
+const EQUIP = {
+  light:     { color: '#f1c40f', offColor: '#555', label: 'Éclairage',    icon: 'bulb' },
+  outlet:    { color: '#3498db', offColor: '#3a3a5c', label: 'Prises',      icon: 'plug' },
+  heaterPow: { color: '#e74c3c', offColor: '#4a2a2a', label: 'Chauffe-eau', icon: 'heater' },
+  heaterCmd: { color: '#e67e22', offColor: '#4a3a2a', label: 'Commande CE', icon: 'switch' },
+  boiler:    { color: '#ff6b6b', offColor: '#4a2a2a', label: 'Chaudière',   icon: 'flame' },
+  mirror:    { color: '#a29bfe', offColor: '#3a3a5c', label: 'Miroir',      icon: 'mirror' },
+  unknown:   { color: '#95a5a6', offColor: '#444',    label: 'Inconnu',     icon: 'question' },
+};
+
+const rooms = [
+  // Sous-sol
+  { name: 'Cave', floor: 'Sous-sol', feeds: [
+    { block: 1, type: 'Chauffe-eau (puissance)', equip: 'heaterPow' },
+    { block: 2, type: 'Chauffe-eau (commande)',   equip: 'heaterCmd' },
+    { block: 4, type: 'Éclairage cave',           equip: 'light' },
+  ]},
+  // RDC
+  { name: 'Pièce principale', floor: 'RDC', feeds: [
+    { block: 3, type: 'Éclairage',          equip: 'light' },
+    { block: 5, type: 'Prises + Chaudière', equip: 'outlet' },
+    { block: 5, type: 'Chaudière',          equip: 'boiler' },
+  ]},
+  // R+1
+  { name: 'Palier escalier', floor: 'R+1', feeds: [
+    { block: 3, type: 'Éclairage',             equip: 'light' },
+    { block: 5, type: 'Prises',                equip: 'outlet' },
+    { block: 6, type: 'Lumière haut escalier',  equip: 'light' },
+  ]},
+  // R+2
+  { name: 'Chambre', floor: 'R+2', feeds: [
+    { block: 3, type: 'Éclairage', equip: 'light' },
+    { block: 5, type: 'Prises',    equip: 'outlet' },
+  ]},
+  { name: 'Dressing', floor: 'R+2', feeds: [
+    { block: 3, type: 'Éclairage', equip: 'light' },
+  ]},
+  { name: 'Salle de bain', floor: 'R+2', feeds: [
+    { block: 3, type: 'Éclairage',                    equip: 'light' },
+    { block: 5, type: 'Prises (via chambre)',          equip: 'outlet' },
+    { block: 6, type: 'Miroir lumineux',               equip: 'mirror' },
+  ]},
+];
+
+// ===== LOGIQUE ÉLECTRIQUE =====
+
+/** Vérifie si un block donné est alimenté (EDF ON + principal ON + block ON) */
+function isBlockPowered(blockId) {
+  if (!edfOn) return false;
+  const principal = breakers.find(b => b.id === 8);
+  if (!principal.on) return false;
+  const b = breakers.find(b => b.id === blockId);
+  return b ? b.on : false;
+}
+
+/** Vérifie si une pièce a du courant (au moins un circuit alimenté) */
+function isRoomPowered(room) {
+  return room.feeds.some(f => isBlockPowered(f.block));
+}
+
+/** Vérifie si la pièce est éclairée (circuit lumière alimenté + interrupteur ON) */
+function isRoomLit(room) {
+  if (!switches[room.name]) return false;
+  return room.feeds.some(f => f.equip === 'light' && isBlockPowered(f.block));
+}
+
+/** Vérifie si le courant arrive aux lumières (sans tenir compte de l'interrupteur) */
+function isRoomLightPowered(room) {
+  return room.feeds.some(f => f.equip === 'light' && isBlockPowered(f.block));
+}
+
+/** Détail des circuits d'une pièce */
+function getRoomDetails(room) {
+  return room.feeds.map(f => {
+    const powered = isBlockPowered(f.block);
+    const eq = EQUIP[f.equip];
+    const col = powered ? eq.color : '#888';
+    const sym = powered ? '✓' : '✗';
+    return `<span style="color:${col}">${sym} [${eq.label}]</span> Block ${f.block} — ${f.type}`;
+  }).join('\n');
+}
+
+// ===== DIAGNOSTIC MAISON =====
+
+/** Génère la liste des messages d'état de la maison */
+function getHouseStatus() {
+  const lines = [];
+
+  // Cas 1 : EDF coupé
+  if (!edfOn) {
+    return [{ text: 'COUPURE EDF — Toute la maison est sans électricité', color: '#e74c3c', icon: 'X' }];
+  }
+
+  // Cas 2 : Disjoncteur principal coupé
+  if (!breakers[7].on) {
+    return [{ text: 'DISJONCTEUR PRINCIPAL COUPÉ — Toute la maison est sans électricité', color: '#e74c3c', icon: 'X' }];
+  }
+
+  // Cas 3 : Tout fonctionne
+  const allOn = breakers.slice(0, 7).every(b => b.on);
+  if (allOn) {
+    return [{ text: 'Tout fonctionne normalement — Maison entièrement alimentée', color: '#2ecc71', icon: 'OK' }];
+  }
+
+  // Cas 4 : Analyse par disjoncteur coupé
+  // Block 1 — Chauffe-eau puissance
+  if (!breakers[0].on) {
+    lines.push({ text: 'Chauffe-eau COUPÉ (puissance) — Pas d\'eau chaude', color: '#e74c3c', icon: 'X' });
+  }
+
+  // Block 2 — Commande chauffe-eau
+  if (!breakers[1].on) {
+    lines.push({ text: 'Commande chauffe-eau COUPÉE — Chauffe-eau non piloté', color: '#e67e22', icon: '!' });
+  }
+
+  // Block 1+2 ON
+  if (breakers[0].on && breakers[1].on) {
+    lines.push({ text: 'Chauffe-eau OK — Eau chaude disponible (cave)', color: '#2ecc71', icon: 'OK' });
+  }
+
+  // Block 3 — Éclairage général
+  if (!breakers[2].on) {
+    lines.push({ text: 'Éclairage général COUPÉ — Pas de lumière : RDC, R+1, R+2', color: '#e74c3c', icon: 'X' });
+  } else {
+    lines.push({ text: 'Éclairage général OK — Lumière : RDC, R+1, R+2', color: '#2ecc71', icon: 'OK' });
+  }
+
+  // Block 4 — Éclairage cave/escalier
+  if (!breakers[3].on) {
+    lines.push({ text: 'Éclairage escalier + cave COUPÉ — Cave dans le noir', color: '#e74c3c', icon: 'X' });
+  } else {
+    lines.push({ text: 'Éclairage escalier + cave OK', color: '#2ecc71', icon: 'OK' });
+  }
+
+  // Block 5 — Prises
+  if (!breakers[4].on) {
+    lines.push({ text: 'Prises COUPÉES — Plus de prises RDC, R+1, R+2, chaudière', color: '#e74c3c', icon: 'X' });
+  } else {
+    lines.push({ text: 'Prises OK — Prises RDC, R+1, R+2, chaudière alimentés', color: '#2ecc71', icon: 'OK' });
+  }
+
+  // Block 6 — Lumière haut escalier
+  if (!breakers[5].on) {
+    lines.push({ text: 'Lumière haut escalier R+1 + miroir SDB COUPÉS', color: '#e67e22', icon: '!' });
+  } else {
+    lines.push({ text: 'Lumière haut escalier R+1 + miroir SDB OK', color: '#2ecc71', icon: 'OK' });
+  }
+
+  // Block 7 — Inconnu
+  if (!breakers[6].on) {
+    lines.push({ text: 'Circuit inconnu (Block 7) COUPÉ', color: '#95a5a6', icon: '?' });
+  }
+
+  return lines;
+}
+
+// ===== DESSIN DES ICÔNES ÉQUIPEMENT =====
+
+/** Dessine une ampoule (éclairage) */
+function drawBulb(cx, cy, on, size) {
+  const s = size || 10;
+  if (on) {
+    // Halo
+    ctx.fillStyle = 'rgba(241,196,15,0.2)';
+    ctx.beginPath(); ctx.arc(cx, cy, s + 5, 0, Math.PI * 2); ctx.fill();
+    // Ampoule
+    ctx.fillStyle = '#f1c40f';
+    ctx.beginPath(); ctx.arc(cx, cy, s, 0, Math.PI * 2); ctx.fill();
+    ctx.fillStyle = '#fff3cd';
+    ctx.beginPath(); ctx.arc(cx, cy - 1, s * 0.5, 0, Math.PI * 2); ctx.fill();
+    // Rayons
+    ctx.strokeStyle = 'rgba(241,196,15,0.6)';
+    ctx.lineWidth = 1.5;
+    for (let a = 0; a < Math.PI * 2; a += Math.PI / 4) {
+      ctx.beginPath();
+      ctx.moveTo(cx + Math.cos(a) * (s + 3), cy + Math.sin(a) * (s + 3));
+      ctx.lineTo(cx + Math.cos(a) * (s + 8), cy + Math.sin(a) * (s + 8));
+      ctx.stroke();
+    }
+    // Culot
+    ctx.fillStyle = '#bbb';
+    ctx.fillRect(cx - 3, cy + s - 2, 6, 5);
+  } else {
+    ctx.fillStyle = '#3a3a3a';
+    ctx.beginPath(); ctx.arc(cx, cy, s, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(cx, cy, s, 0, Math.PI * 2); ctx.stroke();
+    ctx.fillStyle = '#555';
+    ctx.fillRect(cx - 3, cy + s - 2, 6, 5);
+  }
+}
+
+/** Dessine une prise électrique */
+function drawPlug(cx, cy, on, size) {
+  const s = size || 10;
+  const col = on ? '#3498db' : '#3a3a5c';
+  const colH = on ? '#5dade2' : '#555';
+  // Boîtier
+  ctx.fillStyle = on ? '#e8e8e8' : '#444';
+  roundRect(ctx, cx - s, cy - s, s * 2, s * 2, 3);
+  ctx.fill();
+  ctx.strokeStyle = col;
+  ctx.lineWidth = 2;
+  roundRect(ctx, cx - s, cy - s, s * 2, s * 2, 3);
+  ctx.stroke();
+  // Deux trous
+  ctx.fillStyle = col;
+  ctx.beginPath(); ctx.arc(cx - s * 0.35, cy - s * 0.2, 2.5, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx + s * 0.35, cy - s * 0.2, 2.5, 0, Math.PI * 2); ctx.fill();
+  // Terre
+  ctx.fillStyle = colH;
+  ctx.beginPath(); ctx.arc(cx, cy + s * 0.35, 2, 0, Math.PI * 2); ctx.fill();
+  // Petit éclair si alimenté
+  if (on) {
+    ctx.fillStyle = '#f1c40f';
+    ctx.font = 'bold 9px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText('⚡', cx, cy + s + 10);
+  }
+}
+
+/** Dessine un chauffe-eau (ballon) */
+function drawHeater(cx, cy, on, size) {
+  const s = size || 10;
+  const col = on ? '#e74c3c' : '#4a2a2a';
+  // Ballon cylindrique
+  ctx.fillStyle = on ? '#dfe6e9' : '#444';
+  roundRect(ctx, cx - s * 0.7, cy - s, s * 1.4, s * 2, 4);
+  ctx.fill();
+  ctx.strokeStyle = col;
+  ctx.lineWidth = 2;
+  roundRect(ctx, cx - s * 0.7, cy - s, s * 1.4, s * 2, 4);
+  ctx.stroke();
+  // Vagues eau chaude
+  ctx.strokeStyle = on ? '#e74c3c' : '#666';
+  ctx.lineWidth = 1.5;
+  for (let i = -1; i <= 1; i++) {
+    ctx.beginPath();
+    ctx.moveTo(cx + i * 4 - 2, cy - 3);
+    ctx.quadraticCurveTo(cx + i * 4, cy - 7, cx + i * 4 + 2, cy - 3);
+    ctx.stroke();
+  }
+  // Tuyau
+  ctx.strokeStyle = col;
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy + s);
+  ctx.lineTo(cx, cy + s + 5);
+  ctx.stroke();
+}
+
+/** Dessine un interrupteur (commande chauffe-eau) */
+function drawSwitch(cx, cy, on, size) {
+  const s = size || 10;
+  // Plaque
+  ctx.fillStyle = on ? '#ffeaa7' : '#444';
+  roundRect(ctx, cx - s * 0.6, cy - s, s * 1.2, s * 2, 3);
+  ctx.fill();
+  ctx.strokeStyle = on ? '#e67e22' : '#555';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, cx - s * 0.6, cy - s, s * 1.2, s * 2, 3);
+  ctx.stroke();
+  // Bascule
+  ctx.fillStyle = on ? '#e67e22' : '#666';
+  const toggleY = on ? cy - s * 0.6 : cy + s * 0.1;
+  ctx.fillRect(cx - 3, toggleY, 6, s * 0.5);
+}
+
+/** Dessine une flamme (chaudière) */
+function drawFlame(cx, cy, on, size) {
+  const s = size || 10;
+  if (on) {
+    // Flamme extérieure
+    ctx.fillStyle = '#e74c3c';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - s);
+    ctx.quadraticCurveTo(cx + s, cy - s * 0.3, cx + s * 0.5, cy + s);
+    ctx.lineTo(cx - s * 0.5, cy + s);
+    ctx.quadraticCurveTo(cx - s, cy - s * 0.3, cx, cy - s);
+    ctx.fill();
+    // Flamme intérieure
+    ctx.fillStyle = '#f39c12';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - s * 0.5);
+    ctx.quadraticCurveTo(cx + s * 0.5, cy, cx + s * 0.25, cy + s * 0.7);
+    ctx.lineTo(cx - s * 0.25, cy + s * 0.7);
+    ctx.quadraticCurveTo(cx - s * 0.5, cy, cx, cy - s * 0.5);
+    ctx.fill();
+  } else {
+    ctx.fillStyle = '#444';
+    ctx.beginPath();
+    ctx.moveTo(cx, cy - s);
+    ctx.quadraticCurveTo(cx + s, cy - s * 0.3, cx + s * 0.5, cy + s);
+    ctx.lineTo(cx - s * 0.5, cy + s);
+    ctx.quadraticCurveTo(cx - s, cy - s * 0.3, cx, cy - s);
+    ctx.fill();
+    ctx.strokeStyle = '#555';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  }
+}
+
+/** Dessine un miroir lumineux */
+function drawMirror(cx, cy, on, size) {
+  const s = size || 10;
+  // Cadre miroir
+  ctx.fillStyle = on ? '#dfe6e9' : '#444';
+  roundRect(ctx, cx - s * 0.8, cy - s, s * 1.6, s * 1.8, 2);
+  ctx.fill();
+  ctx.strokeStyle = on ? '#a29bfe' : '#555';
+  ctx.lineWidth = 2;
+  roundRect(ctx, cx - s * 0.8, cy - s, s * 1.6, s * 1.8, 2);
+  ctx.stroke();
+  // Reflet
+  if (on) {
+    ctx.fillStyle = 'rgba(162,155,254,0.3)';
+    ctx.fillRect(cx - s * 0.5, cy - s * 0.7, s * 0.4, s * 1.2);
+    // Lumières LED autour
+    ctx.fillStyle = '#a29bfe';
+    for (let i = -1; i <= 1; i++) {
+      ctx.beginPath();
+      ctx.arc(cx - s * 0.8 - 3, cy + i * 6, 2, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(cx + s * 0.8 + 3, cy + i * 6, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+/** Dessine un point d'interrogation (circuit inconnu) */
+function drawQuestion(cx, cy, on, size) {
+  const s = size || 10;
+  ctx.fillStyle = on ? '#95a5a6' : '#444';
+  ctx.beginPath(); ctx.arc(cx, cy, s, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = on ? '#fff' : '#666';
+  ctx.font = `bold ${s + 4}px Segoe UI`;
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('?', cx, cy + 1);
+  ctx.textBaseline = 'alphabetic';
+}
+
+/** Dessine l'icône d'un équipement selon son type */
+function drawEquipIcon(type, cx, cy, on, size) {
+  const fn = {
+    bulb: drawBulb, plug: drawPlug, heater: drawHeater,
+    switch: drawSwitch, flame: drawFlame, mirror: drawMirror, question: drawQuestion,
+  };
+  const eq = EQUIP[type];
+  if (eq && fn[eq.icon]) fn[eq.icon](cx, cy, on, size);
+}
+
+// ===== DESSIN =====
+
+function draw() {
+  ctx.clearRect(0, 0, W, H);
+
+  // ── Compteur Linky EDF (tout en haut) ──
+  const linkyW = 140;
+  const linkyH = 70;
+  const linkyX = W / 2 - linkyW / 2;
+  const linkyY = 10;
+
+  // Boîtier Linky
+  ctx.fillStyle = edfOn ? '#1b7a3d' : '#3a1a1a';
+  roundRect(ctx, linkyX, linkyY, linkyW, linkyH, 8);
+  ctx.fill();
+  ctx.strokeStyle = edfOn ? '#2ecc71' : '#e74c3c';
+  ctx.lineWidth = 3;
+  roundRect(ctx, linkyX, linkyY, linkyW, linkyH, 8);
+  ctx.stroke();
+
+  // Logo EDF
+  ctx.fillStyle = '#fff';
+  ctx.font = 'bold 14px Segoe UI';
+  ctx.textAlign = 'center';
+  ctx.fillText('LINKY  EDF', linkyX + linkyW / 2, linkyY + 20);
+
+  // Écran du compteur
+  const screenX = linkyX + 15;
+  const screenY = linkyY + 28;
+  const screenW = linkyW - 30;
+  const screenH = 20;
+  ctx.fillStyle = edfOn ? '#0a2a0a' : '#1a0a0a';
+  ctx.fillRect(screenX, screenY, screenW, screenH);
+  ctx.strokeStyle = '#555';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(screenX, screenY, screenW, screenH);
+
+  // Texte écran
+  ctx.fillStyle = edfOn ? '#2ecc71' : '#e74c3c';
+  ctx.font = 'bold 11px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText(edfOn ? 'ACTIF' : 'COUPÉ', linkyX + linkyW / 2, screenY + 14);
+
+  // Petit indicateur LED
+  ctx.fillStyle = edfOn ? '#2ecc71' : '#e74c3c';
+  ctx.beginPath();
+  ctx.arc(linkyX + linkyW - 12, linkyY + 12, 4, 0, Math.PI * 2);
+  ctx.fill();
+  if (edfOn) {
+    ctx.fillStyle = 'rgba(46,204,113,0.3)';
+    ctx.beginPath();
+    ctx.arc(linkyX + linkyW - 12, linkyY + 12, 7, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Instruction clic
+  ctx.fillStyle = '#888';
+  ctx.font = '9px Segoe UI';
+  ctx.textAlign = 'center';
+  ctx.fillText('cliquer = coupure EDF', linkyX + linkyW / 2, linkyY + linkyH + 10);
+
+  // Stocker le rect pour le clic
+  window._linkyRect = { x: linkyX, y: linkyY, w: linkyW, h: linkyH };
+
+  // ── Câble EDF du Linky vers le tableau ──
+  const panelY = linkyY + linkyH + 20;
+  const panelH = 200;
+  const cableStartY = linkyY + linkyH;
+  const cableEndY = panelY;
+
+  ctx.strokeStyle = edfOn ? COL.edf : COL.wireOff;
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(W / 2, cableStartY);
+  ctx.lineTo(W / 2, cableEndY);
+  ctx.stroke();
+
+  // Petits éclairs sur le câble si actif
+  if (edfOn) {
+    ctx.fillStyle = '#f1c40f';
+    ctx.font = '10px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText('⚡', W / 2 + 10, cableStartY + 10);
+  }
+
+  // ── Zone tableau électrique ──
+  // Fond du tableau
+  ctx.fillStyle = COL.panelBg;
+  roundRect(ctx, 20, panelY, W - 40, panelH, 10);
+  ctx.fill();
+  ctx.strokeStyle = '#444';
+  ctx.lineWidth = 2;
+  roundRect(ctx, 20, panelY, W - 40, panelH, 10);
+  ctx.stroke();
+
+  // Titre
+  ctx.fillStyle = COL.text;
+  ctx.font = 'bold 14px Segoe UI';
+  ctx.textAlign = 'center';
+  ctx.fillText('TABLEAU ÉLECTRIQUE', W / 2, panelY + 20);
+
+  // Disjoncteurs
+  breakerRects = [];
+  const bW = 80;
+  const bH = 110;
+  const gap = 12;
+  const totalW = breakers.length * bW + (breakers.length - 1) * gap;
+  const startX = (W - totalW) / 2;
+  const startY = panelY + 55;
+
+  // Peigne horizontal (relie le principal aux autres)
+  const peigneY = startY - 10;
+  const mainOn = edfOn && breakers[7].on;
+  ctx.strokeStyle = mainOn ? COL.peigneOn : COL.peigneOff;
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  const firstCx = startX + bW / 2;
+  const lastCx = startX + 7 * (bW + gap) + bW / 2;
+  ctx.moveTo(firstCx, peigneY);
+  ctx.lineTo(lastCx, peigneY);
+  ctx.stroke();
+
+  // Câble EDF arrive sur le disjoncteur principal (depuis le haut du tableau)
+  ctx.strokeStyle = edfOn ? COL.edf : COL.wireOff;
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(W / 2, panelY);
+  ctx.lineTo(W / 2, panelY + 25);
+  ctx.lineTo(lastCx, panelY + 25);
+  ctx.lineTo(lastCx, peigneY);
+  ctx.stroke();
+
+  // Étiquette peigne
+  ctx.fillStyle = mainOn ? COL.peigneOn : COL.peigneOff;
+  ctx.font = '10px Segoe UI';
+  ctx.textAlign = 'center';
+  ctx.fillText('── peigne ──', W / 2, peigneY - 3);
+
+  breakers.forEach((b, i) => {
+    const x = startX + i * (bW + gap);
+    const y = startY;
+    breakerRects.push({ x, y, w: bW, h: bH, index: i });
+
+    // Fil peigne vers disjoncteur
+    ctx.strokeStyle = mainOn ? COL.peigneOn : COL.peigneOff;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x + bW / 2, peigneY);
+    ctx.lineTo(x + bW / 2, y);
+    ctx.stroke();
+
+    // Corps du disjoncteur
+    const isOn = edfOn && (b.id === 8 ? b.on : mainOn && b.on);
+    ctx.fillStyle = isOn ? COL.breakerOn : COL.breakerOff;
+    roundRect(ctx, x, y, bW, bH, 6);
+    ctx.fill();
+    ctx.strokeStyle = COL.breakerStroke;
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, x, y, bW, bH, 6);
+    ctx.stroke();
+
+    // Levier
+    const leverY = y + 25;
+    const leverH = 20;
+    ctx.fillStyle = isOn ? '#2ecc71' : '#e74c3c';
+    ctx.fillRect(x + bW / 2 - 10, leverY, 20, leverH);
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(x + bW / 2 - 6, isOn ? leverY + 2 : leverY + leverH - 8, 12, 6);
+
+    // Texte ampérage
+    ctx.fillStyle = COL.text;
+    ctx.font = 'bold 16px Segoe UI';
+    ctx.textAlign = 'center';
+    ctx.fillText(b.amp, x + bW / 2, y + 65);
+
+    // État ON/OFF
+    ctx.font = 'bold 12px Segoe UI';
+    ctx.fillText(isOn ? 'ON' : 'OFF', x + bW / 2, y + 80);
+
+    // Label multi-ligne
+    ctx.font = '9px Segoe UI';
+    ctx.fillStyle = '#ddd';
+    const lines = b.label.split('\n');
+    lines.forEach((line, li) => {
+      ctx.fillText(line, x + bW / 2, y + 93 + li * 12);
+    });
+
+    // Numéro
+    ctx.fillStyle = 'rgba(255,255,255,0.3)';
+    ctx.font = 'bold 10px Segoe UI';
+    ctx.textAlign = 'left';
+    ctx.fillText('#' + b.id, x + 4, y + 12);
+
+    // Disjoncteur principal : marquage spécial
+    if (b.id === 8) {
+      ctx.strokeStyle = '#ff9f43';
+      ctx.lineWidth = 3;
+      roundRect(ctx, x - 2, y - 2, bW + 4, bH + 4, 8);
+      ctx.stroke();
+    }
+  });
+
+  // ── Panneau état de la maison ──
+  const statusLines = getHouseStatus();
+  const statusY = panelY + panelH + 15;
+  const statusLineH = 20;
+  const statusH = 12 + statusLines.length * statusLineH + 8;
+  const statusX = 20;
+  const statusW = W - 40;
+
+  // Fond
+  ctx.fillStyle = 'rgba(15,15,30,0.9)';
+  roundRect(ctx, statusX, statusY, statusW, statusH, 8);
+  ctx.fill();
+  ctx.strokeStyle = '#333';
+  ctx.lineWidth = 1.5;
+  roundRect(ctx, statusX, statusY, statusW, statusH, 8);
+  ctx.stroke();
+
+  // Titre
+  ctx.fillStyle = '#00d4ff';
+  ctx.font = 'bold 11px Segoe UI';
+  ctx.textAlign = 'left';
+  ctx.fillText('ÉTAT DE LA MAISON', statusX + 12, statusY + 13);
+
+  // Lignes de diagnostic
+  statusLines.forEach((line, i) => {
+    const ly = statusY + 14 + (i + 1) * statusLineH;
+
+    // Pastille icône
+    const iconX = statusX + 18;
+    const iconR = 7;
+    if (line.icon === 'OK') {
+      ctx.fillStyle = '#2ecc71';
+      ctx.beginPath(); ctx.arc(iconX, ly - 4, iconR, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 9px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('✓', iconX, ly - 1);
+    } else if (line.icon === 'X') {
+      ctx.fillStyle = '#e74c3c';
+      ctx.beginPath(); ctx.arc(iconX, ly - 4, iconR, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('✗', iconX, ly - 1);
+    } else if (line.icon === '!') {
+      ctx.fillStyle = '#e67e22';
+      ctx.beginPath(); ctx.arc(iconX, ly - 4, iconR, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('!', iconX, ly - 1);
+    } else {
+      ctx.fillStyle = '#95a5a6';
+      ctx.beginPath(); ctx.arc(iconX, ly - 4, iconR, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#fff';
+      ctx.font = 'bold 10px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText('?', iconX, ly - 1);
+    }
+
+    // Texte
+    ctx.fillStyle = line.color;
+    ctx.font = '12px Segoe UI';
+    ctx.textAlign = 'left';
+    ctx.fillText(line.text, iconX + 14, ly);
+  });
+
+  // ── Zone plan de la maison ──
+  const houseY = statusY + statusH + 15;
+  const floorH = 130;
+  const floorGap = 50;
+  const houseX = 60;
+  const houseW = W - 180;
+
+  ctx.fillStyle = COL.label;
+  ctx.font = 'bold 14px Segoe UI';
+  ctx.textAlign = 'center';
+  ctx.fillText('PLAN DE LA MAISON (coupe)', W / 2, houseY);
+
+  const floors = [
+    { label: 'R+2', y: houseY + 25, rooms: ['Chambre', 'Dressing', 'Salle de bain'] },
+    { label: 'R+1', y: houseY + 25 + (floorH + floorGap), rooms: ['Palier escalier'] },
+    { label: 'RDC', y: houseY + 25 + 2 * (floorH + floorGap), rooms: ['Pièce principale'] },
+    { label: 'Sous-sol', y: houseY + 25 + 3 * (floorH + floorGap), rooms: ['Cave'] },
+  ];
+
+  // Stocker les rectangles des pièces pour le tooltip
+  window._roomRects = [];
+  switchRects = [];
+
+  floors.forEach(floor => {
+    const fy = floor.y;
+
+    // Étiquette étage
+    ctx.fillStyle = COL.label;
+    ctx.font = 'bold 12px Segoe UI';
+    ctx.textAlign = 'right';
+    ctx.fillText(floor.label, houseX - 8, fy + floorH / 2 + 4);
+
+    // Fond étage
+    ctx.fillStyle = 'rgba(255,255,255,0.03)';
+    ctx.fillRect(houseX, fy, houseW, floorH);
+    ctx.strokeStyle = '#333';
+    ctx.lineWidth = 1;
+    ctx.strokeRect(houseX, fy, houseW, floorH);
+
+    // Pièces
+    const count = floor.rooms.length;
+    const roomGap = 15;
+    const roomPad = 20;
+    const availW = houseW - roomPad * 2 - (count - 1) * roomGap;
+    const rW = availW / count;
+    const rH = floorH - 20;
+    const rY = fy + 10;
+
+    floor.rooms.forEach((roomName, ri) => {
+      const room = rooms.find(r => r.name === roomName);
+      if (!room) return;
+      const rX = houseX + roomPad + ri * (rW + roomGap);
+      const powered = isRoomPowered(room);
+
+      const lit = isRoomLit(room);
+
+      window._roomRects.push({ x: rX, y: rY, w: rW, h: rH, room });
+
+      // Fond pièce — jaune seulement si éclairage actif
+      ctx.fillStyle = lit ? 'rgba(241,196,15,0.18)' : 'rgba(25,25,35,0.8)';
+      roundRect(ctx, rX, rY, rW, rH, 6);
+      ctx.fill();
+
+      // Bordure
+      ctx.strokeStyle = lit ? 'rgba(241,196,15,0.5)' : '#333';
+      ctx.lineWidth = 2;
+      roundRect(ctx, rX, rY, rW, rH, 6);
+      ctx.stroke();
+
+      // Nom de la pièce (en haut)
+      ctx.fillStyle = lit ? '#f1c40f' : '#666';
+      ctx.font = 'bold 11px Segoe UI';
+      ctx.textAlign = 'center';
+      ctx.fillText(roomName, rX + rW / 2, rY + 14);
+
+      // ── Interrupteur simple allumage (réaliste) ──
+      const swOn = switches[roomName];
+      const swPowered = isRoomLightPowered(room);
+      const swW = 26;
+      const swH = 40;
+      const swX = rX + rW - swW - 5;
+      const swY = rY + 2;
+      const swCx = swX + swW / 2;
+      const swCy = swY + swH / 2;
+
+      // Stocker le rect pour le clic
+      switchRects.push({ x: swX, y: swY, w: swW, h: swH, roomName });
+
+      // Ombre portée sur le mur
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      roundRect(ctx, swX + 2, swY + 2, swW, swH, 4);
+      ctx.fill();
+
+      // Plaque murale (fond blanc cassé / gris)
+      const plateGrad = ctx.createLinearGradient(swX, swY, swX + swW, swY + swH);
+      if (swPowered) {
+        plateGrad.addColorStop(0, '#f0efe8');
+        plateGrad.addColorStop(1, '#d5d4cc');
+      } else {
+        plateGrad.addColorStop(0, '#4a4a4a');
+        plateGrad.addColorStop(1, '#333');
+      }
+      ctx.fillStyle = plateGrad;
+      roundRect(ctx, swX, swY, swW, swH, 4);
+      ctx.fill();
+      ctx.strokeStyle = swPowered ? '#aaa' : '#555';
+      ctx.lineWidth = 1.5;
+      roundRect(ctx, swX, swY, swW, swH, 4);
+      ctx.stroke();
+
+      // Vis déco (haut et bas de la plaque)
+      const screwCol = swPowered ? '#bbb' : '#555';
+      ctx.fillStyle = screwCol;
+      ctx.beginPath(); ctx.arc(swCx, swY + 5, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); ctx.arc(swCx, swY + swH - 5, 2, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = swPowered ? '#999' : '#444';
+      ctx.lineWidth = 0.5;
+      ctx.beginPath(); ctx.moveTo(swCx - 1.5, swY + 5 - 1.5); ctx.lineTo(swCx + 1.5, swY + 5 + 1.5); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(swCx - 1.5, swY + swH - 5 - 1.5); ctx.lineTo(swCx + 1.5, swY + swH - 5 + 1.5); ctx.stroke();
+
+      // Logement de la bascule (cavité oblongue)
+      const cavW = 14;
+      const cavH = 22;
+      const cavX = swCx - cavW / 2;
+      const cavY = swCy - cavH / 2;
+      ctx.fillStyle = swPowered ? '#c8c7c0' : '#2a2a2a';
+      roundRect(ctx, cavX, cavY, cavW, cavH, 3);
+      ctx.fill();
+      ctx.strokeStyle = swPowered ? '#aaa' : '#444';
+      ctx.lineWidth = 1;
+      roundRect(ctx, cavX, cavY, cavW, cavH, 3);
+      ctx.stroke();
+
+      // Bascule 3D (position basse = ON/allumé, haute = OFF/éteint)
+      const bascW = 12;
+      const bascH = 10;
+      const bascX = swCx - bascW / 2;
+      if (swOn) {
+        // Bascule en bas = allumé (comme un vrai inter français)
+        const bascY2 = cavY + cavH - bascH - 2;
+        const bascGrad = ctx.createLinearGradient(bascX, bascY2, bascX, bascY2 + bascH);
+        bascGrad.addColorStop(0, swPowered ? '#d0cfc8' : '#555');
+        bascGrad.addColorStop(0.5, swPowered ? '#e8e8e0' : '#666');
+        bascGrad.addColorStop(1, swPowered ? '#ffffff' : '#888');
+        ctx.fillStyle = bascGrad;
+        // Trapèze plus large en bas = bascule enfoncée en bas
+        ctx.beginPath();
+        ctx.moveTo(bascX, bascY2);
+        ctx.lineTo(bascX + bascW, bascY2);
+        ctx.lineTo(bascX + bascW + 1, bascY2 + bascH);
+        ctx.lineTo(bascX - 1, bascY2 + bascH);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = swPowered ? '#aaa' : '#555';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        // Ligne médiane
+        ctx.strokeStyle = swPowered ? '#ccc' : '#666';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(bascX + 2, bascY2 + bascH / 2);
+        ctx.lineTo(bascX + bascW - 2, bascY2 + bascH / 2);
+        ctx.stroke();
+      } else {
+        // Bascule en haut = éteint
+        const bascY2 = cavY + 2;
+        const bascGrad = ctx.createLinearGradient(bascX, bascY2, bascX, bascY2 + bascH);
+        bascGrad.addColorStop(0, swPowered ? '#ffffff' : '#888');
+        bascGrad.addColorStop(0.5, swPowered ? '#e8e8e0' : '#666');
+        bascGrad.addColorStop(1, swPowered ? '#d0cfc8' : '#555');
+        ctx.fillStyle = bascGrad;
+        // Trapèze plus large en haut = bascule enfoncée en haut
+        ctx.beginPath();
+        ctx.moveTo(bascX - 1, bascY2);
+        ctx.lineTo(bascX + bascW + 1, bascY2);
+        ctx.lineTo(bascX + bascW, bascY2 + bascH);
+        ctx.lineTo(bascX, bascY2 + bascH);
+        ctx.closePath();
+        ctx.fill();
+        ctx.strokeStyle = swPowered ? '#aaa' : '#555';
+        ctx.lineWidth = 1;
+        ctx.stroke();
+        // Ligne médiane
+        ctx.strokeStyle = swPowered ? '#ccc' : '#666';
+        ctx.lineWidth = 0.8;
+        ctx.beginPath();
+        ctx.moveTo(bascX + 2, bascY2 + bascH / 2);
+        ctx.lineTo(bascX + bascW - 2, bascY2 + bascH / 2);
+        ctx.stroke();
+      }
+
+      // Voyant LED (seulement visible si lumière effectivement allumée)
+      const ledY = swOn ? (swY + swH - 10) : (swY + 10);
+      if (lit) {
+        // LED verte allumée avec halo
+        ctx.fillStyle = 'rgba(46,204,113,0.3)';
+        ctx.beginPath(); ctx.arc(swCx, ledY, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = '#2ecc71';
+        ctx.beginPath(); ctx.arc(swCx, ledY, 2.5, 0, Math.PI * 2); ctx.fill();
+      } else {
+        // LED éteinte (petit cercle gris discret)
+        ctx.fillStyle = swPowered ? '#888' : '#444';
+        ctx.beginPath(); ctx.arc(swCx, ledY, 2, 0, Math.PI * 2); ctx.fill();
+      }
+
+      // Dessiner les icônes des équipements
+      const feeds = room.feeds;
+      const iconSize = 8;
+      const iconSpacing = Math.min(50, (rW - 20) / feeds.length);
+      const iconsW = (feeds.length - 1) * iconSpacing;
+      const iconsStartX = rX + rW / 2 - iconsW / 2;
+      const iconsY = rY + 38;
+
+      feeds.forEach((f, fi) => {
+        const fBlockOn = isBlockPowered(f.block);
+        // Les lumières dépendent aussi de l'interrupteur de la pièce
+        const fPowered = f.equip === 'light' ? (fBlockOn && switches[roomName]) : fBlockOn;
+        const ix = iconsStartX + fi * iconSpacing;
+        const iy = iconsY;
+
+        // Dessiner l'icône
+        drawEquipIcon(f.equip, ix, iy, fPowered, iconSize);
+
+        // Label court sous l'icône
+        const eq = EQUIP[f.equip];
+        ctx.fillStyle = fPowered ? eq.color : '#666';
+        ctx.font = '8px Segoe UI';
+        ctx.textAlign = 'center';
+        ctx.fillText(eq.label, ix, iy + iconSize + 14);
+
+        // Numéro block
+        ctx.fillStyle = fPowered ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.3)';
+        ctx.font = '7px Segoe UI';
+        ctx.fillText('B' + f.block, ix, iy + iconSize + 23);
+      });
+
+      // Barre d'état en bas de la pièce
+      const barY = rY + rH - 12;
+      const barW = rW - 16;
+      const barX = rX + 8;
+      feeds.forEach((f, fi) => {
+        const fBlockOn = isBlockPowered(f.block);
+        const fPowered = f.equip === 'light' ? (fBlockOn && switches[roomName]) : fBlockOn;
+        const eq = EQUIP[f.equip];
+        const segW = barW / feeds.length;
+        ctx.fillStyle = fPowered ? eq.color : eq.offColor;
+        ctx.fillRect(barX + fi * segW + 1, barY, segW - 2, 5);
+      });
+    });
+  });
+
+  // ── Escaliers entre les étages ──
+  // Escaliers : du bas vers le haut
+  // Sous-sol → RDC : escalier cave (block 4)
+  // RDC → R+1 : escalier principal (block 3 éclairage + block 6 lumière haut)
+  // R+1 → R+2 : escalier principal (block 3 éclairage)
+  const stairX = houseX + houseW + 10;
+  const stairW = 55;
+
+  const stairDefs = [
+    { fromFloor: 3, toFloor: 2, label: 'Escalier\ncave', lightBlock: 4 },
+    { fromFloor: 2, toFloor: 1, label: 'Escalier\nRDC→R+1', lightBlock: 6 },
+    { fromFloor: 1, toFloor: 0, label: 'Escalier\nR+1→R+2', lightBlock: 3 },
+  ];
+
+  stairDefs.forEach(sd => {
+    const bottomFloor = floors[sd.fromFloor];
+    const topFloor = floors[sd.toFloor];
+    const sy1 = bottomFloor.y;
+    const sy2 = topFloor.y + floorH;
+    const stairH = sy1 - sy2;
+    const lit = isBlockPowered(sd.lightBlock);
+
+    // Fond cage d'escalier
+    ctx.fillStyle = lit ? 'rgba(241,196,15,0.08)' : 'rgba(20,20,30,0.6)';
+    roundRect(ctx, stairX, sy2, stairW, stairH, 4);
+    ctx.fill();
+    ctx.strokeStyle = lit ? 'rgba(241,196,15,0.3)' : '#333';
+    ctx.lineWidth = 1.5;
+    roundRect(ctx, stairX, sy2, stairW, stairH, 4);
+    ctx.stroke();
+
+    // Marches
+    const nbSteps = 7;
+    const stepH = stairH / nbSteps;
+    const stepW = stairW - 10;
+    const stepX = stairX + 5;
+
+    for (let i = 0; i < nbSteps; i++) {
+      const my = sy2 + i * stepH + 4;
+      const mw = stepW * (1 - i * 0.04);
+      const mx = stepX + (stepW - mw) / 2;
+
+      // Surface de la marche
+      ctx.fillStyle = lit ? 'rgba(241,196,15,0.25)' : 'rgba(60,60,70,0.5)';
+      ctx.fillRect(mx, my + stepH - 6, mw, 4);
+
+      // Contremarche
+      ctx.strokeStyle = lit ? 'rgba(241,196,15,0.4)' : 'rgba(80,80,90,0.4)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(mx, my + stepH - 6);
+      ctx.lineTo(mx, my + stepH - 2);
+      ctx.moveTo(mx + mw, my + stepH - 6);
+      ctx.lineTo(mx + mw, my + stepH - 2);
+      ctx.stroke();
+    }
+
+    // Petite ampoule dans l'escalier
+    const bulbX = stairX + stairW / 2;
+    const bulbY = sy2 + 14;
+    if (lit) {
+      ctx.fillStyle = 'rgba(241,196,15,0.3)';
+      ctx.beginPath(); ctx.arc(bulbX, bulbY, 8, 0, Math.PI * 2); ctx.fill();
+      ctx.fillStyle = '#f1c40f';
+      ctx.beginPath(); ctx.arc(bulbX, bulbY, 4, 0, Math.PI * 2); ctx.fill();
+    } else {
+      ctx.fillStyle = '#333';
+      ctx.beginPath(); ctx.arc(bulbX, bulbY, 4, 0, Math.PI * 2); ctx.fill();
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.arc(bulbX, bulbY, 4, 0, Math.PI * 2); ctx.stroke();
+    }
+
+    // Label
+    ctx.fillStyle = lit ? '#f1c40f' : '#666';
+    ctx.font = '8px Segoe UI';
+    ctx.textAlign = 'center';
+    const labelLines = sd.label.split('\n');
+    labelLines.forEach((ln, li) => {
+      ctx.fillText(ln, stairX + stairW / 2, sy2 + stairH - 10 + li * 10);
+    });
+
+    // Flèche montante
+    const arrowX = stairX + stairW / 2;
+    const arrowTopY = sy2 + 26;
+    const arrowBotY = sy2 + stairH - 26;
+    ctx.strokeStyle = lit ? 'rgba(241,196,15,0.5)' : 'rgba(100,100,110,0.4)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(arrowX, arrowBotY);
+    ctx.lineTo(arrowX, arrowTopY);
+    ctx.stroke();
+    // Pointe
+    ctx.beginPath();
+    ctx.moveTo(arrowX - 5, arrowTopY + 6);
+    ctx.lineTo(arrowX, arrowTopY);
+    ctx.lineTo(arrowX + 5, arrowTopY + 6);
+    ctx.stroke();
+
+    // Indication block
+    ctx.fillStyle = lit ? 'rgba(255,255,255,0.5)' : 'rgba(255,255,255,0.2)';
+    ctx.font = '7px Segoe UI';
+    ctx.fillText('B' + sd.lightBlock, stairX + stairW / 2, bulbY + 12);
+  });
+
+  // ── Fils de liaison (du tableau vers les pièces) ──
+  drawWires(floors, startX, startY + bH);
+
+  // ── Légende ──
+  const legY = H - 70;
+  ctx.font = '11px Segoe UI';
+  ctx.textAlign = 'left';
+
+  // Ligne 1 : disjoncteurs / état
+  ctx.fillStyle = COL.breakerOn;
+  ctx.fillRect(30, legY, 14, 14);
+  ctx.fillStyle = COL.text;
+  ctx.fillText('Disjoncteur ON', 50, legY + 11);
+
+  ctx.fillStyle = COL.breakerOff;
+  ctx.fillRect(200, legY, 14, 14);
+  ctx.fillStyle = COL.text;
+  ctx.fillText('Disjoncteur OFF', 220, legY + 11);
+
+  ctx.fillStyle = COL.peigneOn;
+  ctx.fillRect(400, legY, 14, 14);
+  ctx.fillStyle = COL.text;
+  ctx.fillText('Peigne / EDF', 420, legY + 11);
+
+  // Ligne 2 : types d'équipement
+  const legY2 = legY + 28;
+  const equipLegend = [
+    { equip: 'light',     x: 30 },
+    { equip: 'outlet',    x: 155 },
+    { equip: 'heaterPow', x: 280 },
+    { equip: 'boiler',    x: 420 },
+    { equip: 'mirror',    x: 545 },
+    { equip: 'switch',    x: 670 },
+  ];
+  equipLegend.forEach(item => {
+    const eq = EQUIP[item.equip];
+    drawEquipIcon(item.equip, item.x + 8, legY2 + 6, true, 6);
+    ctx.fillStyle = eq.color;
+    ctx.font = '11px Segoe UI';
+    ctx.textAlign = 'left';
+    ctx.fillText(eq.label, item.x + 22, legY2 + 10);
+  });
+}
+
+/** Dessine des fils reliant les disjoncteurs aux pièces */
+function drawWires(floors, startX, wireStartY) {
+  // Mapping block → pièces alimentées (pour les fils visuels)
+  const blockRooms = {
+    1: ['Cave'],
+    2: ['Cave'],
+    3: ['Pièce principale', 'Palier escalier', 'Chambre', 'Dressing', 'Salle de bain'],
+    4: ['Cave'],
+    5: ['Pièce principale', 'Palier escalier', 'Chambre', 'Salle de bain'],
+    6: ['Palier escalier', 'Salle de bain'],
+    7: [],
+  };
+
+  const bW = 80, gap = 12;
+  const totalW = 8 * bW + 7 * gap;
+  const sx = (W - totalW) / 2;
+
+  // Couleurs par block pour distinguer visuellement
+  const wireColors = [
+    '#e74c3c', '#e67e22', '#2ecc71', '#3498db',
+    '#9b59b6', '#1abc9c', '#95a5a6'
+  ];
+
+  for (let bi = 0; bi < 7; bi++) {
+    const blockId = bi + 1;
+    const powered = isBlockPowered(blockId);
+    const bx = sx + bi * (bW + gap) + bW / 2;
+
+    const targetRooms = blockRooms[blockId];
+    if (!targetRooms || targetRooms.length === 0) continue;
+
+    targetRooms.forEach(roomName => {
+      const rr = (window._roomRects || []).find(r => r.room.name === roomName);
+      if (!rr) return;
+      const rx = rr.x + rr.w / 2;
+      const ry = rr.y;
+
+      ctx.strokeStyle = powered ? (wireColors[bi] + '55') : 'rgba(60,60,60,0.3)';
+      ctx.lineWidth = powered ? 1.5 : 0.8;
+      ctx.setLineDash(powered ? [] : [4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(bx, wireStartY);
+      ctx.bezierCurveTo(bx, wireStartY + 40, rx, ry - 40, rx, ry);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    });
+  }
+}
+
+/** Utilitaire : rectangle arrondi */
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+// ===== INTERACTION =====
+
+/** Convertit les coordonnées écran en coordonnées canvas */
+function getCanvasCoords(e) {
+  const rect = canvas.getBoundingClientRect();
+  const scaleX = W / rect.width;
+  const scaleY = H / rect.height;
+  let clientX, clientY;
+  if (e.touches && e.touches.length > 0) {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else if (e.changedTouches && e.changedTouches.length > 0) {
+    clientX = e.changedTouches[0].clientX;
+    clientY = e.changedTouches[0].clientY;
+  } else {
+    clientX = e.clientX;
+    clientY = e.clientY;
+  }
+  return {
+    mx: (clientX - rect.left) * scaleX,
+    my: (clientY - rect.top) * scaleY,
+    clientX,
+    clientY,
+  };
+}
+
+/** Gère le clic/tap */
+function handleClick(e) {
+  const { mx, my } = getCanvasCoords(e);
+
+  // Vérifier clic sur le Linky EDF
+  const lr = window._linkyRect;
+  if (lr && mx >= lr.x && mx <= lr.x + lr.w && my >= lr.y && my <= lr.y + lr.h) {
+    edfOn = !edfOn;
+    draw();
+    return;
+  }
+
+  // Vérifier clic sur un interrupteur
+  for (const sr of switchRects) {
+    if (mx >= sr.x && mx <= sr.x + sr.w && my >= sr.y && my <= sr.y + sr.h) {
+      switches[sr.roomName] = !switches[sr.roomName];
+      draw();
+      return;
+    }
+  }
+
+  // Vérifier clic sur un disjoncteur
+  for (const br of breakerRects) {
+    if (mx >= br.x && mx <= br.x + br.w && my >= br.y && my <= br.y + br.h) {
+      breakers[br.index].on = !breakers[br.index].on;
+      draw();
+      return;
+    }
+  }
+}
+
+canvas.addEventListener('click', handleClick);
+
+// Support tactile mobile
+canvas.addEventListener('touchend', function(e) {
+  e.preventDefault();
+  handleClick(e);
+}, { passive: false });
+
+// Tooltip au survol (desktop uniquement)
+canvas.addEventListener('mousemove', function(e) {
+  const { mx, my, clientX, clientY } = getCanvasCoords(e);
+
+  // Survol Linky
+  const lr = window._linkyRect;
+  if (lr && mx >= lr.x && mx <= lr.x + lr.w && my >= lr.y && my <= lr.y + lr.h) {
+    tooltip.style.display = 'block';
+    tooltip.style.left = (clientX + 15) + 'px';
+    tooltip.style.top = (clientY + 15) + 'px';
+    tooltip.innerHTML =
+      `<strong>Compteur Linky EDF</strong><br>` +
+      `Arrivée générale électricité<br>` +
+      `État : <strong style="color:${edfOn ? '#2ecc71' : '#e74c3c'}">${edfOn ? 'ACTIF' : 'COUPÉ'}</strong><br>` +
+      `<em>Cliquer = coupure/rétablissement EDF</em>`;
+    return;
+  }
+
+  // Survol interrupteur
+  for (const sr of switchRects) {
+    if (mx >= sr.x && mx <= sr.x + sr.w && my >= sr.y && my <= sr.y + sr.h) {
+      const room = rooms.find(r => r.name === sr.roomName);
+      const swOn = switches[sr.roomName];
+      const hasPower = room ? isRoomLightPowered(room) : false;
+      tooltip.style.display = 'block';
+      tooltip.style.left = (clientX + 15) + 'px';
+      tooltip.style.top = (clientY + 15) + 'px';
+      tooltip.innerHTML =
+        `<strong>Interrupteur — ${sr.roomName}</strong><br>` +
+        `Position : <strong style="color:${swOn ? '#f1c40f' : '#e74c3c'}">${swOn ? 'BAS (allumé)' : 'HAUT (éteint)'}</strong><br>` +
+        `Courant dispo : <strong style="color:${hasPower ? '#2ecc71' : '#e74c3c'}">${hasPower ? 'OUI' : 'NON'}</strong>` +
+        (!hasPower && swOn ? '<br><em>Interrupteur allumé mais pas de courant</em>' : '') +
+        `<br><em>Cliquer pour basculer</em>`;
+      return;
+    }
+  }
+
+  // Survol pièce
+  for (const rr of (window._roomRects || [])) {
+    if (mx >= rr.x && mx <= rr.x + rr.w && my >= rr.y && my <= rr.y + rr.h) {
+      const powered = isRoomPowered(rr.room);
+      const lit = isRoomLit(rr.room);
+      const swOn = switches[rr.room.name];
+      const details = getRoomDetails(rr.room);
+      tooltip.style.display = 'block';
+      tooltip.style.left = (clientX + 15) + 'px';
+      tooltip.style.top = (clientY + 15) + 'px';
+      tooltip.innerHTML =
+        `<strong>${rr.room.name}</strong> (${rr.room.floor})<br>` +
+        `Interrupteur : <strong style="color:${swOn ? '#f1c40f' : '#e74c3c'}">${swOn ? 'ON' : 'OFF'}</strong>` +
+        ` — Éclairage : <strong style="color:${lit ? '#f1c40f' : '#e74c3c'}">${lit ? 'OUI' : 'NON'}</strong>` +
+        ` — Courant : <strong style="color:${powered ? '#2ecc71' : '#e74c3c'}">${powered ? 'OUI' : 'NON'}</strong><br>` +
+        `<br>${details.replace(/\n/g, '<br>')}`;
+      return;
+    }
+  }
+
+  // Survol disjoncteur
+  for (const br of breakerRects) {
+    if (mx >= br.x && mx <= br.x + br.w && my >= br.y && my <= br.y + br.h) {
+      const b = breakers[br.index];
+      const mainOn = edfOn && breakers[7].on;
+      const isOn = edfOn && (b.id === 8 ? b.on : mainOn && b.on);
+      tooltip.style.display = 'block';
+      tooltip.style.left = (clientX + 15) + 'px';
+      tooltip.style.top = (clientY + 15) + 'px';
+      tooltip.innerHTML =
+        `<strong>Block #${b.id} — ${b.amp}</strong><br>` +
+        `${b.label.replace(/\n/g, ' ')}<br>` +
+        `État : <strong style="color:${isOn ? '#2ecc71' : '#e74c3c'}">${isOn ? 'ON' : 'OFF'}</strong>` +
+        (b.id === 8 ? '<br><em>Coupe toute la maison</em>' : '') +
+        (!edfOn ? '<br><em>EDF coupé</em>' : '') +
+        (edfOn && !mainOn && b.id !== 8 ? '<br><em>Principal coupé</em>' : '');
+      return;
+    }
+  }
+
+  tooltip.style.display = 'none';
+});
+
+canvas.addEventListener('mouseleave', () => {
+  tooltip.style.display = 'none';
+});
+
+// ===== PREMIER RENDU =====
+draw();
+</script>
+</body>
+</html>

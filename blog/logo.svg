@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6c5ce7"/>
+      <stop offset="100%" style="stop-color:#7c3aed"/>
+    </linearGradient>
+    <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a78bfa"/>
+      <stop offset="100%" style="stop-color:#6c5ce7"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fond arrondi -->
+  <rect x="10" y="10" width="180" height="180" rx="40" fill="url(#grad)"/>
+
+  <!-- Livre ouvert (base) -->
+  <path d="M60 130 L100 120 L140 130 L140 65 L100 55 L60 65 Z" fill="none" stroke="white" stroke-width="4" stroke-linejoin="round" opacity="0.9"/>
+  <!-- Pli central -->
+  <line x1="100" y1="55" x2="100" y2="120" stroke="white" stroke-width="3" opacity="0.7"/>
+
+  <!-- Lignes de texte gauche -->
+  <line x1="72" y1="78" x2="92" y2="73" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="72" y1="90" x2="92" y2="85" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="72" y1="102" x2="88" y2="97" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Lignes de texte droite -->
+  <line x1="108" y1="73" x2="128" y2="78" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="108" y1="85" x2="128" y2="90" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+  <line x1="112" y1="97" x2="128" y2="102" stroke="white" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- Plume / stylo qui ecrit -->
+  <g transform="translate(130, 42) rotate(35)">
+    <path d="M0 0 L6 30 L3 32 L0 30 L-6 30 L-3 32 Z" fill="white" opacity="0.95"/>
+    <path d="M0 30 L3 32 L0 38 L-3 32 Z" fill="url(#grad2)"/>
+    <rect x="-4" y="-2" width="8" height="6" rx="1" fill="white" opacity="0.8"/>
+  </g>
+
+  <!-- Petit cercle decoratif (point de lumiere) -->
+  <circle cx="155" cy="38" r="4" fill="white" opacity="0.5"/>
+  <circle cx="162" cy="45" r="2" fill="white" opacity="0.3"/>
+
+  <!-- Lettre B stylisee -->
+  <text x="100" y="168" text-anchor="middle" font-family="Arial, sans-serif" font-size="28" font-weight="900" fill="white" letter-spacing="6" opacity="0.95">BLOG</text>
+</svg>

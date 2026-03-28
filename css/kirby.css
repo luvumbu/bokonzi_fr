@@ -1,0 +1,655 @@
+/* Styles univers Kirby — sprites flottants, etoiles, nuages, sol
+   Depend de : rien (fichier autonome)
+   Utilise par : index.php (accueil), auth/login.php */
+
+/* ============================================
+   UNIVERS KIRBY — MONDE
+   ============================================ */
+
+.kirby-world {
+    flex: 1;
+    position: relative;
+    min-height: 520px;
+    overflow: hidden;
+    background: linear-gradient(
+        180deg,
+        #0b0e18 0%,
+        #10163a 25%,
+        #1a1555 45%,
+        #2d1b69 60%,
+        #4a2080 72%,
+        #6c3fa0 82%,
+        #9b6dd7 92%,
+        #c4a0e8 100%
+    );
+    background-size: 100% 200%;
+    animation: skyDrift 20s ease-in-out infinite alternate;
+}
+@keyframes skyDrift {
+    0%   { background-position: 50% 0%; }
+    50%  { background-position: 50% 15%; }
+    100% { background-position: 50% 5%; }
+}
+
+/* --- Planete --- */
+.kirby-planet {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    top: 8%;
+    right: 12%;
+    z-index: 2;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%,
+        #e8d5f5 0%,
+        #c4a0e8 20%,
+        #9b6dd7 45%,
+        #6c3fa0 70%,
+        #4a2080 100%
+    );
+    box-shadow:
+        inset -15px -10px 30px rgba(0, 0, 0, 0.4),
+        0 0 40px rgba(155, 109, 215, 0.25),
+        0 0 80px rgba(108, 63, 160, 0.1);
+    overflow: hidden;
+    animation: planetFloat 25s ease-in-out infinite alternate;
+    pointer-events: none;
+}
+/* Bandes de la planete qui tournent */
+.kirby-planet::before {
+    content: '';
+    position: absolute;
+    inset: -20%;
+    background: repeating-linear-gradient(
+        15deg,
+        transparent 0px,
+        transparent 12px,
+        rgba(255, 255, 255, 0.06) 12px,
+        rgba(255, 255, 255, 0.06) 16px,
+        transparent 16px,
+        transparent 30px,
+        rgba(0, 0, 0, 0.08) 30px,
+        rgba(0, 0, 0, 0.08) 34px
+    );
+    border-radius: 50%;
+    animation: planetRotate 40s linear infinite;
+}
+/* Cratere / tache */
+.kirby-planet::after {
+    content: '';
+    position: absolute;
+    width: 25px;
+    height: 20px;
+    top: 30%;
+    left: 25%;
+    background: rgba(74, 32, 128, 0.4);
+    border-radius: 50%;
+    box-shadow:
+        35px 15px 0 8px rgba(74, 32, 128, 0.2),
+        -10px 30px 0 4px rgba(74, 32, 128, 0.3);
+}
+@keyframes planetRotate {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+}
+@keyframes planetFloat {
+    0%   { transform: translateY(0); }
+    100% { transform: translateY(12px); }
+}
+
+/* --- Anneau de la planete --- */
+.kirby-planet-ring {
+    position: absolute;
+    width: 190px;
+    height: 40px;
+    top: calc(8% + 48px);
+    right: calc(12% - 35px);
+    z-index: 3;
+    border: 3px solid rgba(200, 180, 255, 0.2);
+    border-radius: 50%;
+    transform: rotateX(75deg);
+    pointer-events: none;
+    animation: planetFloat 25s ease-in-out infinite alternate;
+    box-shadow: 0 0 12px rgba(200, 180, 255, 0.08);
+}
+
+/* --- Etoiles --- */
+.kirby-stars {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+.kirby-star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    opacity: 0.6;
+}
+/* Seulement certaines etoiles clignotent */
+.kirby-star.blink {
+    animation: twinkle 2.5s ease-in-out infinite alternate;
+}
+.kirby-star.blink-slow {
+    animation: twinkle 4s ease-in-out infinite alternate;
+}
+.kirby-star.big {
+    width: 4px;
+    height: 4px;
+    box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.5);
+}
+@keyframes twinkle {
+    0%   { opacity: 0.15; }
+    50%  { opacity: 1; }
+    100% { opacity: 0.3; }
+}
+
+/* --- Nuages --- */
+.kirby-clouds {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+.kirby-cloud {
+    position: absolute;
+    background: rgba(200, 180, 255, 0.08);
+    border-radius: 50px;
+    will-change: transform;
+}
+
+/* --- Zone de vol --- */
+.kirby-sky {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    z-index: 5;
+}
+
+/* --- Collines --- */
+.kirby-hills {
+    position: absolute;
+    bottom: 80px;
+    left: 0;
+    right: 0;
+    height: 80px;
+    z-index: 3;
+    pointer-events: none;
+}
+.hill {
+    position: absolute;
+    bottom: 0;
+    border-radius: 50%;
+}
+.hill-1 { left: -5%; width: 35%; height: 70px; background: radial-gradient(ellipse at 50% 100%, #1a3a28 0%, #0f2218 100%); }
+.hill-2 { left: 25%; width: 40%; height: 90px; background: radial-gradient(ellipse at 50% 100%, #1e4030 0%, #122a1e 100%); }
+.hill-3 { left: 55%; width: 30%; height: 60px; background: radial-gradient(ellipse at 50% 100%, #1a3a28 0%, #0f2218 100%); }
+.hill-4 { left: 75%; width: 35%; height: 75px; background: radial-gradient(ellipse at 50% 100%, #1e4030 0%, #122a1e 100%); }
+
+/* --- Sol --- */
+.kirby-ground {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    z-index: 6;
+}
+.ground-grass {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 20px;
+    z-index: 3;
+    overflow: hidden;
+}
+.grass-blade {
+    position: absolute;
+    bottom: 0;
+    width: 12px;
+    height: 18px;
+    background: #2d8a4e;
+    border-radius: 50% 50% 0 0;
+    transform-origin: bottom center;
+    animation: grassSway 3s ease-in-out infinite alternate;
+}
+.grass-blade:nth-child(odd) {
+    background: #38a169;
+    height: 14px;
+    animation-delay: -1s;
+}
+.grass-blade:nth-child(3n) {
+    background: #25753e;
+    height: 20px;
+    animation-delay: -0.5s;
+}
+@keyframes grassSway {
+    0% { transform: rotate(-5deg); }
+    100% { transform: rotate(5deg); }
+}
+.ground-dirt {
+    position: absolute;
+    top: 18px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(180deg, #3d2a16 0%, #2a1c0e 40%, #1a1008 100%);
+    border-top: 3px solid #4a7c3f;
+}
+.ground-dirt::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+        radial-gradient(ellipse 6px 4px at 10% 30%, rgba(255,255,255,0.06) 0%, transparent 100%),
+        radial-gradient(ellipse 8px 5px at 30% 60%, rgba(255,255,255,0.04) 0%, transparent 100%),
+        radial-gradient(ellipse 5px 3px at 55% 25%, rgba(255,255,255,0.05) 0%, transparent 100%),
+        radial-gradient(ellipse 7px 4px at 75% 50%, rgba(255,255,255,0.04) 0%, transparent 100%),
+        radial-gradient(ellipse 6px 4px at 90% 35%, rgba(255,255,255,0.05) 0%, transparent 100%);
+}
+
+/* ============================================
+   SPRITES FLOTTANTS (partage login + accueil)
+   ============================================ */
+
+.floating-sprite {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 110px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    padding: 12px 10px 10px;
+    background: rgba(17, 24, 39, 0.75);
+    border: 1px solid rgba(108, 92, 231, 0.25);
+    border-radius: 14px;
+    text-decoration: none;
+    will-change: transform;
+    cursor: pointer;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    backdrop-filter: blur(6px);
+    z-index: 8;
+}
+.floating-sprite::after {
+    content: '';
+    position: absolute;
+    bottom: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 6px;
+    background: radial-gradient(ellipse, rgba(0,0,0,0.25) 0%, transparent 70%);
+    border-radius: 50%;
+}
+.floating-sprite:hover {
+    border-color: #6c5ce7;
+    box-shadow: 0 0 20px rgba(108, 92, 231, 0.4), 0 8px 24px rgba(108, 92, 231, 0.2);
+    z-index: 20;
+}
+.floating-sprite img {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid rgba(108, 92, 231, 0.3);
+}
+.floating-icon {
+    font-size: 38px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
+.floating-label {
+    font-size: 10px;
+    font-weight: 700;
+    color: #e2e8f0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 90px;
+}
+.floating-desc {
+    font-size: 8px;
+    color: #94a3b8;
+    text-align: center;
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    max-width: 90px;
+}
+.floating-auteur {
+    font-size: 8px;
+    color: #7a8599;
+    font-style: italic;
+}
+
+/* ============================================
+   SPRITES MINE vs ENNEMI
+   ============================================ */
+
+/* Mes projets — petits, rapides, au sol */
+.sprite-mine {
+    border-color: rgba(34, 197, 94, 0.4);
+    box-shadow: 0 0 12px rgba(34, 197, 94, 0.15);
+    width: 85px;
+    padding: 8px 6px;
+}
+.sprite-mine img {
+    width: 40px;
+    height: 40px;
+}
+.sprite-mine .floating-icon {
+    font-size: 28px;
+}
+.sprite-mine .floating-label {
+    font-size: 9px;
+    max-width: 70px;
+}
+.sprite-mine .floating-label {
+    color: #86efac;
+}
+.sprite-mine:hover {
+    border-color: #22c55e;
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+}
+
+/* Projets ennemis — gros, lents, volent */
+.sprite-enemy {
+    border-color: rgba(239, 68, 68, 0.35);
+    box-shadow: 0 0 12px rgba(239, 68, 68, 0.15);
+    width: 130px;
+    padding: 14px 12px;
+}
+.sprite-enemy img {
+    width: 65px;
+    height: 65px;
+}
+.sprite-enemy .floating-icon {
+    font-size: 46px;
+}
+.sprite-enemy img {
+    border-color: rgba(239, 68, 68, 0.35);
+}
+.sprite-enemy .floating-label {
+    color: #fca5a5;
+}
+.sprite-enemy:hover {
+    border-color: #ef4444;
+    box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+/* Hit — tremblement */
+.sprite-hit {
+    animation: spriteShake 0.2s ease;
+}
+@keyframes spriteShake {
+    0%, 100% { filter: none; }
+    25% { filter: brightness(2); transform: translate(-2px, -1px); }
+    50% { filter: brightness(1.5); transform: translate(2px, 1px); }
+    75% { filter: brightness(2); transform: translate(-1px, 2px); }
+}
+
+
+
+/* ============================================
+   LISTE LATERALE DES PROJETS
+   ============================================ */
+
+.kirby-sidebar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    z-index: 50;
+    width: 160px;
+    max-height: calc(100% - 130px);
+    overflow-y: auto;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    backdrop-filter: blur(8px);
+    padding: 8px;
+}
+.kirby-sidebar-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.4);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 4px 8px 6px;
+}
+.kirby-sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.kirby-sidebar-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+.kirby-sidebar-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+.kirby-sidebar-name {
+    font-size: 11px;
+    font-weight: 600;
+    color: rgba(255, 255, 255, 0.8);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* Scrollbar discrete */
+.kirby-sidebar::-webkit-scrollbar {
+    width: 4px;
+}
+.kirby-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+}
+
+/* Mode jour */
+.day-mode .kirby-sidebar {
+    background: rgba(255, 255, 255, 0.5);
+    border-color: rgba(0, 0, 0, 0.08);
+}
+.day-mode .kirby-sidebar-title {
+    color: rgba(0, 0, 0, 0.35);
+}
+.day-mode .kirby-sidebar-item:hover {
+    background: rgba(0, 0, 0, 0.06);
+}
+.day-mode .kirby-sidebar-name {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+/* ============================================
+   TOGGLE JOUR / NUIT
+   ============================================ */
+
+.kirby-toggle-mode {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 50;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.3);
+    color: #fff;
+    backdrop-filter: blur(6px);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.kirby-toggle-mode:hover {
+    background: rgba(0, 0, 0, 0.5);
+}
+.kirby-toggle-mode .mode-label {
+    font-size: 11px;
+    font-weight: 600;
+}
+
+/* ============================================
+   MODE JOUR
+   ============================================ */
+
+.kirby-world.day-mode {
+    background: linear-gradient(
+        180deg,
+        #1a8fe0 0%,
+        #3da5f0 20%,
+        #5cb8f5 35%,
+        #7ecbf8 50%,
+        #a0dcfb 65%,
+        #bde8fd 78%,
+        #d8f2ff 90%,
+        #eaf8ff 100%
+    );
+}
+
+/* Soleil (remplace planete) */
+.day-mode .kirby-planet {
+    background: radial-gradient(circle at 40% 40%,
+        #fff7c2 0%,
+        #ffe566 25%,
+        #ffcc00 50%,
+        #f0a500 80%,
+        #e08600 100%
+    );
+    box-shadow:
+        inset -10px -8px 20px rgba(200, 120, 0, 0.2),
+        0 0 60px rgba(255, 200, 0, 0.5),
+        0 0 120px rgba(255, 170, 0, 0.2);
+}
+.day-mode .kirby-planet::before {
+    background: repeating-linear-gradient(
+        15deg,
+        transparent 0px,
+        transparent 14px,
+        rgba(255, 255, 255, 0.1) 14px,
+        rgba(255, 255, 255, 0.1) 18px,
+        transparent 18px,
+        transparent 32px
+    );
+}
+.day-mode .kirby-planet::after {
+    background: rgba(255, 200, 0, 0.3);
+    box-shadow:
+        35px 15px 0 8px rgba(255, 200, 0, 0.15),
+        -10px 30px 0 4px rgba(255, 200, 0, 0.2);
+}
+.day-mode .kirby-planet-ring {
+    border-color: rgba(255, 200, 0, 0.15);
+    box-shadow: 0 0 12px rgba(255, 200, 0, 0.08);
+}
+
+/* Etoiles cachees en jour */
+.day-mode .kirby-stars {
+    opacity: 0;
+    transition: opacity 0.5s;
+}
+
+/* Nuages blancs */
+.day-mode .kirby-cloud {
+    background: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Collines vertes claires */
+.day-mode .hill-1 { background: radial-gradient(ellipse at 50% 100%, #4caf50 0%, #388e3c 100%); }
+.day-mode .hill-2 { background: radial-gradient(ellipse at 50% 100%, #56c45a 0%, #43a047 100%); }
+.day-mode .hill-3 { background: radial-gradient(ellipse at 50% 100%, #4caf50 0%, #388e3c 100%); }
+.day-mode .hill-4 { background: radial-gradient(ellipse at 50% 100%, #56c45a 0%, #43a047 100%); }
+
+/* Herbe verte claire */
+.day-mode .grass-blade { background: #4caf50; }
+.day-mode .grass-blade:nth-child(odd) { background: #66bb6a; }
+.day-mode .grass-blade:nth-child(3n) { background: #43a047; }
+
+/* Terre claire */
+.day-mode .ground-dirt {
+    background: linear-gradient(180deg, #8d6e4c 0%, #6d5038 40%, #5a4030 100%);
+    border-top-color: #66bb6a;
+}
+
+/* Sprites avec fond clair */
+.day-mode .floating-sprite {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+}
+.day-mode .floating-sprite:hover {
+    border-color: #1a8fe0;
+    box-shadow: 0 4px 16px rgba(26, 143, 224, 0.3);
+}
+.day-mode .floating-label {
+    color: #1a1a2e;
+}
+.day-mode .floating-desc {
+    color: #555;
+}
+.day-mode .floating-auteur {
+    color: #777;
+}
+.day-mode .floating-sprite::after {
+    background: radial-gradient(ellipse, rgba(0,0,0,0.1) 0%, transparent 70%);
+}
+
+/* Sprites mine/ennemi en jour */
+.day-mode .sprite-mine {
+    border-color: rgba(34, 150, 60, 0.5);
+    box-shadow: 0 0 10px rgba(34, 150, 60, 0.15);
+}
+.day-mode .sprite-mine .floating-label { color: #1b7a30; }
+.day-mode .sprite-enemy {
+    border-color: rgba(200, 50, 50, 0.4);
+    box-shadow: 0 0 10px rgba(200, 50, 50, 0.15);
+}
+.day-mode .sprite-enemy .floating-label { color: #c03030; }
+
+/* Transition douce */
+.kirby-world,
+.kirby-world .kirby-stars,
+.kirby-world .kirby-cloud,
+.kirby-world .hill,
+.kirby-world .grass-blade,
+.kirby-world .ground-dirt,
+.kirby-world .kirby-planet,
+.kirby-world .kirby-planet-ring,
+.kirby-world .floating-sprite,
+.kirby-world .floating-label {
+    transition: all 0.8s ease;
+}
+
+/* ===== RESPONSIVE KIRBY ===== */
+@media (max-width: 600px) {
+    .kirby-world { min-height: 420px; }
+    .kirby-ground { height: 70px; }
+    .kirby-sky { bottom: 70px; }
+    .kirby-hills { bottom: 55px; height: 60px; }
+    .floating-sprite {
+        width: 90px;
+        padding: 8px 6px;
+    }
+    .floating-sprite img {
+        width: 42px;
+        height: 42px;
+    }
+    .floating-icon { font-size: 28px; }
+}

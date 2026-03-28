@@ -1,0 +1,25 @@
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+
+/* --- Affichage --- */
+.display_none { display: none; }
+#on { display: none; }
+.u-hidden { display: none; }
+.hidden { display: none; }
+
+/* --- Texte --- */
+.u-text-right { text-align: right; }
+
+/* --- Espacement --- */
+.u-mb-10 { margin-bottom: 10px; }
+.u-mb-150 { margin-bottom: 150px; }
+
+/* --- Flexbox --- */
+.d_flex { display: flex; }
+
+/* --- Couleurs utilitaires --- */
+.white { color: var(--color-white); }
+
+/* --- Curseur --- */
+.element_remove:hover { cursor: pointer; }

@@ -1,0 +1,22 @@
+/* @icon: 🍥 */
+/* @label: Naruto */
+body.theme-naruto {
+    --bg-primary: #FF6600;
+    --bg-secondary: #FFF5EB;
+    --color-primary: #003366;
+    --color-primary-dark: #002244;
+    --color-primary-light: #1A5276;
+    --color-accent: #CC0000;
+    --color-accent-hover: #E60000;
+    --color-accent-dark: #990000;
+    --color-text: #1A1A1A;
+    --color-text-secondary: #5D4037;
+    --color-placeholder: #C68A5E;
+    --color-success: #22c55e;
+    --color-white: #FFF;
+    --color-logout-bg: #FFE0CC;
+    --font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+    --border-radius: 12px;
+    --border-radius-sm: 8px;
+    --badge-label: "Dattebayo!";
+}

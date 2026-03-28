@@ -1,0 +1,42 @@
+/* @icon: 🌑 */
+/* @label: Ultra Dark */
+body.theme-dark-skin {
+
+    --bg-primary: #050507;
+    --bg-secondary: #0b0d12;
+    --bg-tertiary: #12141b;
+
+    --color-primary: #3b82f6;
+    --color-primary-dark: #2563eb;
+    --color-primary-light: #60a5fa;
+
+    --color-accent: #22d3ee;
+    --color-accent-hover: #67e8f9;
+    --color-accent-dark: #0891b2;
+
+    --color-text: #f1f5f9;
+    --color-text-secondary: #94a3b8;
+    --color-placeholder: #64748b;
+
+    --color-success: #1b201d;
+    --color-warning: #202020;
+    --color-danger: #ef4444;
+
+    --color-border: #1c1f26;
+    --color-card: #0f1117;
+    --color-hover: #161a22;
+
+    --color-white: #ffffff;
+    --color-logout-bg: #141821;
+
+    --shadow-sm: 0 2px 6px rgba(0,0,0,0.6);
+    --shadow-md: 0 10px 25px rgba(0,0,0,0.7);
+    --shadow-lg: 0 20px 45px rgba(0,0,0,0.85);
+
+    --font-family: 'Segoe UI', 'Roboto', Arial, sans-serif;
+
+    --border-radius: 14px;
+    --border-radius-sm: 8px;
+
+    --badge-label: "Ultra Dark";
+}

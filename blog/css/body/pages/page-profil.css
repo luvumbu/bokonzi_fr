@@ -1,0 +1,131 @@
+/* ============================================================
+   PAGE : PROFIL
+   ============================================================ */
+/* ----- Container profil ----- */
+
+.profil-container {
+    max-width: 760px;
+    margin: 40px auto;
+    background: var(--bg-secondary);
+    padding: 36px 40px;
+    border-radius: var(--border-radius);
+    color: var(--color-text);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    border: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ----- Titre profil ----- */
+
+.profil-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 6px;
+    color: var(--color-text);
+}
+
+/* ----- Date profil ----- */
+
+.profil-date {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+    margin: 0 0 28px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+
+/* ----- Grille infos profil (lecture seule) ----- */
+
+.profil-info-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 24px;
+}
+.profil-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+}
+.profil-info-row:last-child {
+    border-bottom: none;
+}
+.profil-info-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    color: var(--color-text-secondary);
+}
+.profil-info-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+/* ----- Labels profil ----- */
+
+.profil-container label {
+    display: block;
+    margin: 20px 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    color: var(--color-text-secondary);
+}
+
+.profil-container label:first-of-type {
+    margin-top: 0;
+}
+
+/* ----- Inputs profil ----- */
+
+.profil-container input[type="text"],
+.profil-container input[type="email"],
+.profil-container input[type="password"] {
+    width: 100%;
+    padding: 14px 16px;
+    font-size: 15px;
+    font-family: var(--font-family);
+    line-height: 1.4;
+    color: var(--color-text);
+    background: var(--bg-primary);
+    border: 2px solid transparent;
+    border-radius: var(--border-radius-sm);
+    outline: none;
+    transition: border-color .2s, box-shadow .2s;
+    box-sizing: border-box;
+}
+
+.profil-container input:hover {
+    border-color: var(--color-primary-light);
+}
+
+.profil-container input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+}
+
+.profil-container input::placeholder {
+    color: var(--color-placeholder);
+    font-style: italic;
+}
+
+/* ----- Bouton submit profil ----- */
+
+.profil-container .submit-btn {
+    margin-top: 32px;
+}
+
+/* ----- Erreur profil ----- */
+
+.profil-error {
+    color: var(--color-danger, #ef4444);
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 12px;
+    min-height: 20px;
+}
+

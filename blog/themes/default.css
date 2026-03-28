@@ -1,0 +1,22 @@
+/* @icon: ⚡ */
+/* @label: Classique */
+body.theme-default {
+    --bg-primary: #ffffff;
+    --bg-secondary: #f8f9fa;
+    --color-primary: #3b82f6;
+    --color-primary-dark: #2563eb;
+    --color-primary-light: #60a5fa;
+    --color-accent: #8b5cf6;
+    --color-accent-hover: #a78bfa;
+    --color-accent-dark: #7c3aed;
+    --color-text: #1f2937;
+    --color-text-secondary: #6b7280;
+    --color-placeholder: #9ca3af;
+    --color-success: #10b981;
+    --color-white: #FFF;
+    --color-logout-bg: #fef2f2;
+    --font-family: 'Segoe UI', 'Inter', Arial, sans-serif;
+    --border-radius: 12px;
+    --border-radius-sm: 10px;
+    --badge-label: "Pro";
+}

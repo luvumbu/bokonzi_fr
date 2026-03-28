@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Exemple 15 - Murs colles</title>
+    <link rel="stylesheet" href="../../css/style.css">
+</head>
+<body>
+    <div id="titre" style="position:fixed;top:10px;left:10px;background:rgba(0,0,0,0.7);color:#fff;padding:10px;border-radius:6px;font-family:monospace;font-size:14px;z-index:10;">Exemple 15 — Murs colles (getPositions)</div>
+    <div id="canvas-container"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="../../js/scene/Sun.js"></script>
+    <script src="../../js/scene/Axes.js"></script>
+    <script src="../../js/scene/Brouillard.js"></script>
+    <script src="../../js/scene/SceneManager.js"></script>
+    <script src="../../js/engine/Brique.js"></script>
+    <script>
+    var sceneManager = new SceneManager(document.getElementById('canvas-container'));
+    sceneManager.setCielDegrade('#0044AA', '#87CEEB');
+    sceneManager.setCamera(10, 5, 8);
+    sceneManager.setCible(2.5, 1, 2.5);
+
+    var mur1 = new Brique(sceneManager.scene);
+    mur1.setCouleur('#8B4513');
+    mur1.construire(0, 0, 0, 5, 2.50, 0);
+    var pos = mur1.getPositions(0, 0, 0, 5, 2.50);
+    var mur2 = new Brique(sceneManager.scene);
+    mur2.setCouleur('#CC6633');
+    mur2.construire(pos.droite, 0, 0, 3, 2.50, 0);
+
+    </script>
+</body>
+</html>
