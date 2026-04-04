@@ -41,14 +41,12 @@ define('DB_PASS', $creds['DB_PASS']);
 $oauthFile = __DIR__ . '/.google_oauth.php';
 $oauth = file_exists($oauthFile) ? require $oauthFile : [];
 
-$isLocal = in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']);
-
 define('GOOGLE_CLIENT_ID', $oauth['GOOGLE_CLIENT_ID'] ?? '');
 define('GOOGLE_CLIENT_SECRET', $oauth['GOOGLE_CLIENT_SECRET'] ?? '');
-define('GOOGLE_REDIRECT_URI', $isLocal
-    ? 'http://localhost/bokonzi_fr/auth/callback.php'
-    : 'https://bokonzi.fr/auth/callback.php'
-);
+
+$_scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$_base = rtrim(dirname(dirname($_SERVER['SCRIPT_NAME'])), '/');
+define('GOOGLE_REDIRECT_URI', $_scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost') . $_base . '/auth/callback.php');
 
 // ========================================
 // 3. ADMIN — gere uniquement en BDD (is_admin)
