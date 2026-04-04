@@ -46,7 +46,7 @@ $isLocal = in_array($_SERVER['HTTP_HOST'] ?? '', ['localhost', '127.0.0.1']);
 define('GOOGLE_CLIENT_ID', $oauth['GOOGLE_CLIENT_ID'] ?? '');
 define('GOOGLE_CLIENT_SECRET', $oauth['GOOGLE_CLIENT_SECRET'] ?? '');
 define('GOOGLE_REDIRECT_URI', $isLocal
-    ? 'http://localhost/dossier_bokonzi_fr/auth/callback.php'
+    ? 'http://localhost/bokonzi_fr/auth/callback.php'
     : 'https://bokonzi.fr/auth/callback.php'
 );
 
@@ -65,9 +65,8 @@ mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 try {
     $conn = new mysqli(DB_HOST, DB_USER, DB_PASS);
     $conn->set_charset('utf8mb4');
-    $conn->select_db(DB_NAME);
 } catch (mysqli_sql_exception $e) {
-    // Credentials ou BDD invalides → supprimer le fichier
+    // Credentials invalides → supprimer le fichier
     if (isset($conn) && !$conn->connect_error) {
         $conn->close();
     }
